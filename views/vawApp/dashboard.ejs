@@ -1,0 +1,51 @@
+<div ng-controller="myVAWAppDashboardCtrl">
+    <div id="top" class="container" style="text-align: center; padding-top: 70px">
+        <div class="row">
+            <div id="form-container">
+                <div class="page-header text-center">
+                    <div id="status-buttons" class="text-center">
+                        <a ui-sref-active="active" ui-sref=".cropDetails" style="pointer-events: none; cursor: default"><span><b>1</b></span> Crop Details</a>
+                        <a ui-sref-active="active" ui-sref=".pestDetails" style="pointer-events: none; cursor: default"><span><b>2</b></span> Pest Details</a>
+                        <a ui-sref-active="active" ui-sref=".capturePhoto" style="pointer-events: none; cursor: default"><span><b>3</b></span> Capture Photo</a>
+                    </div>
+                </div>
+            </div>
+            <div id="signup-form" ui-view></div>
+        </div>
+    </div>
+</div>
+<script>
+    var DYNAMIC_FILES = [
+        '/vawApp',
+        '/vawApp/home',
+        '/vawApp/dashboard',
+        '/vawApp/cropdetails',
+        '/vawApp/pestdetails',
+        '/vawApp/capturephoto',
+        '/vawApp/offline'
+    ];
+    if ('caches' in window) {
+        caches.open('dynamic')
+        .then(function(cache) {
+            cache.addAll(DYNAMIC_FILES);
+        })
+    }
+    else {
+        alert('Browser Cache is not supported by your browser. Please use Google Chrome for better experience.');
+    }
+</script>
+<script>
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(function (choiceResult) {
+            console.log(choiceResult.outcome);
+            if (choiceResult.outcome === 'dismissed') {
+                console.log('User cancelled the App installation...');
+            }
+            else {
+                console.log('User added the App to Home Screen...');
+            }
+        });
+        deferredPrompt = null;
+    }
+</script>

@@ -1,0 +1,88 @@
+<form ng-controller="myVAWAppDashboardCtrl" class="form-horizontal" role="form" name="vawAppCPForm" ng-submit="submitPhotoDetails(vawAppCPForm.$valid)" ng-init="getPestDetailsData()" autocomplete="off" novalidate>
+    <div class="row container">
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Reference No.</label>
+            <label style="padding-top: 8px" class="control-label col-lg-7 col-md-7 col-sm-7 col-xs-7">{{referenceNo}}</label>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-8 col-md-8 col-sm-8 col-xs-8">1st Land Photo <span style="color: red">*</span></label>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align: right; padding-top: 3px">
+                <a id="recapture1" href="javascript:void(0)" style="padding: 5px" class="btn btn-warning btn-xs imageBtn">
+                    <span class="glyphicon glyphicon-camera"></span> Recapture
+                    <input id="file4" type="file" accept="image/*" capture="environment" onchange="angular.element(this).scope().readFile(this)" style="visibility: hidden; width: 100%; margin-top: -20px">
+                </a>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10" style="border: 1px solid black; height: 175px; padding: 0">
+                <div id="cameraBtn1" class="glyphicon glyphicon-camera imageBtn" style="height: 172px; font-size: 3em; padding: 66px">
+                    <input id="file1" type="file" accept="image/*" capture="environment" onchange="angular.element(this).scope().readFile(this)" style="visibility: hidden; width: 100%; margin-top: -83px">
+                </div>
+            </div>
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; font-size: 13px" class="control-label col-lg-6 col-md-6 col-sm-6 col-xs-6">Latitude: {{firstLatitude}}</label>
+            <label style="text-align: left; font-size: 13px" class="control-label col-lg-6 col-md-6 col-sm-6 col-xs-6">Longitude: {{firstLongitude}}</label>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-8 col-md-8 col-sm-8 col-xs-8">2nd Land Photo</label>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align: right; padding-top: 3px">
+                <a id="recapture2" href="javascript:void(0)" style="padding: 5px" class="btn btn-warning btn-xs imageBtn">
+                    <span class="glyphicon glyphicon-camera"></span> Recapture
+                    <input id="file5" type="file" accept="image/*" capture="environment" onchange="angular.element(this).scope().readFile(this)" style="visibility: hidden; width: 100%; margin-top: -20px">
+                </a>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10" style="border: 1px solid black; height: 175px; padding: 0">
+                <div id="cameraBtn2" class="glyphicon glyphicon-camera imageBtn" style="height: 172px; font-size: 3em; padding: 66px">
+                    <input id="file2" type="file" accept="image/*" capture="environment" onchange="angular.element(this).scope().readFile(this)" style="visibility: hidden; width: 100%; margin-top: -83px">
+                </div>
+            </div>
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; font-size: 13px" class="control-label col-lg-6 col-md-6 col-sm-6 col-xs-6">Latitude: {{secondLatitude}}</label>
+            <label style="text-align: left; font-size: 13px" class="control-label col-lg-6 col-md-6 col-sm-6 col-xs-6">Longitude: {{secondLongitude}}</label>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-8 col-md-8 col-sm-8 col-xs-8">3rd Land Photo</label>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align: right; padding-top: 3px">
+                <a id="recapture3" href="javascript:void(0)" style="padding: 5px" class="btn btn-warning btn-xs imageBtn">
+                    <span class="glyphicon glyphicon-camera"></span> Recapture
+                    <input id="file6" type="file" accept="image/*" capture="environment" onchange="angular.element(this).scope().readFile(this)" style="visibility: hidden; width: 100%; margin-top: -20px">
+                </a>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10" style="border: 1px solid black; height: 175px; padding: 0">
+                <div id="cameraBtn3" class="glyphicon glyphicon-camera imageBtn" style="height: 172px; font-size: 3em; padding: 66px">
+                    <input id="file3" type="file" accept="image/*" capture="environment" onchange="angular.element(this).scope().readFile(this)" style="visibility: hidden; width: 100%; margin-top: -83px">
+                </div>
+            </div>
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; font-size: 13px" class="control-label col-lg-6 col-md-6 col-sm-6 col-xs-6">Latitude: {{thirdLatitude}}</label>
+            <label style="text-align: left; font-size: 13px" class="control-label col-lg-6 col-md-6 col-sm-6 col-xs-6">Longitude: {{thirdLongitude}}</label>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-default" style="background: #2a5d1f; color: #ffffff">
+                Submit & Proceed <span class="glyphicon glyphicon-circle-arrow-right"></span>
+            </button>
+        </div>
+    </div>
+</form>
+<script>
+    (function() {
+        $('.imageBtn').click(function(e) {
+            if (e.target.id == 'cameraBtn1' || e.target.id == 'cameraBtn2' || e.target.id == 'cameraBtn3' || e.target.id == 'recapture1' || e.target.id == 'recapture2' || e.target.id == 'recapture3') {
+                return document.getElementById(e.target.lastElementChild.id).click();
+            }
+        });
+    }).call(this);
+</script>

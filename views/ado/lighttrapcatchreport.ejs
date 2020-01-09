@@ -1,0 +1,273 @@
+<div class="right_col" role="main" ng-controller="myADOLTCRCtrl" ng-init="getLTCCrops(); getBlocksByADO()" style="min-height: 100vh">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>Light Trap Catch Report</h3>
+            </div>
+            <div class="title_right">
+                <!-- <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search for...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">Go!</button>
+                        </span>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Light Trap Catch Report <small>(Select Date of entry, Season, Financial Year, Crop Category and Crop)</small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <!-- <li>
+                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li> -->
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <br />
+                        <div class="col-md-12 col-sm-12 col-xs-12" style="height: 44px">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label style="text-align: left; white-space: nowrap; padding-top: 8px" class="control-label col-md-4 col-sm-4 col-xs-12">Select Date : <span style="color: red">*</span></label>
+                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                        <input type="date" class="form-control" ng-model="dateOfPDE" id="pdeDate" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12" style="text-align: left">
+                                <div class="form-group">
+                                    <label style="text-align: left; padding-top: 8px" class="control-label col-md-4 col-sm-4 col-xs-12">Season : <span style="color: red">*</span></label>
+                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                        <div class="col-md-6 col-sm-6 col-xs-12" style="padding-top: 7px">
+                                            <input type="radio" name="season" ng-model="rbs" value="K" />
+                                            <label>Kharif</label>
+                                        </div>
+                                        <div class="col-md-6 col-sm-6 col-xs-12" style="padding-top: 7px">
+                                            <input type="radio" name="season" ng-model="rbs" value="R" />
+                                            <label>Rabi</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <label style="text-align: left; padding-top: 10px; white-space: nowrap" class="control-label col-md-4 col-sm-4 col-xs-12">Financial Year : <span style="color: red">*</span></label>
+                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                        <select class="form-control" ng-model="ddlFY">
+                                            <option value="" disabled>Select Financial Year</option>
+                                            <option value="2019-20">2019-20</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <label style="text-align: left; padding-top: 10px" class="control-label col-md-4 col-sm-4 col-xs-12">Block :</label>
+                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                        <select class="form-control" ng-model="ddlBlock" ng-options="i.BlockCode as i.BlockName for i in blocks">
+                                            <option value="">Select Block</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <label style="text-align: left; padding-top: 8px" class="control-label col-md-4 col-sm-4 col-xs-12">Crop : <span style="color: red">*</span></label>
+                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                        <select class="form-control" ng-model="ddlC" ng-options="i.CC as i.CN for i in crops" ng-change="getLTCPestDiseases(ddlC)">
+                                            <option value="" disabled>Select Crop</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <label style="text-align: left; padding-top: 8px" class="control-label col-md-4 col-sm-4 col-xs-12">Pest :</label>
+                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                        <select class="form-control" ng-model="ddlPD" ng-options="i.PestDiseaseCode as i.PestDiseaseName for i in pestDiseases">
+                                            <option value="">Select Pest</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="ln_solid"></div>
+                        <div class="col-md-12 col-sm-12 col-xs-12 text-center">
+                            <input type="button" class="btn btn-success" value="Get Details" ng-click="getLTCDetails()" />
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr />
+                        <div class="col-md-12 col-sm-12 col-xs-12" ng-show="ltcDetails.length > 0">
+                            <div class="form-group" style="text-align: center">
+                                <div ng-show="sgd" class="table table-responsive">
+                                    <input type="button" class="btn btn-info" value="Print" ng-click="printNext($event, 'GP and Pest-wise Light Trap Catch Report')" style="margin-bottom: 10px; float: right" />
+                                    <input type="button" class="btn btn-primary" value="Export to Excel" onclick="ExportToExcel(this, 'GP and Pest-wise Light Trap Catch Report')" style="margin-bottom: 10px; float: right" />
+                                    <table id="sgdData" class="table table-hover table-striped jambo_table bulk_action">
+                                        <thead>
+                                            <tr class="headings">
+                                                <td style="vertical-align: middle"><b>Serial No.</b></td>
+                                                <td style="vertical-align: middle"><b>GP</b></td>
+                                                <td style="vertical-align: middle"><b>No. of Trapped Pests</b></td>
+                                            </tr>
+                                        </thead>
+                                        <tr ng-repeat="i in ltcDetails | orderBy: 'GPName'">
+                                            <td style="vertical-align: middle">{{$index + 1}}</td>
+                                            <td style="vertical-align: middle">{{i.GPName | capitalize}}</td>
+                                            <td style="vertical-align: middle">{{i.PestTrappedNo}}</td>
+                                        </tr>
+                                        <tr class="totalPTN">
+                                            <td style="background: rgba(52,73,94,.94); color: #ECF0F1; vertical-align: middle" colspan="2"><b>Total Area (in HA)</b></td>
+                                            <td>{{ptn}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div ng-show="sgpd" class="table table-responsive">
+                                    <input type="button" class="btn btn-primary" value="Export to Excel" onclick="ExportToExcel(this, 'GP-wise Light Trap Catch Report')" style="margin-bottom: 10px; float: right" />
+                                    <table style="display: none" id="sgpdData" class="table table-hover table-striped jambo_table bulk_action">
+                                        <thead>
+                                            <tr class="headings">
+                                                <td style="vertical-align: middle"><b>Serial No.</b></td>
+                                                <td style="vertical-align: middle"><b>GP</b></td>
+                                                <td style="vertical-align: middle"><b>Pest</b></td>
+                                                <td style="vertical-align: middle"><b>No. of Trapped Pests</b></td>
+                                            </tr>
+                                        </thead>
+                                        <tr ng-repeat="i in ltcDetails | orderBy: ['GPName', 'PestDiseaseName']">
+                                            <td style="vertical-align: middle">{{$index + 1}}</td>
+                                            <td style="vertical-align: middle">{{i.GPName | capitalize}}</td>
+                                            <td style="vertical-align: middle">{{i.PestDiseaseName | capitalize}}</td>
+                                            <td style="vertical-align: middle">{{i.PestTrappedNo}}</td>
+                                        </tr>
+                                    </table>
+                                    <input type="button" class="btn btn-info" value="Print" ng-click="print($event, 'GP-wise Light Trap Catch Report')" style="margin-bottom: 10px; float: right" />
+                                    <table id="sgpdPrint" class="table table-hover table-striped jambo_table bulk_action">
+                                        <thead>
+                                            <tr class="headings">
+                                                <td style="vertical-align: middle"><b>Serial No.</b></td>
+                                                <td style="vertical-align: middle"><b>GP</b></td>
+                                                <td style="vertical-align: middle"><b>Pest Details</b></td>
+                                            </tr>
+                                        </thead>
+                                        <tr ng-repeat="(key, value) in ltcDetails | orderBy: 'GPName' | groupBy: 'GPName'">
+                                            <td><b>{{$index + 1}}</b></td>
+                                            <td><b>{{key | capitalize}}</b></td>
+                                            <td>
+                                                <table class="table table-hover table-striped jambo_table bulk_action">
+                                                    <thead>
+                                                        <tr class="headings">
+                                                            <td><b>Serial No.</b></td>
+                                                            <td><b>Pest</b></td>
+                                                            <td><b>No. of Trapped Pests</b></td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tr ng-repeat="i in value | orderBy: 'PestDiseaseName'">
+                                                        <td>{{$index + 1}}</td>
+                                                        <td>{{i.PestDiseaseName | capitalize}}</td>
+                                                        <td>{{i.PestTrappedNo}}</td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div ng-show="scd" class="table table-responsive">
+                                    <input type="button" class="btn btn-info" value="Print" ng-click="printNext($event, 'Block and Pest-wise Light Trap Catch Report')" style="margin-bottom: 10px; float: right" />
+                                    <input type="button" class="btn btn-primary" value="Export to Excel" onclick="ExportToExcel(this, 'Block and Pest-wise Light Trap Catch Report')" style="margin-bottom: 10px; float: right" />
+                                    <table id="scdData" class="table table-hover table-striped jambo_table bulk_action">
+                                        <thead>
+                                            <tr class="headings">
+                                                <td style="vertical-align: middle"><b>Serial No.</b></td>
+                                                <td style="vertical-align: middle"><b>Block</b></td>
+                                                <td style="vertical-align: middle"><b>No. of Trapped Pests</b></td>
+                                            </tr>
+                                        </thead>
+                                        <tr ng-repeat="i in ltcDetails | orderBy: 'BlockName'">
+                                            <td style="vertical-align: middle">{{$index + 1}}</td>
+                                            <td style="vertical-align: middle">{{i.BlockName | capitalize}}</td>
+                                            <td style="vertical-align: middle">{{i.PestTrappedNo}}</td>
+                                        </tr>
+                                        <tr class="totalPTN">
+                                            <td style="background: rgba(52,73,94,.94); color: #ECF0F1; vertical-align: middle" colspan="2"><b>Total Area (in HA)</b></td>
+                                            <td>{{ptn}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div ng-show="sdd" class="table table-responsive">
+                                    <input type="button" class="btn btn-primary" value="Export to Excel" onclick="ExportToExcel(this, 'Block-wise Light Trap Catch Report')" style="margin-bottom: 10px; float: right" />
+                                    <table style="display: none" id="sddData" class="table table-hover table-striped jambo_table bulk_action">
+                                        <thead>
+                                            <tr class="headings">
+                                                <td style="vertical-align: middle"><b>Serial No.</b></td>
+                                                <td style="vertical-align: middle"><b>Block</b></td>
+                                                <td style="vertical-align: middle"><b>Pest</b></td>
+                                                <td style="vertical-align: middle"><b>No. of Trapped Pests</b></td>
+                                            </tr>
+                                        </thead>
+                                        <tr ng-repeat="i in ltcDetails | orderBy: ['BlockName', 'PestDiseaseName']">
+                                            <td style="vertical-align: middle">{{$index + 1}}</td>
+                                            <td style="vertical-align: middle">{{i.BlockName | capitalize}}</td>
+                                            <td style="vertical-align: middle">{{i.PestDiseaseName | capitalize}}</td>
+                                            <td style="vertical-align: middle">{{i.PestTrappedNo}}</td>
+                                        </tr>
+                                    </table>
+                                    <input type="button" class="btn btn-info" value="Print" ng-click="print($event, 'Block-wise Light Trap Catch Report')" style="margin-bottom: 10px; float: right" />
+                                    <table id="sddPrint" class="table table-hover table-striped jambo_table bulk_action">
+                                        <thead>
+                                            <tr class="headings">
+                                                <td style="vertical-align: middle"><b>Serial No.</b></td>
+                                                <td style="vertical-align: middle"><b>Block</b></td>
+                                                <td style="vertical-align: middle"><b>Pest Details</b></td>
+                                            </tr>
+                                        </thead>
+                                        <tr ng-repeat="(key, value) in ltcDetails | orderBy: 'BlockName' | groupBy: 'BlockName'">
+                                            <td><b>{{$index + 1}}</b></td>
+                                            <td><b>{{key | capitalize}}</b></td>
+                                            <td>
+                                                <table class="table table-hover table-striped jambo_table bulk_action">
+                                                    <thead>
+                                                        <tr class="headings">
+                                                            <td><b>Serial No.</b></td>
+                                                            <td><b>Pest Name</b></td>
+                                                            <td><b>No. of Trapped Pests</b></td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tr ng-repeat="i in value | orderBy: 'PestDiseaseName'">
+                                                        <td>{{$index + 1}}</td>
+                                                        <td>{{i.PestDiseaseName | capitalize}}</td>
+                                                        <td>{{i.PestTrappedNo}}</td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function ExportToExcel(tableID, excelName) {
+        $("#" + tableID.nextElementSibling.id).table2excel({
+            exclude: ".totalPTN",
+            filename: excelName + ".xls",
+        });
+    }
+</script>

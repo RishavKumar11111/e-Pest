@@ -1,0 +1,481 @@
+<div class="right_col" role="main" ng-controller="myJDAPPVAWIRCtrl" ng-init="getDistricts()" style="min-height: 100vh">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>VAW Inspection Report</h3>
+            </div>
+            <div class="title_right">
+                <!-- <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search for...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">Go!</button>
+                        </span>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Date-wise VAW Report <small>(Select Date of entry, Season and Financial Year)</small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <!-- <li>
+                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li> -->
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <br />
+                        <div class="col-md-12 col-sm-12 col-xs-12" style="height: 44px">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label style="text-align: left; white-space: nowrap; padding-top: 8px" class="control-label col-md-4 col-sm-4 col-xs-12">Select Date : <span style="color: red">*</span></label>
+                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                        <input type="date" class="form-control" ng-model="dateOfPDE" id="pdeDate" ng-change="checkCDay()" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12" style="text-align: left">
+                                <div class="form-group">
+                                    <label style="text-align: left; white-space: nowrap; padding-top: 8px" class="control-label col-md-4 col-sm-4 col-xs-12">Season : <span style="color: red">*</span></label>
+                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                        <div class="col-md-4 col-sm-4 col-xs-12" style="padding-top: 7px">
+                                            <input type="radio" name="season" ng-model="rbs" value="K" />
+                                            <label>Kharif</label>
+                                        </div>
+                                        <div class="col-md-4 col-sm-4 col-xs-12" style="padding-top: 7px">
+                                            <input type="radio" name="season" ng-model="rbs" value="R" />
+                                            <label>Rabi</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <label style="text-align: left; padding-top: 10px; white-space: nowrap" class="control-label col-md-4 col-sm-4 col-xs-12">Financial Year : <span style="color: red">*</span></label>
+                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                        <select class="form-control" ng-model="ddlFY">
+                                            <option value="" disabled>Select Financial Year</option>
+                                            <option value="2019-20">2019-20</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <label style="text-align: left; padding-top: 10px; white-space: nowrap" class="control-label col-md-4 col-sm-4 col-xs-12">District :</label>
+                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                        <select class="form-control" ng-model="ddlDistrict" ng-options="i.DistrictCode as i.DistrictName for i in districts" ng-change="getBlocksByDistrict()">
+                                            <option value="">Select District</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <label style="text-align: left; padding-top: 10px; white-space: nowrap" class="control-label col-md-4 col-sm-4 col-xs-12">Block :</label>
+                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                        <select class="form-control" ng-model="ddlBlock" ng-options="i.BlockCode as i.BlockName for i in blocks">
+                                            <option value="">Select Block</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="ln_solid"></div>
+                        <div class="col-md-12 col-sm-12 col-xs-12 text-center">
+                            <input type="button" class="btn btn-success" value="Get Pest Details" ng-click="getVAWInspectionDetails()" />
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr />
+                        <div class="col-md-12 col-sm-12 col-xs-12" ng-show="pestDetails.length > 0">
+                            <div class="form-group" style="text-align: center">
+                                <div ng-show="sdbg" class="table table-responsive" ng-repeat="(key, value) in pestDetails | orderBy: 'DistrictName' | groupBy: 'DistrictName'" style="text-align: left">
+                                    <b>{{$index + 1}}. </b><b>{{key | capitalize}}</b>
+                                    <table class="table table-hover table-striped jambo_table bulk_action" style="text-align: center">
+                                        <thead>
+                                            <tr class="headings">
+                                                <td><b>Serial No.</b></td>
+                                                <td><b>Block</b></td>
+                                                <td><b>VAW Details</b></td>
+                                            </tr>
+                                        </thead>
+                                        <tr ng-repeat="(i, j) in value | orderBy: 'BlockName'| groupBy: 'BlockName'">
+                                            <td><b>{{$index + 1}}</b></td>
+                                            <td><b>{{i | capitalize}}</b></td>
+                                            <td>
+                                                <table class="table table-hover table-striped jambo_table bulk_action">
+                                                    <thead>
+                                                        <tr class="headings">
+                                                            <td><b>Serial No.</b></td>
+                                                            <td><b>VAW Code</b></td>
+                                                            <td><b>GP Details</b></td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tr ng-repeat="(k, l) in j | orderBy: 'VAWCode'| groupBy: 'VAWCode'">
+                                                        <td><b>{{$index + 1}}</b></td>
+                                                        <td><b>{{k}}</b></td>
+                                                        <td>
+                                                            <table class="table table-hover table-striped jambo_table bulk_action">
+                                                                <thead>
+                                                                    <tr class="headings">
+                                                                        <td><b>Serial No.</b></td>
+                                                                        <td><b>GP</b></td>
+                                                                        <td><b>Reference No. Details</b></td>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tr ng-repeat="(m, n) in l | orderBy: 'GPName' | groupBy: 'GPName'">
+                                                                    <td><b>{{$index + 1}}</b></td>
+                                                                    <td><b>{{m | capitalize}}</b></td>
+                                                                    <td>
+                                                                        <table class="table table-hover table-striped jambo_table bulk_action">
+                                                                            <thead>
+                                                                                <tr class="headings">
+                                                                                    <td><b>Serial No.</b></td>
+                                                                                    <td><b>Reference No.</b></td>
+                                                                                    <td><b>View Crop Details</b></td>
+                                                                                    <td><b>View Photo & Location Details</b></td>
+                                                                                    <td><b>View Pest Details</b></td>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tr ng-repeat="p in n | orderBy: 'ReferenceNo'">
+                                                                                <td><b>{{$index + 1}}</b></td>
+                                                                                <td><b>{{p.ReferenceNo}}</b></td>
+                                                                                <td><b><input type="button" class="btn btn-sm btn-primary" value="View Crop Details" ng-click="getCD(p.ReferenceNo)" data-toggle="modal" data-target="#CDModal" /></b></td>
+                                                                                <td><b><input type="button" class="btn btn-sm btn-primary" value="View Photo & Location Details" ng-click="getPLD(p.ReferenceNo)" data-toggle="modal" data-target="#PLDModal" /></b></td>
+                                                                                <td><b><input type="button" class="btn btn-sm btn-primary" value="View Pest Details" ng-click="getPD(p.ReferenceNo)" data-toggle="modal" data-target="#PDModal" /></b></td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div ng-show="sbg" class="table table-responsive" ng-repeat="(key, value) in pestDetails | orderBy: 'BlockName' | groupBy: 'BlockName'" style="text-align: left">
+                                    <b>{{$index + 1}}. </b><b>{{key | capitalize}}</b>
+                                    <table class="table table-hover table-striped jambo_table bulk_action" style="text-align: center">
+                                        <thead>
+                                            <tr class="headings">
+                                                <td><b>Serial No.</b></td>
+                                                <td><b>VAW Code</b></td>
+                                                <td><b>GP Details</b></td>
+                                            </tr>
+                                        </thead>
+                                        <tr ng-repeat="(i, j) in value | orderBy: 'VAWCode' | groupBy: 'VAWCode'">
+                                            <td><b>{{$index + 1}}</b></td>
+                                            <td><b>{{i}}</b></td>
+                                            <td>
+                                                <table class="table table-hover table-striped jambo_table bulk_action">
+                                                    <thead>
+                                                        <tr class="headings">
+                                                            <td><b>Serial No.</b></td>
+                                                            <td><b>GP</b></td>
+                                                            <td><b>Reference No. Details</b></td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tr ng-repeat="(k, l) in j | orderBy: 'GPName' | groupBy: 'GPName'">
+                                                        <td><b>{{$index + 1}}</b></td>
+                                                        <td><b>{{k}}</b></td>
+                                                        <td>
+                                                            <table class="table table-hover table-striped jambo_table bulk_action">
+                                                                <thead>
+                                                                    <tr class="headings">
+                                                                        <td><b>Serial No.</b></td>
+                                                                        <td><b>Reference No.</b></td>
+                                                                        <td><b>View Crop Details</b></td>
+                                                                        <td><b>View Photo & Location Details</b></td>
+                                                                        <td><b>View Pest Details</b></td>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tr ng-repeat="m in l | orderBy: 'ReferenceNo'">
+                                                                    <td><b>{{$index + 1}}</b></td>
+                                                                    <td><b>{{m.ReferenceNo}}</b></td>
+                                                                    <td><b><input type="button" class="btn btn-sm btn-primary" value="View Crop Details" ng-click="getCD(m)" data-toggle="modal" data-target="#CDModal" /></b></td>
+                                                                    <td><b><input type="button" class="btn btn-sm btn-primary" value="View Photo & Location Details" ng-click="getPLD(m)" data-toggle="modal" data-target="#PLDModal" /></b></td>
+                                                                    <td><b><input type="button" class="btn btn-sm btn-primary" value="View Pest Details" ng-click="getPD(m)" data-toggle="modal" data-target="#PDModal" /></b></td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div ng-show="sg" class="table table-responsive">
+                                    <table class="table table-hover table-striped jambo_table bulk_action">
+                                        <thead>
+                                            <tr class="headings">
+                                                <td style="vertical-align: middle"><b>Serial No.</b></td>
+                                                <td style="vertical-align: middle"><b>VAW Code</b></td>
+                                                <td style="vertical-align: middle"><b>GP Details</b></td>
+                                            </tr>
+                                        </thead>
+                                        <tr ng-repeat="(key, value) in pestDetails | orderBy: 'VAWCode' | groupBy: 'VAWCode'">
+                                            <td><b>{{$index + 1}}</b></td>
+                                            <td><b>{{key}}</b></td>
+                                            <td>
+                                                <table class="table table-hover table-striped jambo_table bulk_action">
+                                                    <thead>
+                                                        <tr class="headings">
+                                                            <td><b>Serial No.</b></td>
+                                                            <td><b>GP</b></td>
+                                                            <td><b>ReferenceNo Details</b></td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tr ng-repeat="(i, j) in value | orderBy: 'GPName' | groupBy: 'GPName'">
+                                                        <td><b>{{$index + 1}}</b></td>
+                                                        <td><b>{{i | capitalize}}</b></td>
+                                                        <td>
+                                                            <table class="table table-hover table-striped jambo_table bulk_action">
+                                                                <thead>
+                                                                    <tr class="headings">
+                                                                        <td><b>Serial No.</b></td>
+                                                                        <td><b>ReferenceNo</b></td>
+                                                                        <td><b>View Crop Details</b></td>
+                                                                        <td><b>View Photo & Location Details</b></td>
+                                                                        <td><b>View Pest Details</b></td>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tr ng-repeat="k in j | orderBy: 'ReferenceNo'">
+                                                                    <td><b>{{$index + 1}}</b></td>
+                                                                    <td><b>{{k.ReferenceNo}}</b></td>
+                                                                    <td><input type="button" class="btn btn-sm btn-primary" value="View Crop Details" ng-click="getCD(k)" data-toggle="modal" data-target="#CDModal" /></td>
+                                                                    <td><input type="button" class="btn btn-sm btn-primary" value="View Photo & Location Details" ng-click="getPLD(k)" data-toggle="modal" data-target="#PLDModal" /></td>
+                                                                    <td><input type="button" class="btn btn-sm btn-primary" value="View Pest Details" ng-click="getPD(k)" data-toggle="modal" data-target="#PDModal" /></td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="CDModal" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title text-center">Crop Details Section</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row" ng-show="cd != null">
+                            <div class="col-md-1 col-sm-1 col-xs-12"></div>
+                            <div class="form-horizontal col-md-10 col-sm-10 col-xs-12">
+                                <div class="form-group">
+                                    <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">Reference No. :</label>
+                                    <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">{{cd.ReferenceNo}}</label>
+                                </div>
+                                <div class="form-group">
+                                    <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">District :</label>
+                                    <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">{{cd.DistrictName | capitalize}}</label>
+                                </div>
+                                <div class="form-group">
+                                    <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">Block :</label>
+                                    <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">{{cd.BlockName | capitalize}}</label>
+                                </div>
+                                <div class="form-group">
+                                    <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">GP :</label>
+                                    <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">{{cd.GPName | capitalize}}</label>
+                                </div>
+                                <div class="form-group">
+                                    <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">Village :</label>
+                                    <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">{{cd.VillageName | capitalize}}</label>
+                                </div>
+                                <div class="form-group">
+                                    <label style="text-align: left; padding-top: 8px" class="control-label col-md-6 col-sm-6 col-xs-12">Mobile No. :</label>
+                                    <label style="text-align: left; padding-top: 8px" class="control-label col-md-6 col-sm-6 col-xs-12">{{cd.MobileNo}}</label>
+                                </div>
+                                <div class="form-group">
+                                    <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">Season :</label>
+                                    <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">{{cd.Season}}</label>
+                                </div>
+                                <div class="form-group">
+                                    <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">Crop Category :</label>
+                                    <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">{{cd.CategoryName}}</label>
+                                </div>
+                                <div class="form-group">
+                                    <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">Crop :</label>
+                                    <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">{{cd.CropName}}</label>
+                                </div>
+                                <div class="form-group">
+                                    <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">Crop Stage :</label>
+                                    <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">{{cd.CropStageName}}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-1 col-sm-1 col-xs-12"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="PLDModal" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title text-center">Photo & Location Details Section</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row" ng-show="pld != null">
+                            <div class="form-horizontal">
+                                <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                                    <label style="text-align: left" class="control-label col-md-4 col-sm-4 col-xs-12">Reference No. :</label>
+                                    <label style="text-align: left" class="control-label col-md-4 col-sm-4 col-xs-12">{{pld.ReferenceNo}}</label>
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12"></label>
+                                </div>
+                                <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                                    <label style="text-align: left" class="control-label col-md-4 col-sm-4 col-xs-12">Fixed Land Photo :</label>
+                                    <img id="flp" class="col-md-5 col-sm-5 col-xs-12" />
+                                    <div class="col-md-3 col-sm-3 col-xs-12">
+                                        <label class="control-label">Latitude: {{pld.FixedLandLatitude}}</label>
+                                        <label class="control-label">Longitude: {{pld.FixedLandLongitude}}</label>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                                    <label style="text-align: left" class="control-label col-md-4 col-sm-4 col-xs-12">1st Random Land Photo :</label>
+                                    <div ng-show="pld.RLP1 != null">
+                                        <img id="rlp1" class="col-md-5 col-sm-5 col-xs-12" />
+                                    </div>
+                                    <div ng-show="pld.RLP1 == null" style="padding-top: 8px" class="col-md-5 col-sm-5 col-xs-12"><b>NA</b></div>
+                                    <div class="col-md-3 col-sm-3 col-xs-12">
+                                        <label class="control-label">Latitude: {{pld.RandomLandLatitude1 == null ? 'NA' : pld.RandomLandLatitude1}}</label>
+                                        <label class="control-label">Longitude: {{pld.RandomLandLongitude1 == null ? 'NA' : pld.RandomLandLongitude1}}</label>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                                    <label style="text-align: left" class="control-label col-md-4 col-sm-4 col-xs-12">2nd Random Land Photo :</label>
+                                    <div ng-show="pld.RLP2 != null">
+                                        <img id="rlp2" class="col-md-5 col-sm-5 col-xs-12" />
+                                    </div>
+                                    <div ng-show="pld.RLP2 == null" style="padding-top: 8px" class="col-md-5 col-sm-5 col-xs-12"><b>NA</b></div>
+                                    <div class="col-md-3 col-sm-3 col-xs-12">
+                                        <label class="control-label">Latitude: {{pld.RandomLandLatitude2 == null ? 'NA' : pld.RandomLandLatitude2}}</label>
+                                        <label class="control-label">Longitude: {{pld.RandomLandLongitude2 == null ? 'NA' : pld.RandomLandLongitude2}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="PDModal" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" id="cl" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title text-center">Pest Details Section</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row" ng-show="lblPestDetails && pd != null">
+                            <div class="col-md-1 col-sm-1 col-xs-12"></div>
+                            <div class="form-horizontal col-md-10 col-sm-10 col-xs-12">
+                                <div class="form-group">
+                                    <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">Reference No.</label>
+                                    <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">{{pd.ReferenceNo}}</label>
+                                </div>
+                                <div class="form-group">
+                                    <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">Pest Identified</label>
+                                    <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">{{pd.InfectionIdentified}}</label>
+                                </div>
+                                <div class="form-group">
+                                    <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">Pest Name</label>
+                                    <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">{{pd.PestDiseaseName == null ? 'NA' : pd.PestDiseaseName}}</label>
+                                </div>
+                                <div class="form-group">
+                                    <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">Area of Land</label>
+                                    <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">{{pd.AreaOfLand}} ha</label>
+                                </div>
+                                <div class="form-group col-md-12 col-sm-12 col-xs-12" style="border-bottom: 1px dashed #cccccc">
+                                    <label class="control-label">Area Affected (in Hectare) :---</label>
+                                </div>
+                                <div class="form-group">
+                                    <label style="text-align: left" class="control-label col-md-3 col-sm-3 col-xs-12">Low</label>
+                                    <label style="text-align: left" class="control-label col-md-3 col-sm-3 col-xs-12">Moderate</label>
+                                    <label style="text-align: left" class="control-label col-md-3 col-sm-3 col-xs-12">High</label>
+                                    <label style="text-align: left" class="control-label col-md-3 col-sm-3 col-xs-12">Total</label>
+                                </div>
+                                <div class="form-group">
+                                    <label style="text-align: left" class="control-label col-md-3 col-sm-3 col-xs-12">{{pd.LowIntensityAttackArea}} ha</label>
+                                    <label style="text-align: left" class="control-label col-md-3 col-sm-3 col-xs-12">{{pd.MediumIntensityAttackArea}} ha</label>
+                                    <label style="text-align: left" class="control-label col-md-3 col-sm-3 col-xs-12">{{pd.HighIntensityAttackArea}} ha</label>
+                                    <label style="text-align: left" class="control-label col-md-3 col-sm-3 col-xs-12">{{(pd.LowIntensityAttackArea -- pd.MediumIntensityAttackArea -- pd.HighIntensityAttackArea).toFixed(1)}} ha</label>
+                                </div>
+                                <div class="form-group col-md-12 col-sm-12 col-xs-12" style="border-bottom: 1px dashed #cccccc">
+                                    <label class="control-label">Area Treated (in Hectare) :---</label>
+                                </div>
+                                <div class="form-group">
+                                    <label style="text-align: left" class="control-label col-md-3 col-sm-3 col-xs-12">Low</label>
+                                    <label style="text-align: left" class="control-label col-md-3 col-sm-3 col-xs-12">Moderate</label>
+                                    <label style="text-align: left" class="control-label col-md-3 col-sm-3 col-xs-12">High</label>
+                                    <label style="text-align: left" class="control-label col-md-3 col-sm-3 col-xs-12">Total</label>
+                                </div>
+                                <div class="form-group">
+                                    <label style="text-align: left" class="control-label col-md-3 col-sm-3 col-xs-12">{{pd.LowIntensityTreatedArea}} ha</label>
+                                    <label style="text-align: left" class="control-label col-md-3 col-sm-3 col-xs-12">{{pd.MediumIntensityTreatedArea}} ha</label>
+                                    <label style="text-align: left" class="control-label col-md-3 col-sm-3 col-xs-12">{{pd.HighIntensityTreatedArea}} ha</label>
+                                    <label style="text-align: left" class="control-label col-md-3 col-sm-3 col-xs-12">{{(pd.LowIntensityTreatedArea -- pd.MediumIntensityTreatedArea -- pd.HighIntensityTreatedArea).toFixed(1)}} ha</label>
+                                </div>
+                                <div class="form-group col-md-12 col-sm-12 col-xs-12" style="border-bottom: 1px dashed #cccccc">
+                                    <label class="control-label">Pest Population / Nature of Damage :---</label>
+                                </div>
+                                <div class="form-group">
+                                    <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">Moderate :</label>
+                                    <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">{{pd.ModerateIntensityPestPopulation == null ? 'NA' : pd.ModerateIntensityPestPopulation}}</label>
+                                </div>
+                                <div class="form-group">
+                                    <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">High :</label>
+                                    <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">{{pd.HighIntensityPestPopulation == null ? 'NA' : pd.HighIntensityPestPopulation}}</label>
+                                </div>
+                                <div class="form-group" style="border-bottom: 1px dashed #cccccc">
+                                    <label style="text-align: left" class="control-label col-md-12 col-sm-12 col-xs-12">Advisories :---</label>
+                                </div>
+                                <div class="form-group">
+                                    <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">Moderate :</label>
+                                    <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">{{pd.AdvisoryModerate == null ? 'NA' : pd.AdvisoryModerate}}</label>
+                                </div>
+                                <div class="form-group">
+                                    <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">High :</label>
+                                    <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">{{pd.AdvisoryHigh == null ? 'NA' : pd.AdvisoryHigh}}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-1 col-sm-1 col-xs-12"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

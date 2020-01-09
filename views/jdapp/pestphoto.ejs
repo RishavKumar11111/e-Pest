@@ -1,0 +1,15 @@
+<html>
+    <head>
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+    <meta name='viewport' content='initial-scale=1, maximum-scale=1,user-scalable=no'>
+    <title>Pest Photo</title>
+    <link rel="icon" href="../../gigw/nielit.gov.in/sites/all/themes/berry/images/favicon.ico" type="image/x-icon" />
+    </head>
+    <body>
+        <img id="flp" />
+        <script>
+            var responseData = JSON.parse('<%-JSON.stringify(photoData)%>');
+            document.getElementById('flp').setAttribute("src", responseData);
+        </script>
+    </body>
+</html>

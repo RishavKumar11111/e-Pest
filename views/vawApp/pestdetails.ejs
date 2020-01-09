@@ -1,0 +1,187 @@
+<form ng-controller="myVAWAppDashboardCtrl" class="form-horizontal" role="form" name="vawAppPDForm" ng-submit="submitPestDetails(vawAppPDForm.$valid)" ng-init="getCropDetailsData(); getPestDiseases()" autocomplete="off" novalidate>
+    <div class="row container">
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Reference No.</label>
+            <label style="padding-top: 8px" class="control-label col-lg-7 col-md-7 col-sm-7 col-xs-7">{{referenceNo}}</label>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Pest Identified <span style="color: red">*</span></label>
+            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7" style="margin-top: 6px">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label><input type="radio" name="pestIdentified" ng-model="rbPestIdentified" value="Yes" required /> Yes</label>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label><input type="radio" name="pestIdentified" ng-model="rbPestIdentified" value="No" ng-click="ddlMAdvisory = null; ddlHAdvisory = null; ddlMPP = null; ddlHPP = null; ddlPest = null; moderatePestPopulation = []; highPestPopulation = []; moderateAdvisories = []; highAdvisories = [];" required /> No</label>
+                </div>
+                <div class="has-error" ng-show="vawAppPDForm.$submitted || vawAppPDForm.pestIdentified.$touched" style="color:red">
+                    <span ng-show="vawAppPDForm.pestIdentified.$error.required">This is a required field</span>
+                </div>
+            </div>
+        </div>
+        <div ng-show="rbPestIdentified == 'Yes'" class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Select Pest</label>
+            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                    <select class="form-control" ng-model="ddlPest" ng-options="i.PestDiseaseCode as i.PestDiseaseName for i in pestDiseases" ng-change="getPestPopulation(ddlPest); getPesticides(ddlPest); checkAdvisoryandPP(ddlPest)">
+                        <option value="" disabled>Select Pest</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Area of Land <span style="color: red">*</span></label>
+            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                    <input type="text" class="form-control" name="areaOfLand" ng-model="txtAreaOfLand" valid-number-upto-one-decimal placeholder="Enter Area of Land (in Hectare)" maxlength="10" required />
+                    <span class="input-group-addon" style="padding: 6px"><b>ha</b></span>
+                </div>
+                <div class="has-error" ng-show="vawAppPDForm.$submitted || vawAppPDForm.areaOfLand.$touched" style="color:red">
+                    <span ng-show="vawAppPDForm.areaOfLand.$error.required">This is a required field</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group" style="border-bottom: 1px dashed #cccccc">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-12 col-md-12 col-sm-12 col-xs-12">Area Affected (in Hectare) :---</label>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-4 col-md-4 col-sm-4 col-xs-4">Low <span style="color: red">*</span></label>
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-4 col-md-4 col-sm-4 col-xs-4">Moderate <span style="color: red">*</span></label>
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-4 col-md-4 col-sm-4 col-xs-4">High <span style="color: red">*</span></label>
+        </div>
+        <div class="form-group">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <div class="input-group">
+                    <span class="input-group-addon" style="padding: 6px 3px"><i class="glyphicon glyphicon-pencil"></i></span>
+                    <input type="text" class="form-control" name="lowAffectedArea" ng-model="txtLowAreaAffected" valid-number-upto-one-decimal placeholder="Enter Area Affected in Low Intensity (in Hectare)" maxlength="10" required />
+                </div>
+                <div class="has-error" ng-show="vawAppPDForm.$submitted || vawAppPDForm.lowAffectedArea.$touched" style="color:red">
+                    <span ng-show="vawAppPDForm.lowAffectedArea.$error.required">This is a required field</span>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <div class="input-group">
+                    <span class="input-group-addon" style="padding: 6px 3px"><i class="glyphicon glyphicon-pencil"></i></span>
+                    <input type="text" class="form-control" name="mediumAffectedArea" ng-model="txtMediumAreaAffected" ng-change="ddlMAdvisory = null; ddlHAdvisory = null; ddlMPP = null; ddlHPP = null;" valid-number-upto-one-decimal placeholder="Enter Area Affected in Medium Intensity (in Hectare)" maxlength="10" required />
+                </div>
+                <div class="has-error" ng-show="vawAppPDForm.$submitted || vawAppPDForm.mediumAffectedArea.$touched" style="color:red">
+                    <span ng-show="vawAppPDForm.mediumAffectedArea.$error.required">This is a required field</span>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <div class="input-group">
+                    <span class="input-group-addon" style="padding: 6px 3px"><i class="glyphicon glyphicon-pencil"></i></span>
+                    <input type="text" class="form-control" name="highAffectedArea" ng-model="txtHighAreaAffected" ng-change="ddlMAdvisory = null; ddlHAdvisory = null; ddlMPP = null; ddlHPP = null;" valid-number-upto-one-decimal placeholder="Enter Area Affected in High Intensity (in Hectare)" maxlength="10" required />
+                </div>
+                <div class="has-error" ng-show="vawAppPDForm.$submitted || vawAppPDForm.highAffectedArea.$touched" style="color:red">
+                    <span ng-show="vawAppPDForm.highAffectedArea.$error.required">This is a required field</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-7 col-md-7 col-sm-7 col-xs-7">Total Area Affected</label>
+            <label style="padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">{{(txtLowAreaAffected -- txtMediumAreaAffected -- txtHighAreaAffected).toFixed(1)}} ha</label>
+        </div>
+        <div class="form-group" style="border-bottom: 1px dashed #cccccc">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-12 col-md-12 col-sm-12 col-xs-12">Area Treated (in Hectare) :---</label>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-4 col-md-4 col-sm-4 col-xs-4">Low <span style="color: red">*</span></label>
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-4 col-md-4 col-sm-4 col-xs-4">Moderate <span style="color: red">*</span></label>
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-4 col-md-4 col-sm-4 col-xs-4">High <span style="color: red">*</span></label>
+        </div>
+        <div class="form-group">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <div class="input-group">
+                    <span class="input-group-addon" style="padding: 6px 3px"><i class="glyphicon glyphicon-pencil"></i></span>
+                    <input type="text" class="form-control" name="lowTreatedArea" ng-model="txtLowAreaTreated" valid-number-upto-one-decimal placeholder="Enter Area Treated in Low Intensity (in Hectare)" maxlength="10" required />
+                </div>
+                <div class="has-error" ng-show="vawAppPDForm.$submitted || vawAppPDForm.lowTreatedArea.$touched" style="color:red">
+                    <span ng-show="vawAppPDForm.lowTreatedArea.$error.required">This is a required field</span>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <div class="input-group">
+                    <span class="input-group-addon" style="padding: 6px 3px"><i class="glyphicon glyphicon-pencil"></i></span>
+                    <input type="text" class="form-control" name="mediumTreatedArea" ng-model="txtMediumAreaTreated" valid-number-upto-one-decimal placeholder="Enter Area Treated in Medium Intensity (in Hectare)" maxlength="10" required />
+                </div>
+                <div class="has-error" ng-show="vawAppPDForm.$submitted || vawAppPDForm.mediumTreatedArea.$touched" style="color:red">
+                    <span ng-show="vawAppPDForm.mediumTreatedArea.$error.required">This is a required field</span>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <div class="input-group">
+                    <span class="input-group-addon" style="padding: 6px 3px"><i class="glyphicon glyphicon-pencil"></i></span>
+                    <input type="text" class="form-control" name="highTreatedArea" ng-model="txtHighAreaTreated" valid-number-upto-one-decimal placeholder="Enter Area Treated in High Intensity (in Hectare)" maxlength="10" required />
+                </div>
+                <div class="has-error" ng-show="vawAppPDForm.$submitted || vawAppPDForm.highTreatedArea.$touched" style="color:red">
+                    <span ng-show="vawAppPDForm.highTreatedArea.$error.required">This is a required field</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-7 col-md-7 col-sm-7 col-xs-7">Total Area Treated</label>
+            <label style="padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">{{(txtLowAreaTreated -- txtMediumAreaTreated -- txtHighAreaTreated).toFixed(1)}} ha</label>
+        </div>
+        <div ng-show="rbPestIdentified == 'Yes' && (txtMediumAreaAffected != 0 || txtHighAreaAffected != 0) && pdIntensity.length > 0">
+            <div class="form-group" style="border-bottom: 1px dashed #cccccc">
+                <label style="text-align: left; padding-top: 8px" class="control-label col-lg-12 col-md-12 col-sm-12 col-xs-12">Pest Population / Nature of Damage :---</label>
+            </div>
+            <div class="form-group">
+                <label style="text-align: left; padding-top: 8px" class="control-label col-lg-6 col-md-6 col-sm-6 col-xs-6">Moderate</label>
+                <label style="text-align: left; padding-top: 8px" class="control-label col-lg-6 col-md-6 col-sm-6 col-xs-6">High</label>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <div class="input-group">
+                        <span class="input-group-addon" style="padding: 6px 3px"><i class="glyphicon glyphicon-pencil"></i></span>
+                        <select class="form-control" name="moderatePestPopulation" ng-model="ddlMPP" ng-options="i.mppObj as i.mppObj for i in moderatePestPopulation" ng-disabled="txtMediumAreaAffected == 0">
+                            <option value="" disabled>Select Moderate Pest Population</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <div class="input-group">
+                        <span class="input-group-addon" style="padding: 6px 3px"><i class="glyphicon glyphicon-pencil"></i></span>
+                        <select class="form-control" name="highPestPopulation" ng-model="ddlHPP" ng-options="i.hppObj as i.hppObj for i in highPestPopulation" ng-disabled="txtHighAreaAffected == 0">
+                            <option value="" disabled>Select High Pest Population</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-show="rbPestIdentified == 'Yes' && (txtMediumAreaAffected != 0 || txtHighAreaAffected != 0)">
+            <div class="form-group" style="border-bottom: 1px dashed #cccccc">
+                <label style="text-align: left; padding-top: 8px" class="control-label col-lg-12 col-md-12 col-sm-12 col-xs-12">Advisories :---</label>
+            </div>
+            <div class="form-group">
+                <label style="text-align: left; padding-top: 8px" class="control-label col-lg-6 col-md-6 col-sm-6 col-xs-6">Moderate</label>
+                <label style="text-align: left; padding-top: 8px" class="control-label col-lg-6 col-md-6 col-sm-6 col-xs-6">High</label>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <div class="input-group">
+                        <span class="input-group-addon" style="padding: 6px 3px"><i class="glyphicon glyphicon-pencil"></i></span>
+                        <select class="form-control" name="moderateAdvisory" ng-model="ddlMAdvisory" ng-options="i.maObj as i.maObj for i in moderateAdvisories" ng-disabled="txtMediumAreaAffected == 0">
+                            <option value="" disabled>Select Advisory for Moderate Pest conditions</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <div class="input-group">
+                        <span class="input-group-addon" style="padding: 6px 3px"><i class="glyphicon glyphicon-pencil"></i></span>
+                        <select class="form-control" name="highAdvisory" ng-model="ddlHAdvisory" ng-options="i.haObj as i.haObj for i in highAdvisories" ng-disabled="txtHighAreaAffected == 0">
+                            <option value="" disabled>Select Advisory for High Pest conditions</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-default" style="background: #2a5d1f; color: #ffffff">
+                Submit & Proceed <span class="glyphicon glyphicon-circle-arrow-right"></span>
+            </button>
+        </div>
+    </div>
+</form>

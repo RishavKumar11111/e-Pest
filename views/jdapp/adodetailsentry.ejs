@@ -1,0 +1,137 @@
+<div class="right_col" role="main" ng-controller="myJDAPPADODetailsEntryCtrl" ng-init="getAllADODetails();" style="min-height: 100vh">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>ADO Details Entry</h3>
+            </div>
+            <div class="title_right">
+                <!-- <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search for...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">Go!</button>
+                        </span>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Enter ADO Details<small>(Enter Name, Mobile Number, Aadhaar Number)</small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <!-- <li>
+                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li> -->
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="col-md-12 col-sm-12 col-xs-12 form-group" ng-show="adoDetails.length > 0" ng-repeat="(key, value) in adoDetails | orderBy: 'DistrictName' | groupBy: 'DistrictName'">
+                            <div class="row" >
+                                <div class="col-md-12 col-xs-12 col-sm-12">
+                                    <label class="control-label">{{$index+1}}. {{key | capitalize}}</label>
+                                </div>
+                            </div>
+                            <div class="table table-responsive">
+                                <table class="table table-hover table-striped jambo_table bulk_action">
+                                    <thead>
+                                        <tr class="headings text-center">
+                                            <td style="vertical-align: middle"><b>Serial No.</b></td>
+                                            <td style="vertical-align: middle"><b>ADO Code</b></td>
+                                            <td style="vertical-align: middle"><b>Blocks</b></td>
+                                            <td style="vertical-align: middle"><b>Enter Name <span style="color: red">*</span></b></td>
+                                            <td style="vertical-align: middle"><b>Enter Mobile No. <span style="color: red">*</span></b></td>
+                                            <td style="vertical-align: middle"><b>Enter Aadhaar No.</b></td>
+                                            <td style="vertical-align: middle"><b>Action</b></td>
+                                        </tr>
+                                    </thead>
+                                    <tr style="text-align: center" ng-repeat="(i, j) in value | orderBy: 'ADOCode' | groupBy: 'ADOCode'">
+                                        <td style="vertical-align: middle">{{$index + 1}}</td>
+                                        <td style="vertical-align: middle"><b>{{i}}</b></td>
+                                        <td>
+                                            <table class="table table-hover table-striped jambo_table bulk_action">
+                                                <thead>
+                                                    <tr class="headings text-center">
+                                                        <td style="vertical-align: middle"><b>Block Name</b></td>
+                                                    </tr>
+                                                </thead>
+                                                <tr ng-repeat="k in j | orderBy: 'BlockName'">
+                                                    <td>{{k.BlockName | capitalize}}</td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td ng-show="j[0].ADOName != null && j[0].Status != null" style="vertical-align: middle">{{j[0].ADOName}}</td>
+                                        <td ng-show="j[0].Status == null" style="vertical-align: middle">
+                                            <input type="text" class="form-control" name-only placeholder="Enter Name" ng-model="j[0].ADOName" maxlength="50" required />
+                                        </td>
+                                        <td ng-show="j[0].ADOMobileNo != null && j[0].Status != null" style="vertical-align: middle">{{j[0].ADOMobileNo}}</td>
+                                        <td ng-show="j[0].Status == null" style="vertical-align: middle">
+                                            <input type="text" class="form-control" mobile-no-only numbers-only ng-model="j[0].ADOMobileNo" placeholder="Enter Mobile No." minlength="10" maxlength="10" required />
+                                        </td>
+                                        <td ng-show="j[0].ADOAadhaarNo != null && j[0].Status != null" style="vertical-align: middle">{{j[0].ADOAadhaarNo}}</td>
+                                        <td ng-show="j[0].Status == null" style="vertical-align: middle">
+                                            <input type="text" class="form-control" numbers-only ng-model="j[0].ADOANo" placeholder="Enter Aadhaar No." minlength="12" maxlength="12" />
+                                        </td>
+                                        <td style="vertical-align: middle; white-space: nowrap">
+                                            <input ng-show="j[0].Status == null" type="button" class="btn btn-primary" value="Submit" ng-click="submitADODetails(i, j[0].ADOName, j[0].ADOMobileNo, j[0].ADOANo, j[0].Status)" />
+                                            <input ng-show="j[0].Status != null" type="button" class="btn btn-warning" value="Modify" data-toggle="modal" data-target="#modifyModal" id="btnModifyModal" ng-click="getData(j[0])" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="modifyModal" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" id="closeModifyModal" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Modify ADO Details</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form class="form-horizontal" name="frmADO" role="form" autocomplete="off" novalidate>
+                                            <div class="form-group">
+                                                <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">District Name</label>
+                                                <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">{{dn | capitalize}}</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">ADO Code</label>
+                                                <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">{{cuid}}</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">ADO Name <span style="color: red">*</span></label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input type="text" class="form-control" name="cname" name-only placeholder="Enter Name" ng-model="adoName" maxlength="50" required />
+                                                    <span style="color: red" ng-show="frmADO.cname.$touched && frmADO.cname.$invalid && frmADO.cname.$error.required">This is a required field.</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">ADO Mobile No. <span style="color: red">*</span></label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input type="text" class="form-control" name="cmobno" mobile-no-only numbers-only ng-model="adoMobileNo" placeholder="Enter Mobile No." maxlength="10" required />
+                                                    <span style="color: red" ng-show="frmADO.cmobno.$touched && frmADO.cmobno.$invalid && frmADO.cmobno.$error.required">This is a required field.</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">ADO Aadhaar No.</label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input type="text" class="form-control" numbers-only ng-model="adoANo" placeholder="Enter Aadhaar No." maxlength="12" />
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" ng-disabled="frmADO.$invalid || frmADO.$pristine" ng-click="submitADODetails(cuid, adoName, adoMobileNo, adoANo, status); frmADO.$setPristine()">Update</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="frmADO.$setPristine()">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

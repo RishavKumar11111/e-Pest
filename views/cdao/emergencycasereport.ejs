@@ -1,0 +1,273 @@
+<div class="right_col" role="main" ng-controller="myCDAOEMRCRCtrl" ng-init="getBlocksByCDAO(); getCropCategories();" style="min-height: 100vh">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>Emergency Case Report</h3>
+            </div>
+            <div class="title_right">
+                <!-- <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search for...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">Go!</button>
+                        </span>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Date-wise Emergency Report <small>(Select Date, CropCategory, Crop and Financial Year)</small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <!-- <li>
+                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li> -->
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <br />
+                        <div class="col-md-12 col-sm-12 col-xs-12" style="height: 44px">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label style="text-align: left; white-space: nowrap; padding-top: 8px" class="control-label col-md-4 col-sm-4 col-xs-12">Select Date : <span style="color: red">*</span></label>
+                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                        <input type="date" class="form-control" ng-model="dateOfPDE" id="pdeDate" ng-change="checkCDay()" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <label style="text-align: left; padding-top: 10px; white-space: nowrap" class="control-label col-md-4 col-sm-4 col-xs-12">Financial Year : <span style="color: red">*</span></label>
+                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                        <select class="form-control" ng-model="ddlFY">
+                                            <option value="" disabled>Select Financial Year</option>
+                                            <option value="2019-20">2019-20</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <label style="text-align: left; padding-top: 10px; white-space: nowrap" class="control-label col-md-4 col-sm-4 col-xs-12">Crop Category :<span style="color: red">*</span></label>
+                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                        <select class="form-control" ng-model="ddlCropCategory" ng-options="i.CategoryCode as i.CategoryName for i in cropCategories" ng-change="getCropsByCategory()">
+                                            <option value="" disabled>Select Crop Category</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <label style="text-align: left; padding-top: 10px; white-space: nowrap" class="control-label col-md-4 col-sm-4 col-xs-12">Crop :<span style="color: red">*</span></label>
+                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                        <select class="form-control" ng-model="ddlCrop" ng-options="i.CropCode as i.CropName for i in crops">
+                                            <option value=""disabled>Select Crop</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <label style="text-align: left; padding-top: 10px" class="control-label col-md-4 col-sm-4 col-xs-12">Block :</label>
+                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                        <select class="form-control" ng-model="ddlBlock" ng-options="i.BlockCode as i.BlockName for i in blocks">
+                                            <option value="">Select Block</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="ln_solid"></div>
+                        <div class="col-md-12 col-sm-12 col-xs-12 text-center">
+                            <input type="button" class="btn btn-success" value="Get Pest Details" ng-disabled="ddlCrop == null || ddlCropCategory == null || ddlFY == null || dateOfPDE == null " ng-click="getEMRNosForCDAO()" />
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr />
+                        <div class="col-md-12 col-sm-12 col-xs-12" ng-show="emrDetails.length > 0">
+                            <div class="form-group" style="text-align: center">
+                                <div ng-show="sbg" class="table table-responsive">
+                                    <table id="sbgPrint" class="table table-hover table-striped jambo_table bulk_action">
+                                        <thead>
+                                            <tr class="headings">
+                                                <td style="vertical-align: middle"><b>Serial No.</b></td>
+                                                <td style="vertical-align: middle"><b>Block</b></td>
+                                                <td style="vertical-align: middle"><b>Emergency Reference No. Details</b></td>
+                                            </tr>
+                                        </thead>
+                                        <tr ng-repeat="(key, value) in emrDetails | orderBy: 'BlockName' | groupBy: 'BlockName'">
+                                            <td style="vertical-align: middle"><b>{{$index + 1}}</b></td>
+                                            <td style="vertical-align: middle"><b>{{key | capitalize}}</b></td>
+                                            <td>
+                                                <table class="table table-hover table-striped jambo_table bulk_action">
+                                                    <thead>
+                                                        <tr class="headings">
+                                                            <td><b>Serial No.</b></td>
+                                                            <td><b>Emergency Reference No.</b></td>
+                                                            <td><b>View Crop, Pest & Photo details</b></td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tr ng-repeat="i in value | orderBy: 'EMRReferenceNo'">
+                                                        <td>{{$index + 1}}</td>
+                                                        <td>{{i.EMRReferenceNo}}</td>
+                                                        <td style="vertical-align: middle">
+                                                            <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#cropPhotoModal" ng-click="getEMRReferenceNoDetailsCDAO(i.EMRReferenceNo)">View Details</button>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div ng-show="sg" class="table table-responsive">
+                                    <table id="sgPrint" class="table table-hover table-striped jambo_table bulk_action">
+                                        <thead>
+                                            <tr class="headings">
+                                                <td style="vertical-align: middle"><b>Serial No.</b></td>
+                                                <td style="vertical-align: middle"><b>GP</b></td>
+                                                <td style="vertical-align: middle"><b>Emergency Crop-Pest Details</b></td>
+                                            </tr>
+                                        </thead>
+                                        <tr ng-repeat="(key, value) in emrDetails | orderBy: 'GPName' | groupBy: 'GPName'">
+                                            <td style="vertical-align: middle"><b>{{$index + 1}}</b></td>
+                                            <td style="vertical-align: middle"><b>{{key | capitalize}}</b></td>
+                                            <td>
+                                                <table class="table table-hover table-striped jambo_table bulk_action">
+                                                    <thead>
+                                                        <tr class="headings">
+                                                            <td><b>Serial No.</b></td>
+                                                            <td><b>Emergency Reference No.</b></td>
+                                                            <td><b>View Crop, Pest & Photo details</b></td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tr ng-repeat="i in value | orderBy: 'EMRReferenceNo'">
+                                                        <td>{{$index + 1}}</td>
+                                                        <td>{{i.EMRReferenceNo}}</td>
+                                                        <td style="vertical-align: middle">
+                                                            <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#cropPhotoModal" ng-click="getEMRReferenceNoDetailsCDAO(i.EMRReferenceNo)">View Details</button>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="cropPhotoModal" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" id="cl" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title text-center">Emergency Crop & Photo details</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="form-horizontal">
+                                <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                                    <label style="text-align: left" class="control-label col-md-4 col-sm-4 col-xs-12">Reference No. :</label>
+                                    <label style="text-align: left" class="control-label col-md-4 col-sm-4 col-xs-12">{{rnd.EMRReferenceNo}}</label>
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12"></label>
+                                </div>
+                                <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                                    <label style="text-align: left" class="control-label col-md-4 col-sm-4 col-xs-12">Block :</label>
+                                    <label style="text-align: left" class="control-label col-md-4 col-sm-4 col-xs-12">{{rnd.BlockName | capitalize}}</label>
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12"></label>
+                                </div>
+                                <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                                    <label style="text-align: left" class="control-label col-md-4 col-sm-4 col-xs-12">GP :</label>
+                                    <label style="text-align: left" class="control-label col-md-4 col-sm-4 col-xs-12">{{rnd.GPName | capitalize}}</label>
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12"></label>
+                                </div>
+                                <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                                    <label style="text-align: left" class="control-label col-md-4 col-sm-4 col-xs-12">Crop Category :</label>
+                                    <label style="text-align: left" class="control-label col-md-4 col-sm-4 col-xs-12">{{rnd.CategoryName}}</label>
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12"></label>
+                                </div>
+                                <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                                    <label style="text-align: left" class="control-label col-md-4 col-sm-4 col-xs-12">Crop :</label>
+                                    <label style="text-align: left" class="control-label col-md-4 col-sm-4 col-xs-12">{{rnd.CropName}}</label>
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12"></label>
+                                </div>
+                                <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                                    <label style="text-align: left" class="control-label col-md-4 col-sm-4 col-xs-12">Pest :</label>
+                                    <label style="text-align: left" class="control-label col-md-4 col-sm-4 col-xs-12">{{rnd.PestDiseaseName == null ? 'NA' : rnd.PestDiseaseName}}</label>
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12"></label>
+                                </div>
+                                <div ng-show="rnd.PestDiseaseName != null">
+                                    <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                                        <label style="text-align: left" class="control-label col-md-4 col-sm-4 col-xs-12">Pest Population (Moderate) :</label>
+                                        <label style="text-align: left" class="control-label col-md-4 col-sm-4 col-xs-12">{{rnd.ModerateIntensityPestPopulation}}</label>
+                                        <label class="control-label col-md-4 col-sm-4 col-xs-12"></label>
+                                    </div>
+                                    <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                                        <label style="text-align: left" class="control-label col-md-4 col-sm-4 col-xs-12">Pest Population (High) :</label>
+                                        <label style="text-align: left" class="control-label col-md-4 col-sm-4 col-xs-12">{{rnd.HighIntensityPestPopulation}}</label>
+                                        <label class="control-label col-md-4 col-sm-4 col-xs-12"></label>
+                                    </div>
+                                    <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                                        <label style="text-align: left" class="control-label col-md-4 col-sm-4 col-xs-12">Moderate Advisory :</label>
+                                        <label style="text-align: left" class="control-label col-md-4 col-sm-4 col-xs-12">{{rnd.AdvisoryModerate}}</label>
+                                        <label class="control-label col-md-4 col-sm-4 col-xs-12"></label>
+                                    </div>
+                                    <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                                        <label style="text-align: left" class="control-label col-md-4 col-sm-4 col-xs-12">High Advisory :</label>
+                                        <label style="text-align: left" class="control-label col-md-4 col-sm-4 col-xs-12">{{rnd.AdvisoryHigh}}</label>
+                                        <label class="control-label col-md-4 col-sm-4 col-xs-12"></label>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                                    <label style="text-align: left" class="control-label col-md-4 col-sm-4 col-xs-12">1st Land Photo :</label>
+                                    <img id="flp" class="col-md-5 col-sm-5 col-xs-12" />
+                                    <div class="col-md-3 col-sm-3 col-xs-12">
+                                        <label class="control-label">Latitude: {{rnd.FixedLandLatitude}}</label>
+                                        <label class="control-label">Longitude: {{rnd.FixedLandLongitude}}</label>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                                    <label style="text-align: left" class="control-label col-md-4 col-sm-4 col-xs-12">1st Random Land Photo :</label>
+                                    <div ng-show="rnd.RLP1 != null">
+                                        <img id="rlp1" class="col-md-5 col-sm-5 col-xs-12" />
+                                    </div>
+                                    <div ng-show="rnd.RLP1 == null" style="padding-top: 8px" class="col-md-5 col-sm-5 col-xs-12"><b>NA</b></div>
+                                    <div class="col-md-3 col-sm-3 col-xs-12">
+                                        <label class="control-label">Latitude: {{rnd.RandomLandLatitude1 == null ? 'NA' : pld.RandomLandLatitude1}}</label>
+                                        <label class="control-label">Longitude: {{rnd.RandomLandLongitude1 == null ? 'NA' : pld.RandomLandLongitude1}}</label>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                                    <label style="text-align: left" class="control-label col-md-4 col-sm-4 col-xs-12">2nd Random Land Photo :</label>
+                                    <div ng-show="rnd.RLP2 != null">
+                                        <img id="rlp2" class="col-md-5 col-sm-5 col-xs-12" />
+                                    </div>
+                                    <div ng-show="rnd.RLP2 == null" style="padding-top: 8px" class="col-md-5 col-sm-5 col-xs-12"><b>NA</b></div>
+                                    <div class="col-md-3 col-sm-3 col-xs-12">
+                                        <label class="control-label">Latitude: {{rnd.RandomLandLatitude2 == null ? 'NA' : pld.RandomLandLatitude2}}</label>
+                                        <label class="control-label">Longitude: {{rnd.RandomLandLongitude2 == null ? 'NA' : pld.RandomLandLongitude2}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default"  data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,44 @@
+<div ng-controller="myAAOAppDashboardCtrl" ng-init="checkDay(); getRefNos()" style="padding-top: 30px">
+    <label style="text-align: center; padding-top: 8px" class="control-label col-lg-12 col-md-12 col-sm-12 col-xs-12">Select Reference No. <span style="color: red">*</span></label>
+    <div class="form-group input-group">
+        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+        <select class="form-control" ng-model="ddlRefNo" ng-options="i.ReferenceNo as i.ReferenceNo for i in refNos" ng-change="proceedToCropDetails(ddlRefNo)">
+            <option value="" disabled>Select Reference No.</option>
+        </select>
+    </div>
+</div>
+<script>
+    var DYNAMIC_FILES = [
+        '/aaoApp',
+        '/aaoApp/home',
+        '/aaoApp/dashboard',
+        '/aaoApp/cropdetails',
+        '/aaoApp/pestdetails',
+        '/aaoApp/photo',
+        '/aaoApp/offline'
+    ];
+    if ('caches' in window) {
+        caches.open('dynamic')
+        .then(function(cache) {
+            cache.addAll(DYNAMIC_FILES);
+        })
+    }
+    else {
+        alert('Browser Cache is not supported by your browser. Please use Google Chrome for better experience.');
+    }
+</script>
+<script>
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(function (choiceResult) {
+            console.log(choiceResult.outcome);
+            if (choiceResult.outcome === 'dismissed') {
+                console.log('User cancelled the App installation...');
+            }
+            else {
+                console.log('User added the App to Home Screen...');
+            }
+        });
+        deferredPrompt = null;
+    }
+</script>

@@ -1,0 +1,398 @@
+<div class="right_col" role="main" ng-controller="myAAOPDECtrl" ng-init="month(); getFinancialYear(); getLTCGPs(); getCropCategories(); checkDay(); showHidePestDetails()" style="min-height: 100vh">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>Pest details entry</h3>
+            </div>
+            <div class="title_right">
+                <!-- <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search for...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">Go!</button>
+                        </span>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Enter Pest details for the block <small>(Select Crop Category, Crop and Pest, enter Affected Area and Treated Area, season-wise)</small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <!-- <li>
+                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li> -->
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <br />
+                        <div ng-show="shpd != 'No'">
+                            <form class="form-horizontal" role="form" name="aaoPDEForm" ng-submit="submitAAOPDE(aaoPDEForm.$valid)" autocomplete="off" novalidate>
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="col-md-2 col-sm-2 col-xs-12"></div>
+                                    <div class="col-md-4 col-sm-4 col-xs-12" style="text-align: left">
+                                        <div class="form-group">
+                                            <label style="text-align: left; white-space: nowrap" class="control-label col-md-4 col-sm-4 col-xs-12">Season :</label>
+                                            <div class="col-md-8 col-sm-8 col-xs-12">
+                                                <div class="col-md-6 col-sm-6 col-xs-12" style="padding-top: 7px">
+                                                    <input type="radio" name="season" ng-model="rbSeason" value="Kharif" disabled required />
+                                                    <label>Kharif</label>
+                                                </div>
+                                                <div class="col-md-6 col-sm-6 col-xs-12" style="padding-top: 7px">
+                                                    <input type="radio" name="season" ng-model="rbSeason" value="Rabi" disabled required />
+                                                    <label>Rabi</label>
+                                                </div>
+                                                <div class="has-error" ng-show="aaoPDEForm.$submitted || aaoPDEForm.season.$touched" style="color:red">
+                                                    <span ng-show="aaoPDEForm.season.$error.required">This is a required field</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <label style="text-align: left; padding-top: 10px" class="control-label col-md-5 col-sm-5 col-xs-12">Financial Year :</label>
+                                        <label style="text-align: center; padding-top: 10px" class="control-label col-md-7 col-sm-7 col-xs-12">{{fiscalYear}}</label>
+                                    </div>
+                                    <div class="col-md-2 col-sm-2 col-xs-12"></div>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <label style="text-align: left; padding-top: 8px; white-space: nowrap" class="control-label col-md-4 col-sm-4 col-xs-12">Crop Category <span style="color: red">*</span></label>
+                                        <div class="col-md-8 col-sm-8 col-xs-12">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                                <select class="form-control" name="selectCC" ng-model="ddlCropCategory" ng-options="i.CategoryCode as i.CategoryName for i in cropCategories" ng-change="getCropsByCategory(ddlCropCategory)" required>
+                                                    <option value="" disabled>Select Crop Category</option>
+                                                </select>
+                                            </div>
+                                            <div class="has-error text-right" ng-show="aaoPDEForm.$submitted || aaoPDEForm.selectCC.$touched" style="color:red">
+                                                <span ng-show="aaoPDEForm.selectCC.$error.required">This is a required field</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <label style="text-align: left; padding-top: 8px" class="control-label col-md-4 col-sm-4 col-xs-12">Crop <span style="color: red">*</span></label>
+                                        <div class="col-md-8 col-sm-8 col-xs-12">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                                <select class="form-control" name="selectCrop" ng-model="ddlCrop" ng-options="i.CropCode as i.CropName for i in crops" ng-change="getAllPestDiseases(ddlCrop)" required>
+                                                    <option value="" disabled>Select Crop</option>
+                                                </select>
+                                            </div>
+                                            <div class="has-error text-right" ng-show="aaoPDEForm.$submitted || aaoPDEForm.selectCrop.$touched" style="color:red">
+                                                <span ng-show="aaoPDEForm.selectCrop.$error.required">This is a required field</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <label style="text-align: left; padding-top: 8px" class="control-label col-md-4 col-sm-4 col-xs-12">Pest <span style="color: red">*</span></label>
+                                        <div class="col-md-8 col-sm-8 col-xs-12">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                                <select class="form-control" name="selectPest" ng-model="ddlPestDisease" ng-options="i.PestDiseaseCode as i.PestDiseaseName for i in pestDiseases" required>
+                                                    <option value="" disabled>Select Pest</option>
+                                                </select>
+                                            </div>
+                                            <div class="has-error text-right" ng-show="aaoPDEForm.$submitted || aaoPDEForm.selectPest.$touched" style="color:red">
+                                                <span ng-show="aaoPDEForm.selectPest.$error.required">This is a required field</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <hr />
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="form-group" style="text-align: center">
+                                        <div class="table table-responsive">
+                                            <table class="table table-hover table-striped jambo_table bulk_action">
+                                                <thead>
+                                                    <tr class="headings">
+                                                        <td style="vertical-align: middle"><b>Serial No.</b></td>
+                                                        <td style="vertical-align: middle"><b>GP</b></td>
+                                                        <td style="vertical-align: middle"><b>Low Affected Area (in HA)</b></td>
+                                                        <td style="vertical-align: middle"><b>Medium Affected Area (in HA)</b></td>
+                                                        <td style="vertical-align: middle"><b>High Affected Area (in HA)</b></td>
+                                                        <td style="vertical-align: middle"><b>Total Affected Area (in HA)</b></td>
+                                                        <td style="vertical-align: middle"><b>Low Treated Area (in HA)</b></td>
+                                                        <td style="vertical-align: middle"><b>Medium Treated Area (in HA)</b></td>
+                                                        <td style="vertical-align: middle"><b>High Treated Area (in HA)</b></td>
+                                                        <td style="vertical-align: middle"><b>Total Treated Area (in HA)</b></td>
+                                                    </tr>
+                                                </thead>
+                                                <tr ng-repeat="i in ltcGPs">
+                                                    <td style="vertical-align: middle">{{$index + 1}}</td>
+                                                    <td style="vertical-align: middle">{{i.GPName}}</td>
+                                                    <td style="vertical-align: middle">
+                                                        <input type="text" class="form-control" valid-number-upto-one-decimal ng-model="i.txtLAA" minlength="1" maxlength="10" />
+                                                    </td>
+                                                    <td style="vertical-align: middle">
+                                                        <input type="text" class="form-control" valid-number-upto-one-decimal ng-model="i.txtMAA" minlength="1" maxlength="10" />
+                                                    </td>
+                                                    <td style="vertical-align: middle">
+                                                        <input type="text" class="form-control" valid-number-upto-one-decimal ng-model="i.txtHAA" minlength="1" maxlength="10" />
+                                                    </td>
+                                                    <td class="cd" style="vertical-align: middle">{{i.txtLAA -- i.txtMAA -- i.txtHAA}}</td>
+                                                    <td style="vertical-align: middle">
+                                                        <input type="text" class="form-control" valid-number-upto-one-decimal ng-model="i.txtLTA" minlength="1" maxlength="10" disabled />
+                                                    </td>
+                                                    <td style="vertical-align: middle">
+                                                        <input type="text" class="form-control" valid-number-upto-one-decimal ng-model="i.txtMTA" minlength="1" maxlength="10" />
+                                                    </td>
+                                                    <td style="vertical-align: middle">
+                                                        <input type="text" class="form-control" valid-number-upto-one-decimal ng-model="i.txtHTA" minlength="1" maxlength="10" />
+                                                    </td>
+                                                    <td class="cd" style="vertical-align: middle">{{i.txtLTA -- i.txtMTA -- i.txtHTA}}</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="ln_solid"></div>
+                                <div class="col-md-12 col-sm-12 col-xs-12 text-center">
+                                    <input type="submit" class="btn btn-success" value="Submit" />
+                                </div>
+                            </form>
+                        </div>
+                        <div ng-show="shpd == 'No'" class="row text-center">
+                            <label style="color: darkred; text-align: justify" class="control-label">You are only allowed to enter details on Thursday or Friday.</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Previous Pest details for the block <small>(Select Date of entry, Season, Financial Year, Crop Category and Crop)</small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <!-- <li>
+                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li> -->
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <br />
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group">
+                                    <label style="text-align: left; white-space: nowrap; padding-top: 8px" class="control-label col-md-4 col-sm-4 col-xs-12">Select Date : <span style="color: red">*</span></label>
+                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                        <input type="date" class="form-control" ng-model="dateOfPDE" id="pdeDate" ng-change="checkCDay()" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12" style="text-align: left">
+                                <div class="form-group">
+                                    <label style="text-align: left; white-space: nowrap; padding-top: 8px" class="control-label col-md-4 col-sm-4 col-xs-12">Season : <span style="color: red">*</span></label>
+                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                        <div class="col-md-6 col-sm-6 col-xs-12" style="padding-top: 7px">
+                                            <input type="radio" ng-model="rbs" value="K" required />
+                                            <label>Kharif</label>
+                                        </div>
+                                        <div class="col-md-6 col-sm-6 col-xs-12" style="padding-top: 7px">
+                                            <input type="radio" ng-model="rbs" value="R" required />
+                                            <label>Rabi</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <label style="text-align: left; padding-top: 10px; white-space: nowrap" class="control-label col-md-4 col-sm-4 col-xs-12">Financial Year : <span style="color: red">*</span></label>
+                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                        <select class="form-control" ng-model="ddlFY" required>
+                                            <option value="" disabled>Select Financial Year</option>
+                                            <option value="2019-20">2019-20</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <label style="text-align: left; padding-top: 8px; white-space: nowrap" class="control-label col-md-4 col-sm-4 col-xs-12">Crop Category : <span style="color: red">*</span></label>
+                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                        <select class="form-control" ng-model="ddlCC" ng-options="i.CategoryCode as i.CategoryName for i in cropCategories" ng-change="getCropsByCategory(ddlCC)" required>
+                                            <option value="" disabled>Select Crop Category</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <label style="text-align: left; padding-top: 8px" class="control-label col-md-4 col-sm-4 col-xs-12">Crop : <span style="color: red">*</span></label>
+                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                        <select class="form-control" ng-model="ddlC" ng-options="i.CropCode as i.CropName for i in crops" ng-change="getAllPestDiseases(ddlC)" required>
+                                            <option value="" disabled>Select Crop</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <label style="text-align: left; padding-top: 8px" class="control-label col-md-4 col-sm-4 col-xs-12">Pest :</label>
+                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                        <select class="form-control" ng-model="ddlPD" ng-options="i.PestDiseaseCode as i.PestDiseaseName for i in pestDiseases">
+                                            <option value="">Select Pest</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="ln_solid"></div>
+                        <div class="col-md-12 col-sm-12 col-xs-12 text-center">
+                            <input type="button" class="btn btn-success" value="Get Pest Details" ng-click="getPestDetails()" />
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="ln_solid"></div>
+                        <hr />
+                        <div class="col-md-12 col-sm-12 col-xs-12" ng-show="pestDetails.length > 0">
+                            <div class="form-group" style="text-align: center">
+                                <div ng-show="sgd" class="table table-responsive">
+                                    <input type="button" class="btn btn-info" value="Print" ng-click="printNext($event, 'GP and Pest-wise Pest Report')" style="margin-bottom: 10px; float: right" />
+                                    <input type="button" class="btn btn-primary" value="Export to Excel" onclick="ExportToExcel(this, 'GP and Pest-wise Pest Report')" style="margin-bottom: 10px; float: right" />
+                                    <table id="sgdData" class="table table-hover table-striped jambo_table bulk_action">
+                                        <thead>
+                                            <tr class="headings">
+                                                <td style="vertical-align: middle"><b>Serial No.</b></td>
+                                                <td style="vertical-align: middle"><b>GP</b></td>
+                                                <td style="vertical-align: middle"><b>Low Affected Area (in HA)</b></td>
+                                                <td style="vertical-align: middle"><b>Medium Affected Area (in HA)</b></td>
+                                                <td style="vertical-align: middle"><b>High Affected Area (in HA)</b></td>
+                                                <td style="vertical-align: middle"><b>Total Affected Area (in HA)</b></td>
+                                                <td style="vertical-align: middle"><b>Low Treated Area (in HA)</b></td>
+                                                <td style="vertical-align: middle"><b>Medium Treated Area (in HA)</b></td>
+                                                <td style="vertical-align: middle"><b>High Treated Area (in HA)</b></td>
+                                                <td style="vertical-align: middle"><b>Total Treated Area (in HA)</b></td>
+                                            </tr>
+                                        </thead>
+                                        <tr ng-repeat="i in pestDetails | orderBy: 'GPName'">
+                                            <td style="vertical-align: middle">{{$index + 1}}</td>
+                                            <td style="vertical-align: middle"><b>{{i.GPName | capitalize}}</b></td>
+                                            <td style="vertical-align: middle">{{(i.LowAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle">{{(i.MediumAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle">{{(i.HighAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle">{{(i.LowAffectedArea -- i.MediumAffectedArea -- i.HighAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle">{{i.LowTreatedArea}}</td>
+                                            <td style="vertical-align: middle">{{(i.MediumTreatedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle">{{(i.HighTreatedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle">{{(i.LowTreatedArea -- i.MediumTreatedArea -- i.HighTreatedArea).toFixed(1)}}</td>
+                                        </tr>
+                                        <tr class="totalArea">
+                                            <td style="background: rgba(52,73,94,.94); color: #ECF0F1; vertical-align: middle" colspan="2"><b>Total Area (in HA)</b></td>
+                                            <td>{{laa.toFixed(1)}}</td>
+                                            <td>{{maa.toFixed(1)}}</td>
+                                            <td>{{haa.toFixed(1)}}</td>
+                                            <td>{{taa.toFixed(1)}}</td>
+                                            <td>{{lta.toFixed(1)}}</td>
+                                            <td>{{mta.toFixed(1)}}</td>
+                                            <td>{{hta.toFixed(1)}}</td>
+                                            <td>{{tta.toFixed(1)}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div ng-show="sgpd" class="table table-responsive">
+                                    <input type="button" class="btn btn-primary" value="Export to Excel" onclick="ExportToExcel(this, 'GP-wise Pest Report')" style="margin-bottom: 10px; float: right" />
+                                    <table style="display: none" id="sgpdData" class="table table-hover table-striped jambo_table bulk_action">
+                                        <thead>
+                                            <tr class="headings">
+                                                <td style="vertical-align: middle"><b>Serial No.</b></td>
+                                                <td style="vertical-align: middle"><b>GP</b></td>
+                                                <td style="vertical-align: middle"><b>Pest</b></td>
+                                                <td style="vertical-align: middle"><b>Low Affected Area (in HA)</b></td>
+                                                <td style="vertical-align: middle"><b>Medium Affected Area (in HA)</b></td>
+                                                <td style="vertical-align: middle"><b>High Affected Area (in HA)</b></td>
+                                                <td style="vertical-align: middle"><b>Total Affected Area (in HA)</b></td>
+                                                <td style="vertical-align: middle"><b>Low Treated Area (in HA)</b></td>
+                                                <td style="vertical-align: middle"><b>Medium Treated Area (in HA)</b></td>
+                                                <td style="vertical-align: middle"><b>High Treated Area (in HA)</b></td>
+                                                <td style="vertical-align: middle"><b>Total Treated Area (in HA)</b></td>
+                                            </tr>
+                                        </thead>
+                                        <tr ng-repeat="i in pestDetails | orderBy: 'GPName'">
+                                            <td style="vertical-align: middle">{{$index + 1}}</td>
+                                            <td style="vertical-align: middle"><b>{{i.GPName | capitalize}}</b></td>
+                                            <td style="vertical-align: middle">{{i.PestDiseaseName | capitalize}}</td>
+                                            <td style="vertical-align: middle">{{(i.LowAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle">{{(i.MediumAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle">{{(i.HighAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle">{{(i.LowAffectedArea -- i.MediumAffectedArea -- i.HighAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle">{{i.LowTreatedArea}}</td>
+                                            <td style="vertical-align: middle">{{(i.MediumTreatedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle">{{(i.HighTreatedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle">{{(i.LowTreatedArea -- i.MediumTreatedArea -- i.HighTreatedArea).toFixed(1)}}</td>
+                                        </tr>
+                                    </table>
+                                    <input type="button" class="btn btn-info" value="Print" ng-click="print($event, 'GP-wise Pest Report')" style="margin-bottom: 10px; float: right" />
+                                    <table id="sgpdPrint" class="table table-hover table-striped jambo_table bulk_action">
+                                        <thead>
+                                            <tr class="headings">
+                                                <td style="vertical-align: middle"><b>Serial No.</b></td>
+                                                <td style="vertical-align: middle"><b>GP</b></td>
+                                                <td style="vertical-align: middle"><b>Pest Details</b></td>
+                                            </tr>
+                                        </thead>
+                                        <tr ng-repeat="(key, value) in pestDetails | orderBy: 'GPName' | groupBy: 'GPName'">
+                                            <td style="vertical-align: middle">{{$index + 1}}</td>
+                                            <td style="vertical-align: middle"><b>{{key | capitalize}}</b></td>
+                                            <td>
+                                                <table class="table table-hover table-striped jambo_table bulk_action">
+                                                    <thead>
+                                                        <tr class="headings">
+                                                            <td><b>Serial No.</b></td>
+                                                            <td><b>Pest Name</b></td>
+                                                            <td><b>Low Affected Area (in HA)</b></td>
+                                                            <td><b>Medium Affected Area (in HA)</b></td>
+                                                            <td><b>High Affected Area (in HA)</b></td>
+                                                            <td><b>Total Affected Area (in HA)</b></td>
+                                                            <td><b>Low Treated Area (in HA)</b></td>
+                                                            <td><b>Medium Treated Area (in HA)</b></td>
+                                                            <td><b>High Treated Area (in HA)</b></td>
+                                                            <td><b>Total Treated Area (in HA)</b></td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tr ng-repeat="i in value | orderBy: 'PestDiseaseName'">
+                                                        <td>{{$index + 1}}</td>
+                                                        <td>{{i.PestDiseaseName | capitalize}}</td>
+                                                        <td>{{(i.LowAffectedArea).toFixed(1)}}</td>
+                                                        <td>{{(i.MediumAffectedArea).toFixed(1)}}</td>
+                                                        <td>{{(i.HighAffectedArea).toFixed(1)}}</td>
+                                                        <td>{{(i.LowAffectedArea -- i.MediumAffectedArea -- i.HighAffectedArea).toFixed(1)}}</td>
+                                                        <td>{{(i.LowTreatedArea).toFixed(1)}}</td>
+                                                        <td>{{(i.MediumTreatedArea).toFixed(1)}}</td>
+                                                        <td>{{(i.HighTreatedArea).toFixed(1)}}</td>
+                                                        <td>{{(i.LowTreatedArea -- i.MediumTreatedArea -- i.HighTreatedArea).toFixed(1)}}</td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function ExportToExcel(tableID, excelName) {
+        $("#" + tableID.nextElementSibling.id).table2excel({
+            exclude: ".totalArea",
+            filename: excelName + ".xls",
+        });
+    }
+</script>

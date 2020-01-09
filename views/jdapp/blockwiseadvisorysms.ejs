@@ -1,0 +1,150 @@
+<div class="right_col" role="main" ng-controller="myJDAPPBASCtrl" ng-init="getDistricts(); getAdvisorySMS()" style="min-height: 100vh">   
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>Block-wise Advisory SMS</h3>
+            </div>
+            <div class="title_right">
+                <!-- <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search for...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">Go!</button>
+                        </span>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Block-wise Advisory SMS <small>(in case of emergency conditions)</small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <!-- <li>
+                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li> -->
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <br />
+                        <form class="form-horizontal" role="form" name="jdappBASForm" ng-submit="submitBAS(jdappBASForm.$valid)" autocomplete="off" novalidate>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="col-md-2 col-sm-2 col-xs-12"></div>
+                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <div class="form-group">
+                                        <label style="text-align: left; padding-top: 8px" class="control-label col-md-5 col-sm-5 col-xs-12">Select District</label>
+                                        <div class="form-group input-group col-md-7 col-sm-7 col-xs-12" style="text-align: left">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                            <select class="form-control" name="district" ng-model="ddlDistrict" ng-options="i.DistrictCode as i.DistrictName for i in districts" ng-change="getBlocksByDistrict()" required>
+                                                <option value="" disabled>Select District</option>
+                                            </select>
+                                        </div>
+                                        <div class="has-error text-right" ng-show="jdappBASForm.$submitted || jdappBASForm.district.$touched" style="color:red">
+                                            <span ng-show="jdappBASForm.district.$error.required">This is a required field</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="text-align: left; padding-top: 8px" class="control-label col-md-5 col-sm-5 col-xs-12">Select Block</label>
+                                        <div class="form-group input-group col-md-7 col-sm-7 col-xs-12" style="text-align: left">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                            <select class="form-control" name="block" ng-model="ddlBlock" ng-options="i.BlockCode as i.BlockName for i in blocks" required>
+                                                <option value="" disabled>Select Block</option>
+                                            </select>
+                                        </div>
+                                        <div class="has-error text-right" ng-show="jdappBASForm.$submitted || jdappBASForm.block.$touched" style="color:red">
+                                            <span ng-show="jdappBASForm.block.$error.required">This is a required field</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-12"></div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon" style="padding: 6px 3px"><i class="glyphicon glyphicon-pencil"></i></span>
+                                    <textarea rows="5" name="bas" ng-model="taBAS" placeholder="Enter the advisory for emergency pest condition" ng-trim="false" maxlength="300" style="width: 100%" required></textarea>
+                                </div>
+                                <p style="text-align: right">{{300 - taBAS.length + ' characters remaining'}}</p>
+                                <div class="has-error text-right" ng-show="jdappBASForm.$submitted || jdappBASForm.bas.$touched" style="color:red">
+                                    <span ng-show="jdappBASForm.bas.$error.required">This is a required field</span>
+                                </div>
+                            </div>
+                            <div class="form-group text-center col-md-12 col-sm-12 col-xs-12">
+                                <button type="submit" class="btn btn-default" style="background: #2a5d1f; color: #ffffff">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Previous Block-wise Advisory SMS</h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <!-- <li>
+                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li> -->
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <br />
+                        <div class="form-horizontal table table-responsive">
+                            <table class="table table-hover table-striped jambo_table bulk_action text-center">
+                                <thead>
+                                    <tr class="headings">
+                                        <th class="column-title text-center">Serial No.</th>
+                                        <th class="column-title text-center">District</th>
+                                        <th class="column-title text-center">Block-wise Details</th>
+                                    </tr>
+                                </thead>
+                                <tr ng-repeat="(key, value) in smsAdvisories | groupBy: 'DistrictName'">
+                                    <td style="vertical-align: middle">{{$index + 1}}</td>
+                                    <td style="vertical-align: middle">{{key | capitalize}}</td>
+                                    <td>
+                                        <table class="table table-hover table-striped jambo_table bulk_action">
+                                            <thead>
+                                                <tr class="headings">
+                                                    <td><b>Serial No.</b></td>
+                                                    <td><b>Block</b></td>
+                                                    <td><b>Advisory Details</b></td>
+                                                </tr>
+                                            </thead>
+                                            <tr ng-repeat="(k, v) in value | groupBy: 'BlockName'">
+                                                <td style="vertical-align: middle">{{$index + 1}}</td>
+                                                <td style="vertical-align: middle">{{k | capitalize}}</td>
+                                                <td>
+                                                    <table class="table table-hover table-striped jambo_table bulk_action">
+                                                        <thead>
+                                                            <tr class="headings">
+                                                                <td><b>Serial No.</b></td>
+                                                                <td><b>Advisory SMS</b></td>
+                                                                <td><b>Sent Date</b></td>
+                                                            </tr>
+                                                        </thead>
+                                                        <tr ng-repeat="i in v">
+                                                            <td>{{$index + 1}}</td>
+                                                            <td>{{i.AdvisorySMS}}</td>
+                                                            <td>{{i.Date}}</td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr ng-show="smsAdvisories.length == 0">
+                                    <td colspan="5" style="text-align: center; color: red"><b>No Records are found.</b></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

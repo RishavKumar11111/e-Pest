@@ -1,0 +1,15 @@
+<div ng-controller="myEmergencyAppHomeCtrl">
+    <div id="top" class="container" style="text-align: center; padding-top: 70px">
+        <div class="row">
+            <div id="form-container">
+                <div class="page-header text-center">
+                    <div id="status-buttons" class="text-center">
+                        <a ui-sref-active="active" ui-sref=".farmerDetails" style="pointer-events: none; cursor: default"><span><b>1</b></span> Farmer Details</a>
+                        <a ui-sref-active="active" ui-sref=".cropPhotoDetails" style="pointer-events: none; cursor: default"><span><b>2</b></span> Capture Photo</a>
+                    </div>
+                </div>
+            </div>
+            <div id="signup-form" ui-view></div>
+        </div>
+    </div>
+</div>

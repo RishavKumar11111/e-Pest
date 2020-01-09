@@ -1,0 +1,179 @@
+<html>
+
+<head>
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+    <meta name='viewport' content='initial-scale=1, maximum-scale=1,user-scalable=no'>
+    <title>GIS Map</title>
+    <link rel="icon" href="../../gigw/nielit.gov.in/sites/all/themes/berry/images/favicon.ico" type="image/x-icon" />
+    <link rel='stylesheet' href='https://js.arcgis.com/3.28/esri/css/esri.css' />
+    <style>
+        html,
+        body,
+        #mapDiv {
+            padding: 0;
+            margin: 0;
+            height: 100%;
+            width: 100%;
+        }
+
+        #search {
+            display: block;
+            top: 1.25em;
+            left: 3.625em;
+            right: 0.625em;
+            position: absolute;
+            height: 3.75em;
+            width: auto;
+            font-size: 1em;
+            line-height: 1.25em;
+            z-index: 3;
+        }
+
+        #mainDiv {
+            display: block;
+            top: 1.25em;
+            left: 85%;
+            right: 0.625em;
+            position: absolute;
+            height: 100%;
+            width: 10.7%;
+            font-size: 1em;
+            line-height: 1.25em;
+            z-index: 3;
+        }
+    </style>
+    <script src='https://js.arcgis.com/3.28/'></script>
+    <script>
+        var responseData = JSON.parse('<%-JSON.stringify(locationData)%>');
+        if (responseData.length == 0) {
+            alert('No Data is found.');
+            window.top.location.reload();
+        }
+        else {
+            var map;
+
+            require(['esri/dijit/BasemapLayer', 'esri/dijit/Basemap', 'esri/map', 'esri/geometry/Extent', 'esri/SpatialReference', 'esri/layers/ArcGISDynamicMapServiceLayer', 'esri/layers/ArcGISTiledMapServiceLayer', 'esri/graphic', 'esri/layers/GraphicsLayer', 'esri/geometry/Point', 'esri/symbols/SimpleMarkerSymbol', 'esri/Color', 'esri/InfoTemplate', 'esri/dijit/Search', 'esri/dijit/BasemapToggle'], function (BasemapLayer, Basemap, Map, Extent, SpatialReference, ArcGISDynamicMapServiceLayer, ArcGISTiledMapServiceLayer, Graphic, GraphicsLayer, Point, SimpleMarkerSymbol, Color, InfoTemplate, Search, BasemapToggle) {
+                // var nobasemap = new Basemap({layers: [new BasemapLayer({url: 'http://services.arcgisonline.com/arcgis/rest/services/World_Street_Map/MapServer', opacity: 5})]});
+                map = new Map('mapDiv', {
+                    logo: false,
+                    showAttribution: false,
+                    center: [20.593683, 78.962883],
+                    zoom: 10,
+                    basemap: 'satellite'
+                });
+                map.addLayer(new ArcGISDynamicMapServiceLayer('https://mapservice.gov.in/gismapservice/rest/services/BharatMapService/State_Boundary/MapServer?Token=KkN8Tjxm5-6J3JNhujdiMwpWUXnEWu-vC12ZQaUg7WOKny0SooC4B8WJCGpj6P24'));
+                map.addLayer(new ArcGISDynamicMapServiceLayer('https://mapservice.gov.in/gismapservice/rest/services/BharatMapService/District_Boundary/MapServer?Token=p3jNAZKpI7BHQ3QnVaaeXyczV1KE_AnTksZfRVo4NQQKLkdAhPFE3GBao7NL9zHA'));
+                // map.addLayer(new ArcGISDynamicMapServiceLayer('https://mapservice.gov.in/gismapservice/rest/services/BharatMapService/State_Boundary/MapServer?Token=skT80RL3aoNdmWuvO7MT2RSabh_-0abcXey7k5hM9AylFuOzLmBy_p0NP4vXT134AKYOXzfoq1TQxwbhkmNs8g..'));
+                // map.addLayer(new ArcGISDynamicMapServiceLayer('https://mapservice.gov.in/gismapservice/rest/services/BharatMapService/District_Boundary/MapServer?Token=8dx08VucJQiab9RE9t9A-g_-_fazshA71gYZHtwjbYUntecb-ZO20vKNrw3qqSXvXtHaJ96t7UZy9Srk4F9akQ..'));
+                map.setExtent(new Extent(81, 17, 88, 24, new SpatialReference({ wkid: 4326 })), true);
+
+                var search = new Search({
+                    map: map
+                }, "search");
+                search.startup();
+
+                var satellite = new BasemapToggle({
+                    map: map,
+                    basemap: "topo-vector"
+                }, "topoVector");
+                satellite.startup();
+
+                var hybrid = new BasemapToggle({
+                    map: map,
+                    basemap: "hybrid"
+                }, "hybrid");
+                hybrid.startup();
+
+                var streetsNight = new BasemapToggle({
+                    map: map,
+                    basemap: "streets-night-vector"
+                }, "streetsNight");
+                streetsNight.startup();
+
+                var osm = new BasemapToggle({
+                    map: map,
+                    basemap: "osm"
+                }, "osm");
+                osm.startup();
+
+                var streesNavigation = new BasemapToggle({
+                    map: map,
+                    basemap: "streets-navigation-vector"
+                }, "streesNavigation");
+                streesNavigation.startup();
+
+                var darkGray = new BasemapToggle({
+                    map: map,
+                    basemap: "dark-gray"
+                }, "darkGray");
+                darkGray.startup();
+
+                var graphicsLayer = new GraphicsLayer();
+
+                var red = new Color([255, 0, 0, 0.5]);
+
+                responseData.forEach((a) => {
+                    var refNo = a.ReferenceNo;
+                    var lat = a.FixedLandLatitude;
+                    var long = a.FixedLandLongitude;
+                    var crop = a.CropName;
+                    var pest = a.PestName;
+                    var ma = a.MediumIntensityAttackArea;
+                    var ha = a.HighIntensityAttackArea;
+                    var mt = a.MediumIntensityTreatedArea;
+                    var ht = a.HighIntensityTreatedArea;
+                    var dist = a.DistrictName;
+                    var blk = a.BlockName;
+                    var gp = a.GPName;
+                    var vlg = a.VillageName;
+
+                    var simpleMarkerSymbol = new SimpleMarkerSymbol().setStyle(SimpleMarkerSymbol.STYLE_CIRCLE).setColor(red).setSize(10);
+
+                    var point = new Point(long, lat, map.spatialReference);
+
+                    var attr = { "refNo": refNo, "long": long, "lat": lat, "crop": crop, "pest": pest, "ma": ma, "ha": ha, "mt": mt, "ht": ht, "dist": dist, "blk": blk, "gp": gp, "vlg": vlg };
+
+                    var infoTemplate = new InfoTemplate('Crop and Pest Location', 'Latitude : ${lat}<br/>Longitude : ${long}<br/>Crop : ${crop}<br/>Pest : ${pest}<br/>Area Affected (Moderate Intensity) : ${ma} ha<br/>Area Affected (High Intensity) : ${ha} ha<br/>Area Treated (Moderate Intensity) : ${mt} ha<br/>Area Treated (High Intensity) : ${ht} ha<br/>District : ${dist}<br/>Block : ${blk}<br/>GP : ${gp}<br/>Village : ${vlg}<br/><a href="#!" id="loadImg">Click here to View Pest Photo</a><br /><div id="addImg"></div>');
+
+                    var pointGraphic = new Graphic(point, simpleMarkerSymbol, attr, infoTemplate);
+
+                    graphicsLayer.add(pointGraphic);
+                });
+                map.addLayer(graphicsLayer);
+            });
+        }
+    </script>
+</head>
+
+<body>
+    <div id='mapDiv'>
+        <div id="search"></div>
+        <div id="mainDiv">
+            <ul>
+                <li id="topoVector"></li>
+                <li id="osm"></li>
+                <li id="streetsNight"></li>
+                <li id="hybrid"></li>
+                <li id="streesNavigation"></li>
+                <li id="darkGray"></li>
+            </ul>
+        </div>
+    </div>
+    <script>
+        var refNo;
+        document.addEventListener('click', function (e) {
+            if (e.graphic) {
+                refNo = e.graphic.attributes.refNo;
+            }
+            if (e.target && e.target.id == 'loadImg') {
+                var xhttp = new XMLHttpRequest();
+                xhttp.open('GET', 'http://localhost:3000/jdapp/pestPhoto?referenceNo=' + refNo, false);
+                xhttp.send();
+                document.getElementById('addImg').innerHTML = "<img src='" + xhttp.responseText + "' />";
+                document.getElementById('loadImg').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+
+</html>

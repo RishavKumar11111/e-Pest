@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html style="background: #cde7c7">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Emergency App</title>
+    <link rel="icon" href="../../gigw/nielit.gov.in/sites/all/themes/berry/images/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="../../public/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="../../public/stylesheets/style3.css">
+    <link rel="stylesheet" href="../../public/stylesheets/jquery.mCustomScrollbar.min.css">
+    <link rel="stylesheet" href="../../public/stylesheets/multistepform.css">
+    <link href="../../public/stylesheets/loader.css" rel="stylesheet">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="EmergencyApp">
+    <meta name="csrf-token" content="<%= csrfToken %>">
+    <link rel="apple-touch-icon" href="../../public/images/icons/apple-icon-57x57.png" sizes="57x57">
+    <link rel="apple-touch-icon" href="../../public/images/icons/apple-icon-60x60.png" sizes="60x60">
+    <link rel="apple-touch-icon" href="../../public/images/icons/apple-icon-72x72.png" sizes="72x72">
+    <link rel="apple-touch-icon" href="../../public/images/icons/apple-icon-76x76.png" sizes="76x76">
+    <link rel="apple-touch-icon" href="../../public/images/icons/apple-icon-114x114.png" sizes="114x114">
+    <link rel="apple-touch-icon" href="../../public/images/icons/apple-icon-120x120.png" sizes="120x120">
+    <link rel="apple-touch-icon" href="../../public/images/icons/apple-icon-144x144.png" sizes="144x144">
+    <link rel="apple-touch-icon" href="../../public/images/icons/apple-icon-152x152.png" sizes="152x152">
+    <link rel="apple-touch-icon" href="../../public/images/icons/apple-icon-180x180.png" sizes="180x180">
+    <meta name="msapplication-TileImage" content="../../public/images/icons/app-icon-48x48.png">
+    <meta name="msapplication-TileImage" content="../../public/images/icons/app-icon-96x96.png">
+    <meta name="msapplication-TileImage" content="../../public/images/icons/app-icon-144x144.png">
+    <meta name="msapplication-TileImage" content="../../public/images/icons/app-icon-192x192.png">
+    <meta name="msapplication-TileImage" content="../../public/images/icons/app-icon-256x256.png">
+    <meta name="msapplication-TileImage" content="../../public/images/icons/app-icon-384x384.png">
+    <meta name="msapplication-TileImage" content="../../public/images/icons/app-icon-512x512.png">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="theme-color" content="#ffffff">
+</head>
+<body ng-app="myEmergencyApp" style="background: #cde7c7" ng-cloak>
+    <div data-loading></div>
+    <div class="wrapper">
+        <nav id="sidebar">
+            <!-- <div id="dismiss">
+                <i class="glyphicon glyphicon-arrow-left"></i>
+            </div> -->
+            <div class="sidebar-header">
+                <h3>Emergency App</h3>
+            </div>
+            <ul class="list-unstyled components">
+                <li class="active">
+                    <a id="closeSideBar" href="#!home/farmerDetails"><i class="glyphicon glyphicon-home" style="color: #4285f4"></i> Home</a>
+                </li>
+            </ul>
+        </nav>
+        <div id="content">
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" id="sidebarCollapse" class="btn navbar-btn" style="background: transparent">
+                            <i class="glyphicon glyphicon-menu-hamburger" style="color: #ffffff; font-weight: bold">
+                                <b style="font-size: 19px; font-family: 'Open Sans', sans-serif"> e-Pest</b>
+                            </i>
+                        </button>
+                    </div>
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="#!/home/farmerDetails" style="color: #ffffff">Home</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <div class="line"></div>
+        </div>
+    </div>
+    <div style="padding: 10px; background: #cde7c7" ui-view></div>
+    <div class="overlay"></div>
+    <script src="../../public/javascripts/jquery.min.js"></script>
+    <script src="../../public/javascripts/angular.min.js"></script>
+    <script src="../../public/javascripts/angular-route.min.js"></script>
+    <script src="../../public/javascripts/angular-filter.min.js"></script>
+    <script src="../../public/javascripts/angular-ui-router.min.js"></script>
+    <script src="../../public/javascripts/angular-animate.min.js"></script>
+    <script src="../../public/javascripts/bootstrap.min.js"></script>
+    <script src="../../public/javascripts/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script>
+        var app = angular.module('myEmergencyApp', ['angular.filter', 'ngAnimate', 'ui.router']);
+        app.controller('myEmergencyAppCtrl', function ($scope, $http) {
+
+        });
+        app.service('emergencyAppService', function() {
+            var voterNo;
+            var aadhaarNo;
+            var farmerID;
+            var mobileNo;
+            return {
+                getVoterIDNo: function() {
+                    return voterIDNo;
+                },
+                setVoterIDNo: function(vn) {
+                    voterIDNo = vn;
+                },
+                getAadhaarNo: function() {
+                    return aadhaarNo;
+                },
+                setAadhaarNo: function(an) {
+                    aadhaarNo = an;
+                },
+                getFarmerID: function() {
+                    return farmerID;
+                },
+                setFarmerID: function(fID) {
+                    farmerID = fID;
+                },
+                getMobileNo: function() {
+                    return mobileNo;
+                },
+                setMobileNo: function(mn) {
+                    mobileNo = mn;
+                },
+            };
+        });
+        app.filter('capitalize', function () {
+            return function (input) {
+                if (input != null) {
+                    input = input.toLowerCase().split(' ');
+                    for (var i = 0; i < input.length; i++) {
+                        input[i] = input[i].charAt(0).toUpperCase() + input[i].substring(1);
+                    }
+                    return input.join(' ');
+                }
+                else {
+                    return false;
+                }
+            }
+            // return function (input) {
+            //     return (!!input) ? input.charAt(0).toUpperCase() + input.substr(1).toLowerCase() : '';
+            // }
+        });
+        app.config(function($stateProvider, $urlRouterProvider) {
+            $stateProvider
+            .state('home', {
+                url: '/home',
+                templateUrl: 'emergencyApp/home',
+                controller: 'myEmergencyAppHomeCtrl'
+            }).state('home.farmerDetails', {
+                url: '/farmerDetails',
+                templateUrl: 'emergencyApp/farmerdetails'
+            }).state('home.cropPhotoDetails', {
+                url: '/cropPhotoDetails',
+                templateUrl: 'emergencyApp/cropphotodetails'
+            });
+            $urlRouterProvider.otherwise('/home/farmerDetails');
+        });
+        app.directive('loading', ['$http', function ($http) {
+            return {
+                restrict: 'A',
+                template: '<div class="lds-eclipse" style="background: white; z-index: 99999; position: fixed"><div style="margin: 50% 22%"></div></div>',
+                // Loading&#8230;
+                link: function (scope, elm, attrs) {
+                    scope.isLoading = function () {
+                        return $http.pendingRequests.length > 0;
+                    };
+                    scope.$watch(scope.isLoading, function (v) {
+                        if (v) {
+                            elm.css('display', 'block');
+                        } else {
+                            elm.css('display', 'none');
+                        }
+                    });
+                }
+            };
+        }]);
+    </script>
+    <script src="../../public/controllers/emergencyApp/myEmergencyAppHomeCtrl.js"></script>
+    <script type="text/javascript" src="../../public/javascripts/sha256.js"></script>
+    <script>
+        history.pushState(null, document.title, location.href);
+        window.addEventListener('popstate', function (event) {
+            history.pushState(null, document.title, location.href);
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#sidebar").mCustomScrollbar({
+                theme: "minimal"
+            });
+            $('#dismiss, #closeSideBar, .overlay').on('click', function () {
+                $('#sidebar').removeClass('active');
+                $('.overlay').fadeOut();
+            });
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar').addClass('active');
+                $('.overlay').fadeIn();
+                $('.collapse.in').toggleClass('in');
+                $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+            });
+        });
+    </script>
+</body>
+</html>

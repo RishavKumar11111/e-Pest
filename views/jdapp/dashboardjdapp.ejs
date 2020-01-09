@@ -1,0 +1,156 @@
+<div class="right_col" role="main" ng-controller="myJDAPPDashbord1Ctrl" ng-init="getDashboardDetails(); getCropCategories()" style="min-height: 100vh">
+    <div class="">
+        <div class="row top_tiles">
+            <a href="#!aaoDetails">
+                <div class="animated flipInY col-md-2 col-sm-2 col-xs-12">
+                    <div class="tile-stats" style="background-color: #db4437; height: 125px; padding: 10px">
+                        <h3 style="color: white">Total AAO registered</h3>
+                        <div class="count" style="color: white; padding-top: -10px">
+                            <span>{{getJDAPPDetails[0][0].AAORegistered == null ? 0 : getJDAPPDetails[0][0].AAORegistered}} no.</span>                   
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <a href="#!vawDetails">
+                <div class="animated flipInY col-md-2 col-sm-2 col-xs-12">
+                    <div class="tile-stats" style="background-color: #179928; height: 125px; padding: 10px">
+                        <h3 style="color: white">Total VAW registered</h3>
+                        <div class="count" style="color: white; padding-top: -10px">
+                            <span>{{getJDAPPDetails[1][0].VAWRegistered == null ? 0 : getJDAPPDetails[1][0].VAWRegistered}} no.</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <div class="animated flipInY col-md-2 col-sm-2 col-xs-12">
+                <div class="tile-stats" style="background-color: #4285f4; height: 125px; padding: 10px">
+                    <h3 style="color: white">Total Area Affected</h3>
+                    <div class="count" style="color: white; padding-top: -10px">
+                        <span>{{getJDAPPDetails[2][0].TotalAffectedArea == null ? 0 : getJDAPPDetails[2][0].TotalAffectedArea}} ha</span>
+                    </div>
+                </div>
+            </div>
+            <div class="animated flipInY col-md-2 col-sm-2 col-xs-12">
+                <div class="tile-stats" style="background-color: #db4437; height: 125px; padding: 10px">
+                    <h3 style="color: white">Total Area Treated</h3>
+                    <div class="count" style="color: white; padding-top: -10px">
+                        <span>{{getJDAPPDetails[2][0].TotalTreatedArea == null ? 0 : getJDAPPDetails[2][0].TotalTreatedArea}} ha</span>
+                    </div>
+                </div>
+            </div>
+            <div class="animated flipInY col-md-2 col-sm-2 col-xs-12">
+                <div class="tile-stats" style="background-color: #f4b400; height: 125px; padding: 10px">
+                    <h3 style="color: white; font-size: 19px">Area inspected by VAW</h3>
+                    <div class="count" style="color: white; padding-top: 13px">
+                        <span>{{getJDAPPDetails[3][0].TotalAreaAffected == null ? 0 : getJDAPPDetails[3][0].TotalAreaAffected}} ha</span>
+                    </div>
+                </div>
+            </div>
+            <div class="animated flipInY col-md-2 col-sm-2 col-xs-12">
+                <div class="tile-stats" style="background-color: #179928; height: 125px; padding: 10px">
+                    <h3 style="color: white">Light trap catch</h3>
+                    <div class="count" style="color: white; padding-top: -10px">
+                        <span>{{getJDAPPDetails[4][0].TotalLightTrap == null ? 0 : getJDAPPDetails[4][0].TotalLightTrap}} no.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript" src="../../public/javascripts/chart.min.js"></script>
+        <div class="row">
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h3>Area affected & Area treated (in ha) (Weekly)</h3>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <canvas id="myChart1"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h3>Area affected & Area treated (in ha)</h3>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <canvas id="myChart6"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h3>No. of Advisories for different Cereal Crops (in Kharif)</h3>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <canvas id="myChart5"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                        <h3>Area Affected (Crop Category-wise and Crop-wise) (in ha)</h3>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label style="text-align: left; padding-top: 7px" class="control-label col-md-5 col-sm-5 col-xs-12">Crop Category <span style="color: red">*</span></label>
+                                <div class="col-md-7 col-sm-7 col-xs-12">
+                                    <div class="input-group" style="margin-bottom: 0px">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-edit"></i></span>
+                                        <select class="form-control" ng-model="ddlCropCategory" ng-options="i.CategoryCode as i.CategoryName for i in cropCategories" ng-change="getCropCategoryPestDiseases()" required>
+                                            <option value="" disabled>Select Crop Category</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12" ng-show="pestDiseases.length > 0" style="padding: 30px">
+                            <div class="form-group">
+                                <div class="col-md-4 col-sm-4 col-xs-12" ng-repeat="i in pestDiseases">
+                                    <input style="margin: 5px" type="checkbox" ng-model="i.selected" ng-change="getValue();" ng-true-value="true" ng-false-value="false" />
+                                    <label style="padding: 0 25px 0 0; font-weight: normal" class="control-label">{{i.PestDiseaseName | capitalize}}</label>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="clearfix"></div>
+                            <div class="ln_solid"></div>
+                            <div class="col-md-12 col-sm-12 col-xs-12 text-center">
+                                <input type="button" class="btn btn-success" value="Get Pest Details" ng-disabled="pests.length == 0 || ddlCropCategory == null || ddlCropCategory == undefined" ng-click="getPestGraphData()" />
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12" style="pointer-events: none">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <canvas id="myChart7"></canvas>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <canvas id="myChart8"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="../../public/javascripts/dashboardGraph.js"></script>

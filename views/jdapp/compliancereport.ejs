@@ -1,0 +1,269 @@
+<div class="right_col" role="main" ng-controller="myJDAPPComplianceCtrl" style="min-height: 100vh">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>Compliance Report</h3>
+            </div>
+            <div class="title_right">
+                <!-- <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search for...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">Go!</button>
+                        </span>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <ul class="nav navbar-right panel_toolbox">
+                            <!-- <li>
+                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li> -->
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <br />
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group">
+                                    <label style="text-align: left; padding-top: 10px; white-space: nowrap" class="control-label col-md-4 col-sm-4 col-xs-12">Select Date : <span style="color: red">*</span></label>
+                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                        <input type="date" class="form-control" ng-model="dateOfPDE" id="pdeDate" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12" style="text-align: left">
+                                <div class="form-group">
+                                    <label style="text-align: left; padding-top: 8px" class="control-label col-md-4 col-sm-4 col-xs-12">Season : <span style="color: red">*</span></label>
+                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                        <div class="col-md-6 col-sm-6 col-xs-12" style="padding-top: 7px">
+                                            <input type="radio" name="season" ng-model="rbs" value="K" />
+                                            <label>Kharif</label>
+                                        </div>
+                                        <div class="col-md-6 col-sm-6 col-xs-12" style="padding-top: 7px">
+                                            <input type="radio" name="season" ng-model="rbs" value="R" />
+                                            <label>Rabi</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <label style="text-align: left; padding-top: 10px; white-space: nowrap" class="control-label col-md-4 col-sm-4 col-xs-12">Financial Year : <span style="color: red">*</span></label>
+                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                        <select class="form-control" ng-model="ddlFY">
+                                            <option value="" disabled>Select Financial Year</option>
+                                            <option value="2019-20">2019-20</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="ln_solid"></div>
+                        <div class="col-md-12 col-sm-12 col-xs-12 text-center">
+                            <input type="button" class="btn btn-success" value="Get Details" ng-click="checkCDay()" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <ul class="nav navbar-right panel_toolbox">
+                            <!-- <li>
+                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li> -->
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <br />
+                        <div class="form-horizontal table table-responsive" ng-show="complianceDetails.length > 0">
+                            <input type="button" class="btn btn-primary" value="Export to Excel" onclick="ExportToExcel(this, 'Compliance Report')" style="margin-bottom: 10px; float: right" />
+                            <table style="display: none" id="sadData" class="table table-hover table-striped jambo_table bulk_action">
+                                <thead>
+                                    <tr class="headings">
+                                        <td style="vertical-align: middle"><b>Serial No.</b></td>
+                                        <td style="vertical-align: middle"><b>District</b></td>
+                                        <td style="vertical-align: middle"><b>Block</b></td>
+                                        <td style="vertical-align: middle"><b>Number of GPs selected for survey</b></td>
+                                        <td style="vertical-align: middle"><b>Number of GPs in which survey was conducted</b></td>
+                                        <td style="vertical-align: middle"><b>Number of GPs in which survey was not conducted</b></td>
+                                        <td style="vertical-align: middle"><b>Actual area surveyed by VAWs (in Ha)</b></td>
+                                    </tr>
+                                </thead>
+                                <tr ng-repeat="i in complianceDetails | orderBy: 'DistrictName'">
+                                    <td style="vertical-align: middle">{{$index + 1}}</td>
+                                    <td style="vertical-align: middle">{{i.DistrictName | capitalize}}</td>
+                                    <td style="vertical-align: middle">{{i.BlockName | capitalize}}</td>
+                                    <td style="vertical-align: middle">{{i.GPCount}}</td>
+                                    <td style="vertical-align: middle">{{i.GPSurveyed}}</td>
+                                    <td style="vertical-align: middle">{{i.GPNotSurveyed}}</td>
+                                    <td style="vertical-align: middle">{{i.AreaOfLand == null ? 0 : i.AreaOfLand}}</td>
+                                </tr>
+                            </table>
+                            <input type="button" class="btn btn-info" value="Print" ng-click="print($event, 'Compliance Report')" style="margin-bottom: 10px; float: right" />
+                            <table id="sadPrint" class="table table-hover table-striped jambo_table bulk_action">
+                                <thead>
+                                    <tr class="headings">
+                                        <td style="vertical-align: middle"><b>Serial No.</b></td>
+                                        <td style="vertical-align: middle"><b>District</b></td>
+                                        <td style="vertical-align: middle"><b>Block Details</b></td>
+                                    </tr>
+                                </thead>
+                                <tr ng-repeat="(key, value) in complianceDetails | orderBy: 'DistrictName' | groupBy: 'DistrictName'">
+                                    <td style="vertical-align: middle">{{$index + 1}}</td>
+                                    <td style="vertical-align: middle">{{key | capitalize}}</td>
+                                    <td>
+                                        <table class="table table-hover table-striped jambo_table bulk_action">
+                                            <thead>
+                                                <tr class="headings">
+                                                    <td><b>Serial No.</b></td>
+                                                    <td><b>Block</b></td>
+                                                    <td><b>Number of GPs selected for survey</b></td>
+                                                    <td><b>Number of GPs in which survey was conducted</b></td>
+                                                    <td><b>Number of GPs in which survey was not conducted</b></td>
+                                                    <td><b>Actual area surveyed by VAWs (in Ha)</b></td>
+                                                </tr>
+                                            </thead>
+                                            <tr ng-repeat="i in value | orderBy: 'BlockName'">
+                                                <td style="vertical-align: middle">{{$index + 1}}</td>
+                                                <td style="vertical-align: middle">{{i.BlockName | capitalize}}</td>
+                                                <td style="vertical-align: middle" ng-click="getTargetedGP(i.BlockCode)" data-toggle="modal" data-target="#TargetedGPModal">{{i.GPCount}}</td>
+                                                <td style="vertical-align: middle" ng-click="getSurveyGP(i.BlockCode)" data-toggle="modal" data-target="#SurveyGPModal">{{i.GPSurveyed}}</td>
+                                                <td style="vertical-align: middle" ng-click="getSurveyGP(i.BlockCode)" data-toggle="modal" data-target="#NotSurveyGPModal">{{i.GPNotSurveyed}}</td>
+                                                <td style="vertical-align: middle">{{i.AreaOfLand == null ? 0 : i.AreaOfLand}}</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div ng-show="complianceDetails.length == 0" style="text-align: center">
+                            <span colspan="5" style="color: red"><b>No records are found.</b></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="TargetedGPModal" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title text-center">Number of GPs selected for survey</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row" ng-show="targetedGPData != null">
+                            <div class="col-md-1 col-sm-1 col-xs-12"></div>
+                            <table id="sadPrint" class="table table-hover table-striped jambo_table bulk_action">
+                                <thead>
+                                    <tr class="headings">
+                                        <td style="vertical-align: middle"><b>Serial No.</b></td>
+                                        <td style="vertical-align: middle"><b>GP Name</b></td>
+                                    </tr>
+                                </thead>
+                                <tr ng-repeat="i in targetedGPData ">
+                                    <td style="vertical-align: middle">{{$index + 1}}</td>
+                                    <td style="vertical-align: middle">{{i.GPName | capitalize}}</td>
+                                </tr>
+                            </table>
+                            <div class="col-md-1 col-sm-1 col-xs-12"></div>
+                        </div>
+                        <div ng-show="targetedGPData.length == 0" style="text-align: center">
+                            <span colspan="5" style="color: red"><b>No records are found.</b></span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="SurveyGPModal" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title text-center">Number of GPs in which survey was conducted</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row" ng-show="surveyGP != null">
+                            <div class="col-md-1 col-sm-1 col-xs-12"></div>
+                            <table id="sadPrint" class="table table-hover table-striped jambo_table bulk_action">
+                                <thead>
+                                    <tr class="headings">
+                                        <td style="vertical-align: middle"><b>Serial No.</b></td>
+                                        <td style="vertical-align: middle"><b>GP Name</b></td>
+                                    </tr>
+                                </thead>
+                                <tr ng-repeat="i in surveyGP ">
+                                    <td style="vertical-align: middle">{{$index + 1}}</td>
+                                    <td style="vertical-align: middle">{{i.GPName | capitalize}}</td>
+                                </tr>
+                            </table>
+                            <div class="col-md-1 col-sm-1 col-xs-12"></div>
+                        </div>
+                        <div ng-show="surveyGP.length == 0" style="text-align: center">
+                            <span colspan="5" style="color: red"><b>No records are found.</b></span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="NotSurveyGPModal" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title text-center">Number of GPs in which survey was not conducted</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row" ng-show="notSurveyGP != null">
+                            <div class="col-md-1 col-sm-1 col-xs-12"></div>
+                            <table id="sadPrint" class="table table-hover table-striped jambo_table bulk_action">
+                                <thead>
+                                    <tr class="headings">
+                                        <td style="vertical-align: middle"><b>Serial No.</b></td>
+                                        <td style="vertical-align: middle"><b>GP Name</b></td>
+                                    </tr>
+                                </thead>
+                                <tr ng-repeat="i in notSurveyGP ">
+                                    <td style="vertical-align: middle">{{$index + 1}}</td>
+                                    <td style="vertical-align: middle">{{i.GPName | capitalize}}</td>
+                                </tr>
+                            </table>
+                            <div class="col-md-1 col-sm-1 col-xs-12"></div>
+                        </div>
+                        <div ng-show="notSurveyGP.length == 0" style="text-align: center">
+                            <span colspan="5" style="color: red"><b>No records are found.</b></span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function ExportToExcel(tableID, excelName) {
+        $("#" + tableID.nextElementSibling.id).table2excel({
+            filename: excelName + ".xls",
+        });
+    }
+</script>

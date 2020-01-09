@@ -1,0 +1,28 @@
+<div ng-controller="myADOAppEMRCtrl" ng-init="getRefNoFarmerID()">
+    <div id="top" class="container" style="text-align: center; padding-top: 70px">
+        <div class="row">
+            <div id="signup-form">
+                <div ng-show="emrRefNoFID.length > 0">
+                    <h4 style="text-align: center; padding-bottom: 30px; color: red" class="control-label col-lg-12 col-md-12 col-sm-12 col-xs-12"><b>Please visit your account in the web application to issue advisory for below emergency cases.</b></h4>
+                    <div class="table table-responsive">
+                        <table class="table">
+                            <tr>
+                                <td><b>Sl No.</b></td>
+                                <td><b>Reference No.</b></td>
+                                <td><b>Farmer ID</b></td>
+                            </tr>
+                            <tr ng-repeat="i in emrRefNoFID">
+                                <td>{{$index + 1}}</td>
+                                <td>{{i.EMRReferenceNo}}</td>
+                                <td>{{i.FarmerID}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div ng-show="emrRefNoFID.length == 0">
+                    <h4 style="text-align: center; padding: 100px 0; color: red" class="control-label col-lg-12 col-md-12 col-sm-12 col-xs-12"><b>No pending emergency cases are available.</b></h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

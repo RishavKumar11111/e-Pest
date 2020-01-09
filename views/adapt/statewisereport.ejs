@@ -1,0 +1,145 @@
+<div class="right_col" role="main" ng-controller="myADAPTSWRCtrl" style="min-height: 100vh">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>State-wise Report</h3>
+            </div>
+            <div class="title_right">
+                <!-- <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search for...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">Go!</button>
+                        </span>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <ul class="nav navbar-right panel_toolbox">
+                            <!-- <li>
+                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li> -->
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <br />
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-2 col-sm-2 col-xs-12"></div>
+                            <div class="col-md-8 col-sm-8 col-xs-12">
+                                <div class="form-group">
+                                    <label style="text-align: left; padding-top: 10px" class="control-label col-md-6 col-sm-6 col-xs-12">Select Date :</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="date" class="form-control" ng-model="dateOfPDE" id="pdeDate" ng-change="checkCDay();"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-xs-12"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <ul class="nav navbar-right panel_toolbox">
+                            <!-- <li>
+                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li> -->
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <br />
+                        <div class="form-horizontal table table-responsive" ng-show="stateDetails.length > 0">
+                            <input type="button" class="btn btn-primary" value="Export to Excel" onclick="ExportToExcel(this, 'State-wise Pest Report')" style="margin-bottom: 10px; float: right" />
+                            <table style="display: none" id="sdData" class="table table-hover table-striped jambo_table bulk_action">
+                                <thead>
+                                    <tr class="headings">
+                                        <td style="vertical-align: middle"><b>Serial No.</b></td>
+                                        <td style="vertical-align: middle"><b>Crop</b></td>
+                                        <td style="vertical-align: middle"><b>Pest</b></td>
+                                        <td style="vertical-align: middle"><b>Area affected (Low intensity) in Ha (Reported by AAOs)</b></td>
+                                        <td style="vertical-align: middle"><b>Area Affected (Medium intensity) in Ha (Reported by AAOs)</b></td>
+                                        <td style="vertical-align: middle"><b>Area affected (High intensity) in Ha (Reported by AAOs)</b></td>
+                                        <td style="vertical-align: middle"><b>Area treated (Low intensity) in Ha (Reported by AAOs)</b></td>
+                                        <td style="vertical-align: middle"><b>Area treated (Medium Intensity) in Ha (Reported by AAOs)</b></td>
+                                        <td style="vertical-align: middle"><b>Area treated (High Intensity) in Ha (Reported by AAOs)</b></td>
+                                    </tr>
+                                </thead>
+                                <tr ng-repeat="i in stateDetails | orderBy: 'CropName'">
+                                    <td style="vertical-align: middle">{{$index + 1}}</td>
+                                    <td style="vertical-align: middle">{{i.CropName | capitalize}}</td>
+                                    <td style="vertical-align: middle">{{i.PestDiseaseName}}</td>
+                                    <td style="vertical-align: middle">{{(i.LowAffectedArea == null ? 0 : i.LowAffectedArea).toFixed(1)}}</td>
+                                    <td style="vertical-align: middle">{{(i.MediumAffectedArea == null ? 0 : i.MediumAffectedArea).toFixed(1)}}</td>
+                                    <td style="vertical-align: middle">{{(i.HighAffectedArea == null ? 0 : i.HighAffectedArea).toFixed(1)}}</td>
+                                    <td style="vertical-align: middle">{{(i.LowTreatedArea == null ? 0 : i.LowTreatedArea).toFixed(1)}}</td>
+                                    <td style="vertical-align: middle">{{(i.MediumTreatedArea == null ? 0 : i.MediumTreatedArea).toFixed(1)}}</td>
+                                    <td style="vertical-align: middle">{{(i.HighTreatedArea == null ? 0 : i.HighTreatedArea).toFixed(1)}}</td>
+                                </tr>
+                            </table>
+                            <input type="button" class="btn btn-info" value="Print" ng-click="print($event, 'State-wise Pest Report')" style="margin-bottom: 10px; float: right" />
+                            <table id="sdPrint" class="table table-hover table-striped jambo_table bulk_action">
+                                <thead>
+                                    <tr class="headings">
+                                        <th class="column-title text-center">Serial No.</th>
+                                        <th class="column-title text-center">Crop</th>
+                                        <th class="column-title text-center">Pest Details</th>
+                                    </tr>
+                                </thead>
+                                <tr ng-repeat="(key, value) in stateDetails | orderBy: 'CropName' | groupBy: 'CropName'">
+                                    <td>{{$index + 1}}</td>
+                                    <td><b>{{key | capitalize}}</b></td>
+                                    <td>
+                                        <table class="table table-hover table-striped jambo_table bulk_action text-center">
+                                            <thead>
+                                                <tr class="headings">
+                                                <td><b>Serial No.</b></td>
+                                                <td><b>Pest</b></td>
+                                                <td><b>Area affected (Low intensity) in Ha (Reported by AAOs)</b></td>
+                                                <td><b>Area Affected (Medium intensity) in Ha (Reported by AAOs)</b></td>
+                                                <td><b>Area affected (High intensity) in Ha (Reported by AAOs)</b></td>
+                                                <td><b>Area treated (Low intensity) in Ha (Reported by AAOs)</b></td>
+                                                <td><b>Area treated (Medium Intensity) in Ha (Reported by AAOs)</b></td>
+                                                <td><b>Area treated (High Intensity) in Ha (Reported by AAOs)</b></td>
+                                                </tr>
+                                            </thead>
+                                            <tr ng-repeat="i in value | orderBy: 'PestDiseaseName'">
+                                                <td style="vertical-align: middle">{{$index + 1}}</td>
+                                                <td style="vertical-align: middle">{{i.PestDiseaseName}}</td>
+                                                <td style="vertical-align: middle">{{(i.LowAffectedArea == null ? 0 : i.LowAffectedArea).toFixed(1)}}</td>
+                                                <td style="vertical-align: middle">{{(i.MediumAffectedArea == null ? 0 : i.MediumAffectedArea).toFixed(1)}}</td>
+                                                <td style="vertical-align: middle">{{(i.HighAffectedArea == null ? 0 : i.HighAffectedArea).toFixed(1)}}</td>
+                                                <td style="vertical-align: middle">{{(i.LowTreatedArea == null ? 0 : i.LowTreatedArea).toFixed(1)}}</td>
+                                                <td style="vertical-align: middle">{{(i.MediumTreatedArea == null ? 0 : i.MediumTreatedArea).toFixed(1)}}</td>
+                                                <td style="vertical-align: middle">{{(i.HighTreatedArea == null ? 0 : i.HighTreatedArea).toFixed(1)}}</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div ng-show="stateDetails.length == 0" style="text-align: center">
+                            <span colspan="5" style="color: red"><b>No records are found.</b></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function ExportToExcel(tableID, excelName) {
+        $("#" + tableID.nextElementSibling.id).table2excel({
+            filename: excelName + ".xls",
+        });
+    }
+</script>

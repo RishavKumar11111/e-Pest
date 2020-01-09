@@ -1,0 +1,712 @@
+<div class="right_col" role="main" ng-controller="myOUATVPDCtrl" ng-init="getCropCategories(); getDistricts()" style="min-height: 100vh">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>View Pest details</h3>
+            </div>
+            <div class="title_right">
+                <!-- <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search for...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">Go!</button>
+                        </span>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Pest details <small>(Select Date of entry, Season, Financial Year, Crop Category and Crop)</small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <!-- <li>
+                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li> -->
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <br />
+                        <div class="col-md-12 col-sm-12 col-xs-12" style="height: 44px">
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <label style="text-align: left; padding-top: 10px" class="control-label col-md-4 col-sm-4 col-xs-12">User Type : <span style="color: red">*</span></label>
+                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                        <select class="form-control" ng-model="ddlUT" ng-change="dateOfPDE = null">
+                                            <option value="" disabled>Select User Type</option>
+                                            <option value="AAO">AAO</option>
+                                            <option value="VAW">VAW</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group">
+                                    <label style="text-align: left; white-space: nowrap; padding-top: 8px" class="control-label col-md-4 col-sm-4 col-xs-12">Select Date : <span style="color: red">*</span></label>
+                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                        <input type="date" class="form-control" ng-model="dateOfPDE" id="pdeDate" ng-change="checkCDay()" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12" style="text-align: left">
+                                <div class="form-group">
+                                    <label style="text-align: left; padding-top: 8px" class="control-label col-md-4 col-sm-4 col-xs-12">Season : <span style="color: red">*</span></label>
+                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                        <div class="col-md-6 col-sm-6 col-xs-12" style="padding-top: 7px">
+                                            <input type="radio" name="season" ng-model="rbs" value="K" />
+                                            <label>Kharif</label>
+                                        </div>
+                                        <div class="col-md-6 col-sm-6 col-xs-12" style="padding-top: 7px">
+                                            <input type="radio" name="season" ng-model="rbs" value="R" />
+                                            <label>Rabi</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <label style="text-align: left; padding-top: 10px; white-space: nowrap" class="control-label col-md-4 col-sm-4 col-xs-12">Financial Year : <span style="color: red">*</span></label>
+                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                        <select class="form-control" ng-model="ddlFY">
+                                            <option value="" disabled>Select Financial Year</option>
+                                            <option value="2019-20">2019-20</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <label style="text-align: left; padding-top: 10px" class="control-label col-md-4 col-sm-4 col-xs-12">District :</label>
+                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                        <select class="form-control" ng-model="ddlDistrict" ng-options="i.DistrictCode as i.DistrictName for i in districts" ng-change="getBlocksByDistrict()">
+                                            <option value="">Select District</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <label style="text-align: left; padding-top: 10px" class="control-label col-md-4 col-sm-4 col-xs-12">Block :</label>
+                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                        <select class="form-control" ng-model="ddlBlock" ng-options="i.BlockCode as i.BlockName for i in blocks">
+                                            <option value="">Select Block</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <label style="text-align: left; padding-top: 8px; white-space: nowrap" class="control-label col-md-4 col-sm-4 col-xs-12">Crop Category : <span style="color: red">*</span></label>
+                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                        <select class="form-control" ng-model="ddlCC" ng-options="i.CategoryCode as i.CategoryName for i in cropCategories" ng-change="getCropsByCategory(ddlCC)">
+                                            <option value="" disabled>Select Crop Category</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <label style="text-align: left; padding-top: 8px" class="control-label col-md-4 col-sm-4 col-xs-12">Crop : <span style="color: red">*</span></label>
+                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                        <select class="form-control" ng-model="ddlC" ng-options="i.CropCode as i.CropName for i in crops" ng-change="getAllPestDiseases(ddlC)">
+                                            <option value="" disabled>Select Crop</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <label style="text-align: left; padding-top: 8px" class="control-label col-md-4 col-sm-4 col-xs-12">Pest :</label>
+                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                        <select class="form-control" ng-model="ddlPD" ng-options="i.PestDiseaseCode as i.PestDiseaseName for i in pestDiseases">
+                                            <option value="">Select Pest</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-2 col-sm-2 col-xs-12"></div>
+                            <div class="form-group col-md-2 col-sm-2 col-xs-12">
+                                <label style="text-align: left" class="control-label">Pest Intensity:</label>
+                            </div>
+                            <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                                <input type="checkbox" ng-model="cbLIntensity" id="cbli" />
+                                <label style="padding: 0 25px 0 0; font-weight: normal" class="control-label">Low Intensity</label>
+                                <input type="checkbox" ng-model="cbMIntensity" id="cbmi" />
+                                <label style="padding: 0 25px 0 0; font-weight: normal" class="control-label">Moderate Intensity</label>
+                                <input type="checkbox" ng-model="cbHIntensity" id="cbhi" />
+                                <label style="padding: 0 25px 0 0; font-weight: normal" class="control-label">High Intensity</label>
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-xs-12"></div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="ln_solid"></div>
+                        <div class="col-md-12 col-sm-12 col-xs-12 text-center">
+                            <input type="button" class="btn btn-success" value="Get Pest Details" ng-click="getPestDetails()" />
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr />
+                        <div class="col-md-12 col-sm-12 col-xs-12" ng-show="pestDetails.length > 0">
+                            <div class="form-group" style="text-align: center">
+                                <div ng-show="sgd" class="table table-responsive">
+                                    <input type="button" class="btn btn-info" value="Print" ng-click="printNext($event, 'GP and Pest-wise Pest Report')" style="margin-bottom: 10px; float: right" />
+                                    <input type="button" class="btn btn-primary" value="Export to Excel" ng-hide="ete" onclick="ExportToExcel(this, 'GP and Pest-wise Pest Report')" style="margin-bottom: 10px; float: right" />
+                                    <table id="sgdData" class="table table-hover table-striped jambo_table bulk_action">
+                                        <thead>
+                                            <tr class="headings">
+                                                <td style="vertical-align: middle"><b>Serial No.</b></td>
+                                                <td style="vertical-align: middle"><b>GP</b></td>
+                                                <td style="vertical-align: middle" name="low" ng-show="L"><b>Low Affected Area (in HA)</b></td>
+                                                <td style="vertical-align: middle" name="medium" ng-show="M"><b>Medium Affected Area (in HA)</b></td>
+                                                <td style="vertical-align: middle" name="high" ng-show="H"><b>High Affected Area (in HA)</b></td>
+                                                <td style="vertical-align: middle"><b>Total Affected Area (in HA)</b></td>
+                                                <td style="vertical-align: middle" name="low" ng-show="L"><b>Low Treated Area (in HA)</b></td>
+                                                <td style="vertical-align: middle" name="medium" ng-show="M"><b>Medium Treated Area (in HA)</b></td>
+                                                <td style="vertical-align: middle" name="high" ng-show="H"><b>High Treated Area (in HA)</b></td>
+                                                <td style="vertical-align: middle"><b>Total Treated Area (in HA)</b></td>
+                                            </tr>
+                                        </thead>
+                                        <tr ng-repeat="i in pestDetails | orderBy: 'GPName'">
+                                            <td style="vertical-align: middle">{{$index + 1}}</td>
+                                            <td style="vertical-align: middle"><b>{{i.GPName | capitalize}}</b></td>
+                                            <td style="vertical-align: middle" name="low" ng-show="L">{{(i.LowAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle" name="medium" ng-show="M">{{(i.MediumAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle" name="high" ng-show="H">{{(i.HighAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle">{{(i.LowAffectedArea -- i.MediumAffectedArea -- i.HighAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle" name="low" ng-show="L">{{(i.LowTreatedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle" name="medium" ng-show="M">{{(i.MediumTreatedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle" name="high" ng-show="H">{{(i.HighTreatedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle">{{(i.LowTreatedArea -- i.MediumTreatedArea -- i.HighTreatedArea).toFixed(1)}}</td>
+                                        </tr>
+                                        <tr class="totalArea">
+                                            <td style="background: rgba(52,73,94,.94); color: #ECF0F1; vertical-align: middle" colspan="2"><b>Total Area (in HA)</b></td>
+                                            <td name="low" ng-show="L">{{laa.toFixed(1)}}</td>
+                                            <td name="medium" ng-show="M">{{maa.toFixed(1)}}</td>
+                                            <td name="high" ng-show="H">{{haa.toFixed(1)}}</td>
+                                            <td>{{taa.toFixed(1)}}</td>
+                                            <td name="low" ng-show="L">{{lta.toFixed(1)}}</td>
+                                            <td name="medium" ng-show="M">{{mta.toFixed(1)}}</td>
+                                            <td name="high" ng-show="H">{{hta.toFixed(1)}}</td>
+                                            <td>{{tta.toFixed(1)}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div ng-show="sgpd" class="table table-responsive">
+                                    <input type="button" class="btn btn-primary" value="Export to Excel" ng-hide="ete" onclick="ExportToExcel(this, 'GP-wise Pest Report')" style="margin-bottom: 10px; float: right" />
+                                    <table style="display: none" id="sgpdData" class="table table-hover table-striped jambo_table bulk_action">
+                                        <thead>
+                                            <tr class="headings">
+                                                <td style="vertical-align: middle"><b>Serial No.</b></td>
+                                                <td style="vertical-align: middle"><b>GP</b></td>
+                                                <td style="vertical-align: middle"><b>Pest</b></td>
+                                                <td style="vertical-align: middle" name="low" ng-show="L"><b>Low Affected Area (in HA)</b></td>
+                                                <td style="vertical-align: middle" name="medium" ng-show="M"><b>Medium Affected Area (in HA)</b></td>
+                                                <td style="vertical-align: middle" name="high" ng-show="H"><b>High Affected Area (in HA)</b></td>
+                                                <td style="vertical-align: middle"><b>Total Affected Area (in HA)</b></td>
+                                                <td style="vertical-align: middle" name="low" ng-show="L"><b>Low Treated Area (in HA)</b></td>
+                                                <td style="vertical-align: middle" name="medium" ng-show="M"><b>Medium Treated Area (in HA)</b></td>
+                                                <td style="vertical-align: middle" name="high" ng-show="H"><b>High Treated Area (in HA)</b></td>
+                                                <td style="vertical-align: middle"><b>Total Treated Area (in HA)</b></td>
+                                            </tr>
+                                        </thead>
+                                        <tr ng-repeat="i in pestDetails | orderBy: 'GPName'">
+                                            <td style="vertical-align: middle">{{$index + 1}}</td>
+                                            <td style="vertical-align: middle"><b>{{i.GPName | capitalize}}</b></td>
+                                            <td style="vertical-align: middle">{{i.PestDiseaseName | capitalize}}</td>
+                                            <td style="vertical-align: middle" name="low" ng-show="L">{{(i.LowAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle" name="medium" ng-show="M">{{(i.MediumAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle" name="high" ng-show="H">{{(i.HighAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle">{{(i.LowAffectedArea -- i.MediumAffectedArea -- i.HighAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle" name="low" ng-show="L">{{(i.LowTreatedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle" name="medium" ng-show="M">{{(i.MediumTreatedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle" name="high" ng-show="H">{{(i.HighTreatedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle">{{(i.LowTreatedArea -- i.MediumTreatedArea -- i.HighTreatedArea).toFixed(1)}}</td>
+                                        </tr>
+                                    </table>
+                                    <input type="button" class="btn btn-info" value="Print" ng-click="print($event, 'GP-wise Pest Report')" style="margin-bottom: 10px; float: right" />
+                                    <table id="sgpdPrint" class="table table-hover table-striped jambo_table bulk_action">
+                                        <thead>
+                                            <tr class="headings">
+                                                <td style="vertical-align: middle"><b>Serial No.</b></td>
+                                                <td style="vertical-align: middle"><b>GP</b></td>
+                                                <td style="vertical-align: middle"><b>Pest Details</b></td>
+                                            </tr>
+                                        </thead>
+                                        <tr ng-repeat="(key, value) in pestDetails | orderBy: 'GPName' | groupBy: 'GPName'">
+                                            <td style="vertical-align: middle">{{$index + 1}}</td>
+                                            <td style="vertical-align: middle"><b>{{key | capitalize}}</b></td>
+                                            <td>
+                                                <table class="table table-hover table-striped jambo_table bulk_action">
+                                                    <thead>
+                                                        <tr class="headings">
+                                                            <td><b>Serial No.</b></td>
+                                                            <td><b>Pest Name</b></td>
+                                                            <td name="low" ng-show="L"><b>Low Affected Area (in HA)</b></td>
+                                                            <td name="medium" ng-show="M"><b>Medium Affected Area (in HA)</b></td>
+                                                            <td name="high" ng-show="H"><b>High Affected Area (in HA)</b></td>
+                                                            <td><b>Total Affected Area (in HA)</b></td>
+                                                            <td name="low" ng-show="L"><b>Low Treated Area (in HA)</b></td>
+                                                            <td name="medium" ng-show="M"><b>Medium Treated Area (in HA)</b></td>
+                                                            <td name="high" ng-show="H"><b>High Treated Area (in HA)</b></td>
+                                                            <td><b>Total Treated Area (in HA)</b></td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tr ng-repeat="i in value | orderBy: 'PestDiseaseName'">
+                                                        <td>{{$index + 1}}</td>
+                                                        <td>{{i.PestDiseaseName | capitalize}}</td>
+                                                        <td name="low" ng-show="L">{{(i.LowAffectedArea).toFixed(1)}}</td>
+                                                        <td name="medium" ng-show="M">{{(i.MediumAffectedArea).toFixed(1)}}</td>
+                                                        <td name="high" ng-show="H">{{(i.HighAffectedArea).toFixed(1)}}</td>
+                                                        <td>{{(i.LowAffectedArea -- i.MediumAffectedArea -- i.HighAffectedArea).toFixed(1)}}</td>
+                                                        <td name="low" ng-show="L">{{(i.LowTreatedArea).toFixed(1)}}</td>
+                                                        <td name="medium" ng-show="M">{{(i.MediumTreatedArea).toFixed(1)}}</td>
+                                                        <td name="high" ng-show="H">{{(i.HighTreatedArea).toFixed(1)}}</td>
+                                                        <td>{{(i.LowTreatedArea -- i.MediumTreatedArea -- i.HighTreatedArea).toFixed(1)}}</td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div ng-show="sbd" class="table table-responsive">
+                                    <input type="button" class="btn btn-info" value="Print" ng-click="printNext($event, 'District and Pest-wise Pest Report')" style="margin-bottom: 10px; float: right" />
+                                    <input type="button" class="btn btn-primary" value="Export to Excel" ng-hide="ete" onclick="ExportToExcel(this, 'District and Pest-wise Pest Report')" style="margin-bottom: 10px; float: right" />
+                                    <table id="sbdData" class="table table-hover table-striped jambo_table bulk_action">
+                                        <thead>
+                                            <tr class="headings">
+                                                <td style="vertical-align: middle"><b>Serial No.</b></td>
+                                                <td style="vertical-align: middle"><b>District</b></td>
+                                                <td style="vertical-align: middle" name="low" ng-show="L"><b>Low Affected Area (in HA)</b></td>
+                                                <td style="vertical-align: middle" name="medium" ng-show="M"><b>Medium Affected Area (in HA)</b></td>
+                                                <td style="vertical-align: middle" name="high" ng-show="H"><b>High Affected Area (in HA)</b></td>
+                                                <td style="vertical-align: middle"><b>Total Affected Area (in HA)</b></td>
+                                                <td style="vertical-align: middle" name="low" ng-show="L"><b>Low Treated Area (in HA)</b></td>
+                                                <td style="vertical-align: middle" name="medium" ng-show="M"><b>Medium Treated Area (in HA)</b></td>
+                                                <td style="vertical-align: middle" name="high" ng-show="H"><b>High Treated Area (in HA)</b></td>
+                                                <td style="vertical-align: middle"><b>Total Treated Area (in HA)</b></td>
+                                            </tr>
+                                        </thead>
+                                        <tr ng-repeat="i in pestDetails | orderBy: 'DistrictName'">
+                                            <td style="vertical-align: middle">{{$index + 1}}</td>
+                                            <td style="vertical-align: middle"><b>{{i.DistrictName | capitalize}}</b></td>
+                                            <td style="vertical-align: middle" name="low" ng-show="L">{{(i.LowAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle" name="medium" ng-show="M">{{(i.MediumAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle" name="high" ng-show="H">{{(i.HighAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle">{{(i.LowAffectedArea -- i.MediumAffectedArea -- i.HighAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle" name="low" ng-show="L">{{(i.LowTreatedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle" name="medium" ng-show="M">{{(i.MediumTreatedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle" name="high" ng-show="H">{{(i.HighTreatedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle">{{(i.LowTreatedArea -- i.MediumTreatedArea -- i.HighTreatedArea).toFixed(1)}}</td>
+                                        </tr>
+                                        <tr class="totalArea">
+                                            <td style="background: rgba(52,73,94,.94); color: #ECF0F1; vertical-align: middle" colspan="2"><b>Total Area (in HA)</b></td>
+                                            <td name="low" ng-show="L">{{laa.toFixed(1)}}</td>
+                                            <td name="medium" ng-show="M">{{maa.toFixed(1)}}</td>
+                                            <td name="high" ng-show="H">{{haa.toFixed(1)}}</td>
+                                            <td>{{taa.toFixed(1)}}</td>
+                                            <td name="low" ng-show="L">{{lta.toFixed(1)}}</td>
+                                            <td name="medium" ng-show="M">{{mta.toFixed(1)}}</td>
+                                            <td name="high" ng-show="H">{{hta.toFixed(1)}}</td>
+                                            <td>{{tta.toFixed(1)}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div ng-show="sad" class="table table-responsive">
+                                    <input type="button" class="btn btn-primary" value="Export to Excel" ng-hide="ete" onclick="ExportToExcel(this, 'District-wise Pest Report')" style="margin-bottom: 10px; float: right" />
+                                    <table style="display: none" id="sadData" class="table table-hover table-striped jambo_table bulk_action">
+                                        <thead>
+                                            <tr class="headings">
+                                                <td style="vertical-align: middle"><b>Serial No.</b></td>
+                                                <td style="vertical-align: middle"><b>District</b></td>
+                                                <td style="vertical-align: middle"><b>Pest</b></td>
+                                                <td style="vertical-align: middle" name="low" ng-show="L"><b>Low Affected Area (in HA)</b></td>
+                                                <td style="vertical-align: middle" name="medium" ng-show="M"><b>Medium Affected Area (in HA)</b></td>
+                                                <td style="vertical-align: middle" name="high" ng-show="H"><b>High Affected Area (in HA)</b></td>
+                                                <td style="vertical-align: middle"><b>Total Affected Area (in HA)</b></td>
+                                                <td style="vertical-align: middle" name="low" ng-show="L"><b>Low Treated Area (in HA)</b></td>
+                                                <td style="vertical-align: middle" name="medium" ng-show="M"><b>Medium Treated Area (in HA)</b></td>
+                                                <td style="vertical-align: middle" name="high" ng-show="H"><b>High Treated Area (in HA)</b></td>
+                                                <td style="vertical-align: middle"><b>Total Treated Area (in HA)</b></td>
+                                            </tr>
+                                        </thead>
+                                        <tr ng-repeat="i in pestDetails | orderBy: 'DistrictName'">
+                                            <td style="vertical-align: middle">{{$index + 1}}</td>
+                                            <td style="vertical-align: middle"><b>{{i.DistrictName | capitalize}}</b></td>
+                                            <td style="vertical-align: middle">{{i.PestDiseaseName | capitalize}}</td>
+                                            <td style="vertical-align: middle" name="low" ng-show="L">{{(i.LowAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle" name="medium" ng-show="M">{{(i.MediumAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle" name="high" ng-show="H">{{(i.HighAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle">{{(i.LowAffectedArea -- i.MediumAffectedArea -- i.HighAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle" name="low" ng-show="L">{{(i.LowTreatedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle" name="medium" ng-show="M">{{(i.MediumTreatedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle" name="high" ng-show="H">{{(i.HighTreatedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle">{{(i.LowTreatedArea -- i.MediumTreatedArea -- i.HighTreatedArea).toFixed(1)}}</td>
+                                        </tr>
+                                    </table>
+                                    <input type="button" class="btn btn-info" value="Print" ng-click="print($event, 'District-wise Pest Report')" style="margin-bottom: 10px; float: right" />
+                                    <table id="sadPrint" class="table table-hover table-striped jambo_table bulk_action">
+                                        <thead>
+                                            <tr class="headings">
+                                                <td style="vertical-align: middle"><b>Serial No.</b></td>
+                                                <td style="vertical-align: middle"><b>District</b></td>
+                                                <td style="vertical-align: middle"><b>Pest Details</b></td>
+                                            </tr>
+                                        </thead>
+                                        <tr ng-repeat="(key, value) in pestDetails | orderBy: 'DistrictName' | groupBy: 'DistrictName'">
+                                            <td style="vertical-align: middle">{{$index + 1}}</td>
+                                            <td style="vertical-align: middle"><b>{{key | capitalize}}</b></td>
+                                            <td>
+                                                <table class="table table-hover table-striped jambo_table bulk_action">
+                                                    <thead>
+                                                        <tr class="headings">
+                                                            <td><b>Serial No.</b></td>
+                                                            <td><b>Pest Name</b></td>
+                                                            <td name="low" ng-show="L"><b>Low Affected Area (in HA)</b></td>
+                                                            <td name="medium" ng-show="M"><b>Medium Affected Area (in HA)</b></td>
+                                                            <td name="high" ng-show="H"><b>High Affected Area (in HA)</b></td>
+                                                            <td><b>Total Affected Area (in HA)</b></td>
+                                                            <td name="low" ng-show="L"><b>Low Treated Area (in HA)</b></td>
+                                                            <td name="medium" ng-show="M"><b>Medium Treated Area (in HA)</b></td>
+                                                            <td name="high" ng-show="H"><b>High Treated Area (in HA)</b></td>
+                                                            <td><b>Total Treated Area (in HA)</b></td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tr ng-repeat="i in value | orderBy: 'PestDiseaseName'">
+                                                        <td>{{$index + 1}}</td>
+                                                        <td>{{i.PestDiseaseName | capitalize}}</td>
+                                                        <td name="low" ng-show="L">{{(i.LowAffectedArea).toFixed(1)}}</td>
+                                                        <td name="medium" ng-show="M">{{(i.MediumAffectedArea).toFixed(1)}}</td>
+                                                        <td name="high" ng-show="H">{{(i.HighAffectedArea).toFixed(1)}}</td>
+                                                        <td>{{(i.LowAffectedArea -- i.MediumAffectedArea -- i.HighAffectedArea).toFixed(1)}}</td>
+                                                        <td name="low" ng-show="L">{{(i.LowTreatedArea).toFixed(1)}}</td>
+                                                        <td name="medium" ng-show="M">{{(i.MediumTreatedArea).toFixed(1)}}</td>
+                                                        <td name="high" ng-show="H">{{(i.HighTreatedArea).toFixed(1)}}</td>
+                                                        <td>{{(i.LowTreatedArea -- i.MediumTreatedArea -- i.HighTreatedArea).toFixed(1)}}</td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div ng-show="scd" class="table table-responsive">
+                                    <input type="button" class="btn btn-info" value="Print" ng-click="printNext($event, 'Block and Pest-wise Pest Report')" style="margin-bottom: 10px; float: right" />
+                                    <input type="button" class="btn btn-primary" value="Export to Excel" ng-hide="ete" onclick="ExportToExcel(this, 'Block and Pest-wise Pest Report')" style="margin-bottom: 10px; float: right" />
+                                    <table id="scdData" class="table table-hover table-striped jambo_table bulk_action">
+                                        <thead>
+                                            <tr class="headings">
+                                                <td style="vertical-align: middle"><b>Serial No.</b></td>
+                                                <td style="vertical-align: middle"><b>Block</b></td>
+                                                <td style="vertical-align: middle" name="low" ng-show="L"><b>Low Affected Area (in HA)</b></td>
+                                                <td style="vertical-align: middle" name="medium" ng-show="M"><b>Medium Affected Area (in HA)</b></td>
+                                                <td style="vertical-align: middle" name="high" ng-show="H"><b>High Affected Area (in HA)</b></td>
+                                                <td style="vertical-align: middle"><b>Total Affected Area (in HA)</b></td>
+                                                <td style="vertical-align: middle" name="low" ng-show="L"><b>Low Treated Area (in HA)</b></td>
+                                                <td style="vertical-align: middle" name="medium" ng-show="M"><b>Medium Treated Area (in HA)</b></td>
+                                                <td style="vertical-align: middle" name="high" ng-show="H"><b>High Treated Area (in HA)</b></td>
+                                                <td style="vertical-align: middle"><b>Total Treated Area (in HA)</b></td>
+                                            </tr>
+                                        </thead>
+                                        <tr ng-repeat="i in pestDetails | orderBy: 'BlockName'">
+                                            <td style="vertical-align: middle">{{$index + 1}}</td>
+                                            <td style="vertical-align: middle"><b>{{i.BlockName | capitalize}}</b></td>
+                                            <td style="vertical-align: middle" name="low" ng-show="L">{{(i.LowAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle" name="medium" ng-show="M">{{(i.MediumAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle" name="high" ng-show="H">{{(i.HighAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle">{{(i.LowAffectedArea -- i.MediumAffectedArea -- i.HighAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle" name="low" ng-show="L">{{(i.LowTreatedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle" name="medium" ng-show="M">{{(i.MediumTreatedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle" name="high" ng-show="H">{{(i.HighTreatedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle">{{(i.LowTreatedArea -- i.MediumTreatedArea -- i.HighTreatedArea).toFixed(1)}}</td>
+                                        </tr>
+                                        <tr class="totalArea">
+                                            <td style="background: rgba(52,73,94,.94); color: #ECF0F1; vertical-align: middle" colspan="2"><b>Total Area (in HA)</b></td>
+                                            <td name="low" ng-show="L">{{laa.toFixed(1)}}</td>
+                                            <td name="medium" ng-show="M">{{maa.toFixed(1)}}</td>
+                                            <td name="high" ng-show="H">{{haa.toFixed(1)}}</td>
+                                            <td>{{taa.toFixed(1)}}</td>
+                                            <td name="low" ng-show="L">{{lta.toFixed(1)}}</td>
+                                            <td name="medium" ng-show="M">{{mta.toFixed(1)}}</td>
+                                            <td name="high" ng-show="H">{{hta.toFixed(1)}}</td>
+                                            <td>{{tta.toFixed(1)}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div ng-show="sdd" class="table table-responsive">
+                                    <input type="button" class="btn btn-primary" value="Export to Excel" ng-hide="ete" onclick="ExportToExcel(this, 'Block-wise Pest Report')" style="margin-bottom: 10px; float: right" />
+                                    <table style="display: none" id="sddData" class="table table-hover table-striped jambo_table bulk_action">
+                                        <thead>
+                                            <tr class="headings">
+                                                <td style="vertical-align: middle"><b>Serial No.</b></td>
+                                                <td style="vertical-align: middle"><b>Block</b></td>
+                                                <td style="vertical-align: middle"><b>Pest</b></td>
+                                                <td style="vertical-align: middle" name="low" ng-show="L"><b>Low Affected Area (in HA)</b></td>
+                                                <td style="vertical-align: middle" name="medium" ng-show="M"><b>Medium Affected Area (in HA)</b></td>
+                                                <td style="vertical-align: middle" name="high" ng-show="H"><b>High Affected Area (in HA)</b></td>
+                                                <td style="vertical-align: middle"><b>Total Affected Area (in HA)</b></td>
+                                                <td style="vertical-align: middle" name="low" ng-show="L"><b>Low Treated Area (in HA)</b></td>
+                                                <td style="vertical-align: middle" name="medium" ng-show="M"><b>Medium Treated Area (in HA)</b></td>
+                                                <td style="vertical-align: middle" name="high" ng-show="H"><b>High Treated Area (in HA)</b></td>
+                                                <td style="vertical-align: middle"><b>Total Treated Area (in HA)</b></td>
+                                            </tr>
+                                        </thead>
+                                        <tr ng-repeat="i in pestDetails | orderBy: 'BlockName'">
+                                            <td style="vertical-align: middle">{{$index + 1}}</td>
+                                            <td style="vertical-align: middle"><b>{{i.BlockName | capitalize}}</b></td>
+                                            <td style="vertical-align: middle">{{i.PestDiseaseName | capitalize}}</td>
+                                            <td style="vertical-align: middle" name="low" ng-show="L">{{(i.LowAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle" name="medium" ng-show="M">{{(i.MediumAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle" name="high" ng-show="H">{{(i.HighAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle">{{(i.LowAffectedArea -- i.MediumAffectedArea -- i.HighAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle" name="low" ng-show="L">{{(i.LowTreatedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle" name="medium" ng-show="M">{{(i.MediumTreatedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle" name="high" ng-show="H">{{(i.HighTreatedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle">{{(i.LowTreatedArea -- i.MediumTreatedArea -- i.HighTreatedArea).toFixed(1)}}</td>
+                                        </tr>
+                                    </table>
+                                    <input type="button" class="btn btn-info" value="Print" ng-click="print($event, 'Block-wise Pest Report')" style="margin-bottom: 10px; float: right" />
+                                    <table id="sddPrint" class="table table-hover table-striped jambo_table bulk_action">
+                                        <thead>
+                                            <tr class="headings">
+                                                <td style="vertical-align: middle"><b>Serial No.</b></td>
+                                                <td style="vertical-align: middle"><b>Block</b></td>
+                                                <td style="vertical-align: middle"><b>Pest Details</b></td>
+                                            </tr>
+                                        </thead>
+                                        <tr ng-repeat="(key, value) in pestDetails | orderBy: 'BlockName' | groupBy: 'BlockName'">
+                                            <td style="vertical-align: middle">{{$index + 1}}</td>
+                                            <td style="vertical-align: middle"><b>{{key | capitalize}}</b></td>
+                                            <td>
+                                                <table class="table table-hover table-striped jambo_table bulk_action">
+                                                    <thead>
+                                                        <tr class="headings">
+                                                            <td><b>Serial No.</b></td>
+                                                            <td><b>Pest Name</b></td>
+                                                            <td name="low" ng-show="L"><b>Low Affected Area (in HA)</b></td>
+                                                            <td name="medium" ng-show="M"><b>Medium Affected Area (in HA)</b></td>
+                                                            <td name="high" ng-show="H"><b>High Affected Area (in HA)</b></td>
+                                                            <td><b>Total Affected Area (in HA)</b></td>
+                                                            <td name="low" ng-show="L"><b>Low Treated Area (in HA)</b></td>
+                                                            <td name="medium" ng-show="M"><b>Medium Treated Area (in HA)</b></td>
+                                                            <td name="high" ng-show="H"><b>High Treated Area (in HA)</b></td>
+                                                            <td><b>Total Treated Area (in HA)</b></td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tr ng-repeat="i in value | orderBy: 'PestDiseaseName'">
+                                                        <td>{{$index + 1}}</td>
+                                                        <td>{{i.PestDiseaseName | capitalize}}</td>
+                                                        <td name="low" ng-show="L">{{(i.LowAffectedArea).toFixed(1)}}</td>
+                                                        <td name="medium" ng-show="M">{{(i.MediumAffectedArea).toFixed(1)}}</td>
+                                                        <td name="high" ng-show="H">{{(i.HighAffectedArea).toFixed(1)}}</td>
+                                                        <td>{{(i.LowAffectedArea -- i.MediumAffectedArea -- i.HighAffectedArea).toFixed(1)}}</td>
+                                                        <td name="low" ng-show="L">{{(i.LowTreatedArea).toFixed(1)}}</td>
+                                                        <td name="medium" ng-show="M">{{(i.MediumTreatedArea).toFixed(1)}}</td>
+                                                        <td name="high" ng-show="H">{{(i.HighTreatedArea).toFixed(1)}}</td>
+                                                        <td>{{(i.LowTreatedArea -- i.MediumTreatedArea -- i.HighTreatedArea).toFixed(1)}}</td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div ng-show="sed" class="table table-responsive">
+                                    <input type="button" class="btn btn-primary" value="Export to Excel" ng-hide="ete" onclick="ExportToExcel(this, 'District, Block Pest-wise Pest Report')" style="margin-bottom: 10px; float: right" />
+                                    <table style="display: none" id="sedData" class="table table-hover table-striped jambo_table bulk_action">
+                                        <thead>
+                                            <tr class="headings">
+                                                <td style="vertical-align: middle"><b>Serial No.</b></td>
+                                                <td style="vertical-align: middle"><b>District</b></td>
+                                                <td style="vertical-align: middle"><b>Block</b></td>
+                                                <td style="vertical-align: middle" name="low" ng-show="L"><b>Low Affected Area (in HA)</b></td>
+                                                <td style="vertical-align: middle" name="medium" ng-show="M"><b>Medium Affected Area (in HA)</b></td>
+                                                <td style="vertical-align: middle" name="high" ng-show="H"><b>High Affected Area (in HA)</b></td>
+                                                <td style="vertical-align: middle"><b>Total Affected Area (in HA)</b></td>
+                                                <td style="vertical-align: middle" name="low" ng-show="L"><b>Low Treated Area (in HA)</b></td>
+                                                <td style="vertical-align: middle" name="medium" ng-show="M"><b>Medium Treated Area (in HA)</b></td>
+                                                <td style="vertical-align: middle" name="high" ng-show="H"><b>High Treated Area (in HA)</b></td>
+                                                <td style="vertical-align: middle"><b>Total Treated Area (in HA)</b></td>
+                                            </tr>
+                                        </thead>
+                                        <tr ng-repeat="i in pestDetails | orderBy: 'DistrictName'">
+                                            <td style="vertical-align: middle">{{$index + 1}}</td>
+                                            <td style="vertical-align: middle"><b>{{i.DistrictName | capitalize}}</b></td>
+                                            <td style="vertical-align: middle">{{i.BlockName | capitalize}}</td>
+                                            <td style="vertical-align: middle" name="low" ng-show="L">{{(i.LowAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle" name="medium" ng-show="M">{{(i.MediumAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle" name="high" ng-show="H">{{(i.HighAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle">{{(i.LowAffectedArea -- i.MediumAffectedArea -- i.HighAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle" name="low" ng-show="L">{{(i.LowTreatedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle" name="medium" ng-show="M">{{(i.MediumTreatedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle" name="high" ng-show="H">{{(i.HighTreatedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle">{{(i.LowTreatedArea -- i.MediumTreatedArea -- i.HighTreatedArea).toFixed(1)}}</td>
+                                        </tr>
+                                    </table>
+                                    <input type="button" class="btn btn-info" value="Print" ng-click="print($event, 'District, Block Pest-wise Pest Report')" style="margin-bottom: 10px; float: right" />
+                                    <table id="sedPrint" class="table table-hover table-striped jambo_table bulk_action">
+                                        <thead>
+                                            <tr class="headings">
+                                                <td style="vertical-align: middle"><b>Serial No.</b></td>
+                                                <td style="vertical-align: middle"><b>District</b></td>
+                                                <td style="vertical-align: middle"><b>Block-wise Pest Details</b></td>
+                                            </tr>
+                                        </thead>
+                                        <tr ng-repeat="(key, value) in pestDetails | orderBy: 'DistrictName' | groupBy: 'DistrictName'">
+                                            <td style="vertical-align: middle">{{$index + 1}}</td>
+                                            <td style="vertical-align: middle"><b>{{key | capitalize}}</b></td>
+                                            <td>
+                                                <table class="table table-hover table-striped jambo_table bulk_action">
+                                                    <thead>
+                                                        <tr class="headings">
+                                                            <td><b>Serial No.</b></td>
+                                                            <td><b>Block Name</b></td>
+                                                            <td name="low" ng-show="L"><b>Low Affected Area (in HA)</b></td>
+                                                            <td name="medium" ng-show="M"><b>Medium Affected Area (in HA)</b></td>
+                                                            <td name="high" ng-show="H"><b>High Affected Area (in HA)</b></td>
+                                                            <td><b>Total Affected Area (in HA)</b></td>
+                                                            <td name="low" ng-show="L"><b>Low Treated Area (in HA)</b></td>
+                                                            <td name="medium" ng-show="M"><b>Medium Treated Area (in HA)</b></td>
+                                                            <td name="high" ng-show="H"><b>High Treated Area (in HA)</b></td>
+                                                            <td><b>Total Treated Area (in HA)</b></td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tr ng-repeat="i in value | orderBy: 'BlockName'">
+                                                        <td>{{$index + 1}}</td>
+                                                        <td>{{i.BlockName | capitalize}}</td>
+                                                        <td name="low" ng-show="L">{{(i.LowAffectedArea).toFixed(1)}}</td>
+                                                        <td name="medium" ng-show="M">{{(i.MediumAffectedArea).toFixed(1)}}</td>
+                                                        <td name="high" ng-show="H">{{(i.HighAffectedArea).toFixed(1)}}</td>
+                                                        <td>{{(i.LowAffectedArea -- i.MediumAffectedArea -- i.HighAffectedArea).toFixed(1)}}</td>
+                                                        <td name="low" ng-show="L">{{(i.LowTreatedArea).toFixed(1)}}</td>
+                                                        <td name="medium" ng-show="M">{{(i.MediumTreatedArea).toFixed(1)}}</td>
+                                                        <td name="high" ng-show="H">{{(i.HighTreatedArea).toFixed(1)}}</td>
+                                                        <td>{{(i.LowTreatedArea -- i.MediumTreatedArea -- i.HighTreatedArea).toFixed(1)}}</td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div ng-show="sfd" class="table table-responsive">
+                                    <input type="button" class="btn btn-primary" value="Export to Excel" ng-hide="ete" onclick="ExportToExcel(this, 'District, Block-wise Pest Report')" style="margin-bottom: 10px; float: right" />
+                                    <table style="display: none" id="sfdData" class="table table-hover table-striped jambo_table bulk_action">
+                                        <thead>
+                                            <tr class="headings">
+                                                <td style="vertical-align: middle"><b>Serial No.</b></td>
+                                                <td style="vertical-align: middle"><b>District</b></td>
+                                                <td style="vertical-align: middle"><b>Block</b></td>
+                                                <td style="vertical-align: middle"><b>Pest</b></td>
+                                                <td style="vertical-align: middle" name="low" ng-show="L"><b>Low Affected Area (in HA)</b></td>
+                                                <td style="vertical-align: middle" name="medium" ng-show="M"><b>Medium Affected Area (in HA)</b></td>
+                                                <td style="vertical-align: middle" name="high" ng-show="H"><b>High Affected Area (in HA)</b></td>
+                                                <td style="vertical-align: middle"><b>Total Affected Area (in HA)</b></td>
+                                                <td style="vertical-align: middle" name="low" ng-show="L"><b>Low Treated Area (in HA)</b></td>
+                                                <td style="vertical-align: middle" name="medium" ng-show="M"><b>Medium Treated Area (in HA)</b></td>
+                                                <td style="vertical-align: middle" name="high" ng-show="H"><b>High Treated Area (in HA)</b></td>
+                                                <td style="vertical-align: middle"><b>Total Treated Area (in HA)</b></td>
+                                            </tr>
+                                        </thead>
+                                        <tr ng-repeat="i in pestDetails | orderBy: 'DistrictName'">
+                                            <td style="vertical-align: middle">{{$index + 1}}</td>
+                                            <td style="vertical-align: middle"><b>{{i.DistrictName | capitalize}}</b></td>
+                                            <td style="vertical-align: middle">{{i.BlockName | capitalize}}</td>
+                                            <td style="vertical-align: middle">{{i.PestDiseaseName | capitalize}}</td>
+                                            <td style="vertical-align: middle" name="low" ng-show="L">{{(i.LowAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle" name="medium" ng-show="M">{{(i.MediumAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle" name="high" ng-show="H">{{(i.HighAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle">{{(i.LowAffectedArea -- i.MediumAffectedArea -- i.HighAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle" name="low" ng-show="L">{{(i.LowTreatedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle" name="medium" ng-show="M">{{(i.MediumTreatedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle" name="high" ng-show="H">{{(i.HighTreatedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle">{{(i.LowTreatedArea -- i.MediumTreatedArea -- i.HighTreatedArea).toFixed(1)}}</td>
+                                        </tr>
+                                    </table>
+                                    <input type="button" class="btn btn-info" value="Print" ng-click="print($event, 'District, Block-wise Pest Report')" style="margin-bottom: 10px; float: right" />
+                                    <table id="sfdPrint" class="table table-hover table-striped jambo_table bulk_action">
+                                        <thead>
+                                            <tr class="headings">
+                                                <td style="vertical-align: middle"><b>Serial No.</b></td>
+                                                <td style="vertical-align: middle"><b>District</b></td>
+                                                <td style="vertical-align: middle"><b>Block Details</b></td>
+                                            </tr>
+                                        </thead>
+                                        <tr ng-repeat="(key, value) in pestDetails | orderBy: 'DistrictName' | groupBy: 'DistrictName'">
+                                            <td>{{$index + 1}}</td>
+                                            <td><b>{{key | capitalize}}</b></td>
+                                            <td>
+                                                <table class="table table-hover table-striped jambo_table bulk_action">
+                                                    <thead>
+                                                        <tr class="headings">
+                                                            <td><b>Serial No.</b></td>
+                                                            <td><b>Block Name</b></td>
+                                                            <td><b>Pest Details</b></td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tr ng-repeat="(i, j) in value | orderBy: 'BlockName' | groupBy: 'BlockName'">
+                                                        <td>{{$index + 1}}</td>
+                                                        <td>{{i | capitalize}}</td>
+                                                        <td>
+                                                            <table class="table table-hover table-striped jambo_table bulk_action">
+                                                                <thead>
+                                                                    <tr class="headings">
+                                                                        <td><b>Serial No.</b></td>
+                                                                        <td><b>Pest Details</b></td>
+                                                                        <td name="low" ng-show="L"><b>Low Affected Area (in HA)</b></td>
+                                                                        <td name="medium" ng-show="M"><b>Medium Affected Area (in HA)</b></td>
+                                                                        <td name="high" ng-show="H"><b>High Affected Area (in HA)</b></td>
+                                                                        <td><b>Total Affected Area (in HA)</b></td>
+                                                                        <td name="low" ng-show="L"><b>Low Treated Area (in HA)</b></td>
+                                                                        <td name="medium" ng-show="M"><b>Medium Treated Area (in HA)</b></td>
+                                                                        <td name="high" ng-show="H"><b>High Treated Area (in HA)</b></td>
+                                                                        <td><b>Total Treated Area (in HA)</b></td>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tr ng-repeat="k in j | orderBy: 'PestDiseaseName'">
+                                                                    <td>{{$index + 1}}</td>
+                                                                    <td>{{k.PestDiseaseName | capitalize}}</td>
+                                                                    <td name="low" ng-show="L">{{(k.LowAffectedArea).toFixed(1)}}</td>
+                                                                    <td name="medium" ng-show="M">{{(k.MediumAffectedArea).toFixed(1)}}</td>
+                                                                    <td name="high" ng-show="H">{{(k.HighAffectedArea).toFixed(1)}}</td>
+                                                                    <td>{{(k.LowAffectedArea -- k.MediumAffectedArea -- k.HighAffectedArea).toFixed(1)}}</td>
+                                                                    <td name="low" ng-show="L">{{(k.LowTreatedArea).toFixed(1)}}</td>
+                                                                    <td name="medium" ng-show="M">{{(k.MediumTreatedArea).toFixed(1)}}</td>
+                                                                    <td name="high" ng-show="H">{{(k.HighTreatedArea).toFixed(1)}}</td>
+                                                                    <td>{{(k.LowTreatedArea -- k.MediumTreatedArea -- k.HighTreatedArea).toFixed(1)}}</td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function ExportToExcel(tableID, excelName) {
+        $("#" + tableID.nextElementSibling.id).table2excel({
+            exclude: ".totalArea",
+            filename: excelName + ".xls",
+        });
+    }
+</script>

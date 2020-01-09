@@ -1,0 +1,229 @@
+<div class="right_col" role="main" ng-controller="myAAOLTCCtrl" ng-init="month(); getFinancialYear(); getLTCGPs(); getCrops()" style="min-height: 100vh">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>Light Trap Catch details entry</h3>
+            </div>
+            <div class="title_right">
+                <!-- <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search for...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">Go!</button>
+                        </span>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Enter Number of Trapped pests <small>(Select GP, Crop and Pest, season-wise)</small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <!-- <li>
+                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li> -->
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <br />
+                        <form class="form-horizontal" role="form" name="aaoLTCForm" ng-submit="submitAAOLTC(aaoLTCForm.$valid)" autocomplete="off" novalidate>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="col-md-4 col-sm-4 col-xs-12" style="text-align: left">
+                                    <div class="form-group">
+                                        <label style="text-align: left; white-space: nowrap" class="control-label col-md-4 col-sm-4 col-xs-12">Season :</label>
+                                        <div class="col-md-8 col-sm-8 col-xs-12">
+                                            <div class="col-md-6 col-sm-6 col-xs-12" style="padding-top: 7px">
+                                                <input type="radio" name="season" ng-model="rbSeason" value="Kharif" disabled required />
+                                                <label>Kharif</label>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 col-xs-12" style="padding-top: 7px">
+                                                <input type="radio" name="season" ng-model="rbSeason" value="Rabi" disabled required />
+                                                <label>Rabi</label>
+                                            </div>
+                                            <div class="has-error" ng-show="aaoLTCForm.$submitted || aaoLTCForm.season.$touched" style="color:red">
+                                                <span ng-show="aaoLTCForm.season.$error.required">This is a required field</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <label style="text-align: left; padding-top: 10px" class="control-label col-md-5 col-sm-5 col-xs-12">Financial Year :</label>
+                                    <label style="text-align: center; padding-top: 10px" class="control-label col-md-7 col-sm-7 col-xs-12">{{fiscalYear}}</label>
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <label style="text-align: left; padding-top: 8px" class="control-label col-md-4 col-sm-4 col-xs-12">Select GP <span style="color: red">*</span></label>
+                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                            <select class="form-control" name="selectGP" ng-model="ddlGP" ng-options="i.GPCode as i.GPName for i in ltcGPs" required>
+                                                <option value="" disabled>Select GP</option>
+                                            </select>
+                                        </div>
+                                        <div class="has-error" ng-show="aaoLTCForm.$submitted || aaoLTCForm.selectGP.$touched" style="color:red">
+                                            <span ng-show="aaoLTCForm.selectGP.$error.required">This is a required field</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <label style="text-align: left; padding-top: 8px" class="control-label col-md-4 col-sm-4 col-xs-12">Select Crop <span style="color: red">*</span></label>
+                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                            <select class="form-control" name="selectCrop" ng-model="ddlCrop" ng-options="i.CC as i.CN for i in crops" ng-change="getPestDiseases()" required>
+                                                <option value="" disabled>Select Crop</option>
+                                            </select>
+                                        </div>
+                                        <div class="has-error" ng-show="aaoLTCForm.$submitted || aaoLTCForm.selectCrop.$touched" style="color:red">
+                                            <span ng-show="aaoLTCForm.selectCrop.$error.required">This is a required field</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <label style="text-align: left; padding-top: 8px" class="control-label col-md-4 col-sm-4 col-xs-12">Select Pest <span style="color: red">*</span></label>
+                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                            <select class="form-control" name="selectPest" ng-model="ddlPestDisease" ng-options="i.PestDiseaseCode as i.PestDiseaseName for i in pestDiseases" required>
+                                                <option value="" disabled>Select Pest</option>
+                                            </select>
+                                        </div>
+                                        <div class="has-error" ng-show="aaoLTCForm.$submitted || aaoLTCForm.selectPest.$touched" style="color:red">
+                                            <span ng-show="aaoLTCForm.selectPest.$error.required">This is a required field</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <label style="text-align: left; padding-top: 8px" class="control-label col-md-6 col-sm-6 col-xs-12">No. of Pest trapped <span style="color: red">*</span></label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="text" class="form-control" numbers-only name="pestTrappedNo" ng-model="txtPestTrappedNo" minlength="1" maxlength="10" placeholder="Enter No. of Pest trapped" required />
+                                        <div class="has-error" ng-show="aaoLTCForm.$submitted || aaoLTCForm.pestTrappedNo.$touched" style="color:red">
+                                            <span ng-show="aaoLTCForm.pestTrappedNo.$error.required">This is a required field</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="ln_solid"></div>
+                            <div class="col-md-12 col-sm-12 col-xs-12 text-center">
+                                <input type="submit" class="btn btn-success" value="Submit" ng-disabled="aaoLTCForm.$invalid" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Previous Light Trap Catch details</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="col-md-12 col-sm-12 col-xs-12" style="height: 44px">
+                        <div class="col-md-4 col-sm-4 col-xs-12">
+                            <div class="form-group">
+                                <label style="text-align: left; white-space: nowrap; padding-top: 8px" class="control-label col-md-4 col-sm-4 col-xs-12">Select Date : <span style="color: red">*</span></label>
+                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <input type="date" class="form-control" ng-model="dateOfPDE" id="pdeDate" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-12" style="text-align: left">
+                            <div class="form-group">
+                                <label style="text-align: left; padding-top: 8px" class="control-label col-md-4 col-sm-4 col-xs-12">Season : <span style="color: red">*</span></label>
+                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <div class="col-md-6 col-sm-6 col-xs-12" style="padding-top: 7px">
+                                        <input type="radio" name="season" ng-model="rbs" value="K" />
+                                        <label>Kharif</label>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12" style="padding-top: 7px">
+                                        <input type="radio" name="season" ng-model="rbs" value="R" />
+                                        <label>Rabi</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-12">
+                            <label style="text-align: left; padding-top: 10px; white-space: nowrap" class="control-label col-md-4 col-sm-4 col-xs-12">Financial Year : <span style="color: red">*</span></label>
+                            <div class="col-md-8 col-sm-8 col-xs-12">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                    <select class="form-control" ng-model="ddlFY">
+                                        <option value="" disabled>Select Financial Year</option>
+                                        <option value="2019-20">2019-20</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="ln_solid"></div>
+                    <div class="col-md-12 col-sm-12 col-xs-12 text-center">
+                        <input type="button" class="btn btn-success" value="Get Details" ng-click="getLTCDetails()" />
+                    </div>
+                    <div class="clearfix"></div>
+                    <hr />
+                    <div class="row" ng-show="ltcDetails.length > 0">
+                        <div class="form-group" style="text-align: center">
+                            <div class="table table-responsive">
+                                <table class="table table-hover table-striped jambo_table bulk_action">
+                                    <thead>
+                                        <tr class="headings">
+                                            <td><b>Serial No.</b></td>
+                                            <td><b>GP</b></td>
+                                            <td><b>Light Trap Catch details</b></td>
+                                        </tr>
+                                    </thead>
+                                    <tr ng-repeat="(key, value) in ltcDetails | orderBy: 'GPName' | groupBy: 'GPName'">
+                                        <td>{{$index + 1}}</td>
+                                        <td>{{key}}</td>
+                                        <td>
+                                            <table class="table table-hover table-striped jambo_table bulk_action">
+                                                <thead>
+                                                    <tr class="headings">
+                                                        <td><b>Serial No.</b></td>
+                                                        <td><b>Crop</b></td>
+                                                        <td><b>Pest Details</b></td>
+                                                    </tr>
+                                                </thead>
+                                                <tr ng-repeat="(i, j) in value | orderBy: 'CN' | groupBy: 'CN'">
+                                                    <td>{{$index + 1}}</td>
+                                                    <td>{{i | capitalize}}</td>
+                                                    <td>
+                                                        <table class="table table-hover table-striped jambo_table bulk_action">
+                                                            <thead>
+                                                                <tr class="headings">
+                                                                    <td><b>Serial No.</b></td>
+                                                                    <td><b>Pest</b></td>
+                                                                    <td><b>No. of Trapped Pests</b></td>
+                                                                </tr>
+                                                            </thead>
+                                                            <tr ng-repeat="k in j | orderBy: 'PestDiseaseName'">
+                                                                <td>{{$index + 1}}</td>
+                                                                <td>{{k.PestDiseaseName | capitalize}}</td>
+                                                                <td>{{k.PestTrappedNo}}</td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row text-center" ng-show="ltcDetails.length == 0">
+                        <label style="color: darkred; text-align: justify" class="control-label">No light trap catch records found.</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

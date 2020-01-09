@@ -1,0 +1,123 @@
+<div class="right_col" role="main" ng-controller="myJDAPPCDAODetailsEntryCtrl" ng-init="getAllCDAODetails();" style="min-height: 100vh">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>CDAO Details Entry</h3>
+            </div>
+            <div class="title_right">
+                <!-- <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search for...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">Go!</button>
+                        </span>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Enter CDAO details <small>(Enter CDAO Name, Mobile Number, Aadhaar Number)</small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <!-- <li>
+                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li> -->
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="form-group" style="text-align: center" ng-show="cdaoDetails.length > 0">
+                                <div class="table table-responsive">
+                                    <table class="table table-hover table-striped jambo_table bulk_action">
+                                        <thead>
+                                            <tr class="headings">
+                                                <td style="vertical-align: middle"><b>Serial No.</b></td>
+                                                <td style="vertical-align: middle"><b>District Name</b></td>
+                                                <td style="vertical-align: middle"><b>CDAO UserID</b></td>
+                                                <td style="vertical-align: middle"><b>CDAO Name <span style="color: red">*</span></b></td>
+                                                <td style="vertical-align: middle"><b>CDAO Mobile No. <span style="color: red">*</span></b></td>
+                                                <td style="vertical-align: middle"><b>CDAO Aadhaar No.</b></td>
+                                                <td style="vertical-align: middle"><b>Action</b></td>
+                                            </tr>
+                                        </thead>
+                                        <tr ng-repeat="i in cdaoDetails | orderBy: 'DistrictName'">
+                                            <td style="vertical-align: middle">{{$index + 1}}</td>
+                                            <td style="vertical-align: middle"><b>{{i.DistrictName | capitalize}}</b></td>
+                                            <td style="vertical-align: middle">{{i.CDAOUserID}}</td>
+                                            <td ng-show="i.CDAOName != null && i.Status != null" style="vertical-align: middle">{{i.CDAOName}}</td>
+                                            <td ng-show="i.Status == null" style="vertical-align: middle">
+                                                <input type="text" class="form-control" name-only placeholder="Enter Name" ng-model="i.CDAOName" maxlength="50" required />
+                                            </td>
+                                            <td ng-show="i.CDAOMobileNo != null && i.Status != null" style="vertical-align: middle">{{i.CDAOMobileNo}}</td>
+                                            <td ng-show="i.Status == null" style="vertical-align: middle">
+                                                <input type="text" class="form-control" mobile-no-only numbers-only ng-model="i.CDAOMobileNo" placeholder="Enter Mobile No." minlength="10"maxlength="10" required />
+                                            </td>
+                                            <td ng-show="i.CDAOAadhaarNo != null && i.Status != null" style="vertical-align: middle">{{i.CDAOAadhaarNo}}</td>
+                                            <td ng-show="i.Status == null" style="vertical-align: middle">
+                                                <input type="text" class="form-control" numbers-only ng-model="i.CDAOANo" placeholder="Enter Aadhaar No." minlength="12" maxlength="12" />
+                                            </td>
+                                            <td style="vertical-align: middle; white-space: nowrap">
+                                                <input ng-show="i.Status == null" type="button" class="btn btn-primary" value="Submit" ng-click="submitCDAODetails(i.CDAOUserID, i.CDAOName, i.CDAOMobileNo, i.CDAOANo, i.Status)" />
+                                                <input ng-show="i.Status != null" type="button" class="btn btn-warning" value="Modify" data-toggle="modal" data-target="#modifyModal" id="btnModifyModal" ng-click="getData(i)" />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="modifyModal" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" id="closeModifyModal" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Modify CDAO Details</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form class="form-horizontal" name="frmCDAO" role="form" autocomplete="off" novalidate>
+                                            <div class="form-group">
+                                                <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">District Name</label>
+                                                <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">{{dn | capitalize}}</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">CDAO User ID</label>
+                                                <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">{{cuid}}</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">CDAO Name <span style="color: red">*</span></label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input type="text" class="form-control" name="cname" name-only placeholder="Enter Name" ng-model="cdaoName" maxlength="50" required />
+                                                    <span style="color: red" ng-show="frmCDAO.cname.$touched && frmCDAO.cname.$invalid && frmCDAO.cname.$error.required">This is a required field.</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">CDAO Mobile No. <span style="color: red">*</span></label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input type="text" class="form-control" name="cmobno" mobile-no-only numbers-only ng-model="cdaoMobileNo" placeholder="Enter Mobile No." maxlength="10" required />
+                                                    <span style="color: red" ng-show="frmCDAO.cmobno.$touched && frmCDAO.cmobno.$invalid && frmCDAO.cmobno.$error.required">This is a required field.</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label style="text-align: left" class="control-label col-md-6 col-sm-6 col-xs-12">CDAO Aadhaar No.</label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input type="text" class="form-control" numbers-only ng-model="cdaoANo" placeholder="Enter Aadhaar No." maxlength="12" />
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" ng-disabled="frmCDAO.$invalid || frmCDAO.$pristine" ng-click="submitCDAODetails(cuid, cdaoName, cdaoMobileNo, cdaoANo, status); frmCDAO.$setPristine()">Update</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="frmCDAO.$setPristine()">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

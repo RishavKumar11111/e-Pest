@@ -1,0 +1,172 @@
+<div class="right_col" role="main" ng-controller="myAAODECtrl" ng-init="getBlocks(); getRegisteredAAOs()" style="min-height: 100vh">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>AAO Details Entry</h3>
+            </div>
+            <div class="title_right">
+                <!-- <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search for...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">Go!</button>
+                        </span>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Select Block(s) under your District <small></small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li>
+                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <br />
+                        <div class="form-group">
+                            <div class="col-md-3 col-sm-3 col-xs-12" ng-repeat="i in blocks">
+                                <input style="margin: 5px" type="checkbox" ng-model="i.selected" ng-change="getValue()" ng-true-value="true" ng-false-value="false" />
+                                <label style="padding: 0 25px 0 0; font-weight: normal" class="control-label">{{i.BlockName | capitalize}}</label>
+                            </div>
+                            <div ng-show="blocks.length == 0">
+                                <label style="color: darkred; text-align: justify" class="control-label">All Blocks are occupied.</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-xs-4 col-xs-12">
+                <div class="row">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>AAO Registration</h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <form class="form-horizontal" role="form" name="aaoForm" ng-submit="registerAAO(aaoForm.$valid)" autocomplete="off" novalidate>
+                                <div ng-show="populateBlocks.length > 0">
+                                    <div class="row">
+                                        <div class="form-group" style="text-align: center">
+                                            <div class="table table-responsive">
+                                                <table class="table table-hover table-striped jambo_table bulk_action">
+                                                    <thead>
+                                                        <tr class="headings">
+                                                            <td><b>Serial No.</b></td>
+                                                            <td><b>Block Name</b></td>
+                                                            <td><b>Action</b></td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tr ng-repeat="i in populateBlocks">
+                                                        <td>{{$index + 1}}</td>
+                                                        <td>{{i.BlockName | capitalize}}</td>
+                                                        <td>
+                                                            <button type="button" style="margin-bottom: 0px" class="btn btn-xs btn-danger" ng-click="removeData($index, i.BlockCode)">Delete <i class="fa fa-trash"></i></button>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-addon" style="padding-right: 6px"><i class="glyphicon glyphicon-user"></i><span style="color: red">*</span></span>
+                                            <input type="text" class="form-control" name-only name="aaoName" ng-model="txtAAOName" minlength="1" maxlength="50" placeholder="Enter AAO's Name" required />
+                                        </div>
+                                        <div class="has-error" ng-show="aaoForm.$submitted || aaoForm.aaoName.$touched" style="color:red">
+                                            <span ng-show="aaoForm.aaoName.$error.required">This is a required field</span>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-addon" style="padding-right: 6px"><i class="glyphicon glyphicon-phone"></i><span style="color: red">*</span></span>
+                                            <input type="text" class="form-control" numbers-only mobile-no-only name="aaoMobileNo" ng-model="txtAAOMobileNo" placeholder="Enter AAO's Mobile No." minlength="10" maxlength="10" required />
+                                        </div>
+                                        <div class="has-error" ng-show="aaoForm.$submitted || aaoForm.aaoMobileNo.$touched" style="color:red">
+                                            <span ng-show="aaoForm.aaoMobileNo.$error.required">This is a required field</span>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                            <input type="text" class="form-control" numbers-only name="aaoAadhaarNo" ng-model="txtAAOAadhaarNo" placeholder="Enter AAO's Aadhaar No." minlength="12" maxlength="12">
+                                        </div>
+                                    </div>
+                                    <div class="ln_solid"></div>
+                                    <input type="submit" class="btn btn-success" value="Register" ng-disabled="aaoForm.$invalid" />
+                                </div>
+                                <div class="row" ng-show="populateBlocks.length == 0">
+                                    <label style="color: darkred; text-align: justify" class="control-label">Select Block(s) to assign AAO(s) to their respective Blocks.</label>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8 col-xs-8 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Registered AAO(s)</h2>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="form-group">
+                            <div class="row" ng-show="registeredAAOs.length > 0">
+                                <div class="form-group" style="text-align: center">
+                                    <div class="table table-responsive">
+                                        <table class="table table-hover table-striped jambo_table bulk_action">
+                                            <thead>
+                                                <tr class="headings">
+                                                    <td><b>Serial No.</b></td>
+                                                    <td><b>AAO Name</b></td>
+                                                    <td><b>AAO Mobile No.</b></td>
+                                                    <td><b>AAO Details</b></td>
+                                                </tr>
+                                            </thead>
+                                            <tr ng-repeat="(key, value) in registeredAAOs | groupBy: 'AAOMobileNo'">
+                                                <td style="vertical-align: middle">{{$index + 1}}</td>
+                                                <td style="vertical-align: middle">{{value[0].AAOName}}</td>
+                                                <td style="vertical-align: middle">{{key}}</td>
+                                                <td>
+                                                    <table class="table table-hover table-striped jambo_table bulk_action">
+                                                        <thead>
+                                                            <tr class="headings">
+                                                                <td><b>Serial No.</b></td>
+                                                                <td><b>AAO Code</b></td>
+                                                                <td><b>Block Name</b></td>
+                                                                <td><b>Action</b></td>
+                                                            </tr>
+                                                        </thead>
+                                                        <tr ng-repeat="i in value">
+                                                            <td>{{$index + 1}}</td>
+                                                            <td>{{i.AAOCode}}</td>
+                                                            <td>{{i.BlockName | capitalize}}</td>
+                                                            <td>
+                                                                <button type="button" style="margin-bottom: 0px" class="btn btn-xs btn-danger" ng-click="removeAAO(i.AAOCode, i.BlockCode, i.BlockName)">Remove <span class="glyphicon glyphicon-trash"></span></button>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" ng-show="registeredAAOs.length == 0">
+                                <label style="color: darkred; text-align: justify" class="control-label">None of the AAOs are allotted to their Blocks.</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

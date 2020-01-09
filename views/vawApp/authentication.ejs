@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>VAWAppAuthentication</title>
+    <link rel="icon" href="../../gigw/nielit.gov.in/sites/all/themes/berry/images/favicon.ico" type="image/x-icon" />
+	<link rel="stylesheet" type="text/css" href="../../app_login/vendor/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="../../app_login/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="../../app_login/fonts/iconic/css/material-design-iconic-font.min.css">
+	<link rel="stylesheet" type="text/css" href="../../app_login/vendor/animate/animate.css">
+	<link rel="stylesheet" type="text/css" href="../../app_login/vendor/css-hamburgers/hamburgers.min.css">
+	<link rel="stylesheet" type="text/css" href="../../app_login/vendor/animsition/css/animsition.min.css">
+	<link rel="stylesheet" type="text/css" href="../../app_login/vendor/select2/select2.min.css">
+	<link rel="stylesheet" type="text/css" href="../../app_login/vendor/daterangepicker/daterangepicker.css">
+	<link rel="stylesheet" type="text/css" href="../../app_login/css/util.css">
+    <link rel="stylesheet" type="text/css" href="../../app_login/css/main.css">
+    <link href="../../public/stylesheets/loader.css" rel="stylesheet">
+    <link rel="manifest" href="../../public/manifestVAW.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="VAWAppAuthentication">
+    <link rel="apple-touch-icon" href="../../public/images/icons/apple-icon-57x57.png" sizes="57x57">
+    <link rel="apple-touch-icon" href="../../public/images/icons/apple-icon-60x60.png" sizes="60x60">
+    <link rel="apple-touch-icon" href="../../public/images/icons/apple-icon-72x72.png" sizes="72x72">
+    <link rel="apple-touch-icon" href="../../public/images/icons/apple-icon-76x76.png" sizes="76x76">
+    <link rel="apple-touch-icon" href="../../public/images/icons/apple-icon-114x114.png" sizes="114x114">
+    <link rel="apple-touch-icon" href="../../public/images/icons/apple-icon-120x120.png" sizes="120x120">
+    <link rel="apple-touch-icon" href="../../public/images/icons/apple-icon-144x144.png" sizes="144x144">
+    <link rel="apple-touch-icon" href="../../public/images/icons/apple-icon-152x152.png" sizes="152x152">
+    <link rel="apple-touch-icon" href="../../public/images/icons/apple-icon-180x180.png" sizes="180x180">
+    <meta name="msapplication-TileImage" content="../../public/images/icons/app-icon-48x48.png">
+    <meta name="msapplication-TileImage" content="../../public/images/icons/app-icon-96x96.png">
+    <meta name="msapplication-TileImage" content="../../public/images/icons/app-icon-144x144.png">
+    <meta name="msapplication-TileImage" content="../../public/images/icons/app-icon-192x192.png">
+    <meta name="msapplication-TileImage" content="../../public/images/icons/app-icon-256x256.png">
+    <meta name="msapplication-TileImage" content="../../public/images/icons/app-icon-384x384.png">
+    <meta name="msapplication-TileImage" content="../../public/images/icons/app-icon-512x512.png">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="theme-color" content="#ffffff">
+</head>
+<body>
+    <div id="loader" class="lds-eclipse" style="background: white; z-index: 99999; position: fixed"><div style="margin: 50% 22%"></div></div>
+    <div class="limiter">
+		<div class="container-login100" style="background: #4ea43b">
+			<div class="wrap-login100">
+                <span class="login100-form-title p-b-26">
+                    <a href="odiahome"><img alt="e-Pest Logo" src="../gigw/nielit.gov.in/sites/all/themes/berry/images/e-PestLogo.png" style="width: 75px; height: 75px" /></a>
+                    <!-- <i class="zmdi zmdi-font"></i> -->
+                </span>
+                <span class="login100-form-title p-b-48">e-Pest</span>
+                <div class="wrap-input100 validate-input" data-validate = "Enter Username">
+                    <span onclick="alert('If the displayed VAW Code does not match with yours, then please clear the browsing data of Google Chrome. The steps for the same is given in the website (www.epestodisha.nic.in)')" style="color: #999999; display: flex; align-items: center; position: absolute; height: 100%; right: 0; padding-right: 5px; color: red"><i class="zmdi zmdi-pin-help"></i></span>
+                    <input class="input100" type="text" id="un" name="username" maxlength="30" autocomplete="off" required>
+                    <span id="spanUN" class="focus-input100" data-placeholder="Username"></span>
+                </div>
+                <div class="wrap-input100 validate-input" data-validate="Enter Pin">
+                    <span class="btn-show-pass"><i class="zmdi zmdi-eye"></i></span>
+                    <input class="input100" type="password" id="pin" name="pin" maxlength="30" autocomplete="off" required>
+                    <span class="focus-input100" data-placeholder="Pin"></span>
+                </div>
+                <div class="container-login100-form-btn">
+                    <div class="wrap-login100-form-btn">
+                        <div class="login100-form-bgbtn"></div>
+                        <button class="login100-form-btn" onclick="authenticate()">Enter</button>
+                    </div>
+                </div>
+                <div class="text-center p-t-115">
+                    <span class="txt1">Forgot</span>
+                    <a class="txt2" href="#" onclick="alert('Please contact Administrator (JDA(PP)).')">Username / Pin</a>
+                </div>
+			</div>
+		</div>
+	</div>
+    <script src="../../app_login/vendor/jquery/jquery.min.js"></script>
+	<script src="../../app_login/vendor/animsition/js/animsition.min.js"></script>
+	<script src="../../app_login/vendor/bootstrap/js/popper.js"></script>
+	<script src="../../app_login/vendor/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../../app_login/vendor/select2/select2.min.js"></script>
+	<script src="../../app_login/vendor/daterangepicker/moment.min.js"></script>
+	<script src="../../app_login/vendor/daterangepicker/daterangepicker.js"></script>
+	<script src="../../app_login/vendor/countdowntime/countdowntime.js"></script>
+    <script src="../../app_login/js/main.js"></script>
+    <script type="text/javascript" src="../../public/javascripts/sha256.js"></script>
+    <script src="../../public/javascripts/promise.js"></script>
+    <script src="../../public/javascripts/fetch.js"></script>
+    <script src="../../public/javascripts/idb.js"></script>
+    <script src="../../public/javascripts/vawUtility.js"></script>
+    <script src="../../public/javascripts/appsw.js"></script>
+    <script>
+        history.pushState(null, document.title, location.href);
+        window.addEventListener('popstate', function (event) {
+            history.pushState(null, document.title, location.href);
+        });
+    </script>
+    <script>
+        window.onload = function() {
+            document.getElementById("loader").style.display = 'block';
+            setTimeout(function() {
+                if(!window.location.hash) {
+                    window.location = window.location + '#loaded';
+                    window.location.reload();
+                }
+                else {
+                    if ('indexedDB' in window) {
+                        readAllData('user-authentication').then(function success(response) {
+                            if (response.length == 0) {
+                                var userAuthenticationDetails = {
+                                    Username: '',
+                                    Pin: sha256('123')
+                                };
+                                writeData('user-authentication', userAuthenticationDetails);
+                            }
+                            else {
+                                if (response[0].Username != '') {
+                                    document.getElementById('un').disabled = true;
+                                    document.getElementById('spanUN').setAttribute('data-placeholder', '');
+                                    document.getElementById('un').value = response[0].Username;
+                                }
+                            }
+                        }, function error(response) {
+                            console.log(response.status);
+                        }).catch(function err(error) {
+                            console.log('An error occurred...', error);
+                        });
+                    }
+                    else {
+                        alert('Indexed DB is not supported by your browser. Please use Google Chrome for better experience.');
+                    }
+                }
+            }, 3000);
+            if (window.location.hash) {
+                document.getElementById("loader").style.display = 'none';
+            }
+        };
+        var authenticate = function() {
+            if (document.getElementById('un').value != undefined && document.getElementById('un').value != null && document.getElementById('un').value != '' && document.getElementById('pin').value != undefined && document.getElementById('pin').value != null && document.getElementById('pin').value != '') {
+                var usernameRegex = /^VAW_\d{1,5}$/;
+                var pinRegex = /^123$/;
+                if (usernameRegex.test(document.getElementById('un').value) && pinRegex.test(document.getElementById('pin').value)) {
+                    if ('indexedDB' in window) {
+                        readAllData('user-authentication').then(function success(response) {
+                            if (response.length > 0) {
+                                if (response[0].Username != '' && document.getElementById('un').value == response[0].Username && response[0].Pin == sha256(document.getElementById('pin').value)) {
+                                    if (navigator.onLine) {
+                                        location.href = 'http://localhost:3000/vawApp#!/synchronize';
+                                    }
+                                    else {
+                                        location.href = 'http://localhost:3000/vawApp#!/home';
+                                    }
+                                }
+                                else if (response[0].Username == '' && response[0].Pin == sha256(document.getElementById('pin').value)) {
+                                    var uad = {
+                                        Username: document.getElementById('un').value,
+                                        Pin: sha256('123')
+                                    };
+                                    writeData('user-authentication', uad);
+                                    if (navigator.onLine) {
+                                        location.href = 'http://localhost:3000/vawApp#!/synchronize';
+                                    }
+                                    else {
+                                        location.href = 'http://localhost:3000/vawApp#!/home';
+                                    }
+                                }
+                                else {
+                                    alert('You have entered wrong Pin.');
+                                    document.getElementById('pin').value = null;
+                                }
+                            }
+                        }, function error(response) {
+                            console.log(response.status);
+                        }).catch(function err(error) {
+                            console.log('An error occurred...', error);
+                        });
+                    }
+                    else {
+                        alert('Indexed DB is not supported by your browser. Please use Google Chrome for better experience.');
+                    }
+                }
+                else {
+                    alert('You have entered wrong Pin.');
+                    document.getElementById('pin').value = null;
+                }
+            }
+            else {
+                alert('Please enter Username and Pin.');
+            }
+        };
+    </script>
+</body>
+</html>

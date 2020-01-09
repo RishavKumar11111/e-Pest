@@ -1,0 +1,81 @@
+<div class="right_col" role="main" ng-controller="myAAODashboardCtrl" ng-init="getDashboardDetails();" style="min-height: 100vh">
+    <div class="">
+        <div class="row top_tiles">
+            <a href="#!vawDetails">
+                <div class="animated flipInY col-md-2 col-sm-2 col-xs-12">
+                    <div class="tile-stats" style="background-color: #db4437; height: 125px; padding: 10px">
+                        <h3 style="color: white">Total VAW registered</h3>
+                        <div class="count" style="color: white; padding-top: -10px">
+                            <span>{{getAAODD[0][0].VAWRegistered == null ? 0 : getAAODD[0][0].VAWRegistered}} no.</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <div class="animated flipInY col-md-2 col-sm-2 col-xs-12">
+                <div class="tile-stats" style="background-color: #179928; height: 125px; padding: 10px">
+                    <h3 style="color: white; font-size: 21px">Total affected area</h3>
+                    <div class="count" style="color: white; padding-top: -10px">
+                        <span>{{getAAODD[1][0].TotalAffectedArea == null ? 0 : getAAODD[1][0].TotalAffectedArea}} ha</span>
+                    </div>
+                </div>
+            </div>
+            <div class="animated flipInY col-md-2 col-sm-3 col-xs-12">
+                <div class="tile-stats" style="background-color:#4285f4; height: 125px; padding: 10px">
+                    <h3 style="color: white">Total treated area</h3>
+                    <div class="count" style="color: white; padding-top: -10px">
+                        <span>{{getAAODD[1][0].TotalTreatedArea == null ? 0 : getAAODD[1][0].TotalTreatedArea}} ha</span>
+                    </div>
+                </div>
+            </div>
+            <div class="animated flipInY col-md-2 col-sm-2 col-xs-12">
+                <div class="tile-stats" style="background-color: #db4437; height: 125px; padding: 10px">
+                    <h3 style="color: white; font-size: 19px">Area inspected by VAWs</h3>
+                    <div class="count" style="color: white; padding-top: -11px">
+                        <span>{{getAAODD[2][0].TotalAreaAffected == null ? 0 : getAAODD[2][0].TotalAreaAffected}} ha</span>
+                    </div>
+                </div>
+            </div>
+            <div class="animated flipInY col-md-2 col-sm-2 col-xs-12">
+                <div class="tile-stats" style="background-color:#f4b400; height: 125px; padding: 10px">
+                    <h3 style="color: white">Total Light Trap catch</h3>
+                    <div class="count" style="color: white; padding-top: -10px">
+                        <span>{{getAAODD[3][0].TotalLightTrap == null ? 0 : getAAODD[3][0].TotalLightTrap}} no.</span>
+                    </div>
+                </div>
+            </div>
+            <a href="#!vawGPTargets">
+                <div class="animated flipInY col-md-2 col-sm-2 col-xs-12">
+                    <div class="tile-stats" style="background-color: #179928;; height: 125px; padding: 10px">
+                        <h3 style="color: white">Total GP Target</h3>
+                        <div class="count" style="color: white; padding-top: -10px">
+                            <span>{{getAAODD[4][0].VAWGPTarget == null ? 0 : getAAODD[4][0].VAWGPTarget}} no.</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h3>Area affected & Area treated</h3>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="col-md-3 col-sm-3 col-xs-12"></div>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <script type="text/javascript" src="../../public/javascripts/chart.min.js"></script>
+                                    <canvas id="myChart"></canvas>
+                                </div>
+                                <div class="col-md-3 col-sm-3 col-xs-12"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="../../public/javascripts/dashboardGraph.js"></script>

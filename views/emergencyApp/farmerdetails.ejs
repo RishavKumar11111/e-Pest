@@ -1,0 +1,68 @@
+<form ng-controller="myEmergencyAppHomeCtrl" class="form-horizontal" role="form" name="emergencyAppForm" autocomplete="off" novalidate>
+    <div class="row container">
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Farmer ID <span style="color: red">*</span></label>
+            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                    <input type="text" class="form-control" alpha-numeric capitalize name="farmerID" ng-model="txtFarmerID" placeholder="Enter Farmer ID" maxlength="10" ng-disabled="isDisabled" required />
+                </div>
+                <div class="has-error" ng-show="emergencyAppForm.$submitted || emergencyAppForm.farmerID.$touched" style="color:red">
+                    <span ng-show="emergencyAppForm.farmerID.$error.required">This is a required field</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Aadhaar No. <span style="color: red">*</span></label>
+            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                    <input type="text" class="form-control" numbers-only name="aadhaarNo" ng-model="txtAadhaarNo" placeholder="Enter Aadhaar No." maxlength="12" ng-disabled="isDisabled" required />
+                </div>
+                <div class="has-error" ng-show="emergencyAppForm.$submitted || emergencyAppForm.aadhaarNo.$touched" style="color:red">
+                    <span ng-show="emergencyAppForm.aadhaarNo.$error.required">This is a required field</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Voter ID No. <span style="color: red">*</span></label>
+            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                    <input type="text" class="form-control" alpha-numeric capitalize name="voterIDNo" ng-model="txtVoterIDNo" placeholder="Enter Voter ID No." maxlength="30" ng-disabled="isDisabled" required />
+                </div>
+                <div class="has-error" ng-show="emergencyAppForm.$submitted || emergencyAppForm.voterIDNo.$touched" style="color:red">
+                    <span ng-show="emergencyAppForm.voterIDNo.$error.required">This is a required field</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Mobile No. <span style="color: red">*</span></label>
+            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-phone"></i></span>
+                    <input type="text" class="form-control" numbers-only mobile-no-only name="mobileNo" ng-model="txtMobileNo" placeholder="Enter Mobile No." minlength="10" maxlength="10" ng-disabled="isDisabled" required />
+                </div>
+                <div class="has-error" ng-show="emergencyAppForm.$submitted || emergencyAppForm.mobileNo.$touched" style="color:red">
+                    <span ng-show="emergencyAppForm.mobileNo.$error.required">This is a required field</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group" ng-show="otp">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">OTP <span style="color: red">*</span></label>
+            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-phone"></i></span>
+                    <input type="text" class="form-control" numbers-only ng-model="txtOTP" placeholder="Enter OTP" minlength="6" maxlength="6" />
+                </div>
+            </div>
+        </div>
+        <div class="form-group" style="margin: 30px" ng-show="fd">
+            <button type="button" class="btn btn-default" style="background: #2a5d1f; color: #ffffff" ng-disabled="emergencyAppForm.$invalid" ng-click="checkfarmerIDs(emergencyAppForm.$valid)">Proceed</button>
+        </div>
+        <div class="form-group" style="margin: 30px" ng-show="otp">
+            <button type="button" class="btn btn-success" ng-click="verifyOTP()">Verify OTP</button>
+            <button type="button" class="btn btn-warning" ng-click="sendOTP()">Resend OTP</button>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,189 @@
+<div class="form-horizontal" ng-controller="myAAOAppDashboardCtrl" ng-init="checkUserDetails(); getRefNoDetails(); getCropCategories(); getCropStages()">
+    <div id="lblCD" class="row container" ng-show="lblCropDetails">
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Reference No.</label>
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-7 col-md-7 col-sm-7 col-xs-7">{{referenceNo}}</label>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">GP</label>
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-7 col-md-7 col-sm-7 col-xs-7">{{refNoDetails.GPName | capitalize}}</label>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Village</label>
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-7 col-md-7 col-sm-7 col-xs-7">{{refNoDetails.VillageName | capitalize}}</label>
+        </div>
+        <div style="padding: 10px; background: #ffffff; margin-bottom: 10px; border-radius: 5px; box-shadow: 3px 3px 5px 1px #aaaaaa; -webkit-box-shadow: 3px 3px 5px 1px #aaaaaa; -moz-box-shadow: 3px 3px 5px 1px #aaaaaa">
+            <div class="form-group">
+                <label style="text-align: left; padding-top: 8px" class="control-label col-lg-12 col-md-12 col-sm-12 col-xs-12">Farmer ID & Aadhaar No.</label>
+                <div class="table table-responsive col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <table class="table table-hover table-striped jambo_table bulk_action">
+                        <thead>
+                            <tr class="headings">
+                                <td><b>Serial No.</b></td>
+                                <td><b>Farmer ID</b></td>
+                                <td><b>Aadhaar No.</b></td>
+                            </tr>
+                        </thead>
+                        <tr ng-repeat="i in faArray">
+                            <td>{{$index + 1}}</td>
+                            <td>{{i.FarmerID == null ? 'NA' : i.FarmerID}}</td>
+                            <td>{{i.AadhaarNo == null ? 'NA' : '********' + i.AadhaarNo.substring(8, 12)}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Mobile No.</label>
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-7 col-md-7 col-sm-7 col-xs-7">{{refNoDetails.MobileNo}}</label>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Season</label>
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-7 col-md-7 col-sm-7 col-xs-7">{{refNoDetails.Season}}</label>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Crop Category</label>
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-7 col-md-7 col-sm-7 col-xs-7">{{refNoDetails.CategoryName}}</label>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Crop</label>
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-7 col-md-7 col-sm-7 col-xs-7">{{refNoDetails.CropName}}</label>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Crop Stage</label>
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-7 col-md-7 col-sm-7 col-xs-7">{{refNoDetails.CropStageName}}</label>
+        </div>
+        <div class="form-group">
+            <button type="button" class="btn btn-default" style="background: #f4b400; color: #ffffff" ng-click="modifyCropDetails()">Modify <span class="glyphicon glyphicon-edit"></span></button>
+            <button type="button" class="btn btn-default" style="background: #2a5d1f; color: #ffffff" ng-click="proceedToPhoto()">Proceed <span class="glyphicon glyphicon-circle-arrow-right"></span></button>
+        </div>
+    </div>
+    <div id="txtCD" class="row container" ng-show="txtCropDetails">
+        <form ng-controller="myAAOAppDashboardCtrl" class="form-horizontal" role="form" name="aaoAppCDForm" ng-submit="updateCropDetails(aaoAppCDForm.$valid)" autocomplete="off" novalidate>
+            <div class="row container">
+                <div class="form-group">
+                    <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Reference No.</label>
+                    <label style="padding-top: 8px" class="control-label col-lg-7 col-md-7 col-sm-7 col-xs-7">{{referenceNo}}</label>
+                </div>
+                <div style="padding: 10px; background: #ffffff; margin-bottom: 10px; border-radius: 5px; box-shadow: 3px 3px 5px 1px #aaaaaa; -webkit-box-shadow: 3px 3px 5px 1px #aaaaaa; -moz-box-shadow: 3px 3px 5px 1px #aaaaaa">
+                    <div class="table table-responsive" style="border: none">
+                        <table class="table">
+                            <tr>
+                                <td style="padding-left: 0; vertical-align: middle; text-align: left; border: none"><b>Farmer ID</b></td>
+                                <td style="padding-right: 0; border: none">
+                                    <div class="input-group">
+                                        <span class="input-group-addon" style="padding: 6px 1px"><b>{{districtName}}/</b></span>
+                                        <input type="text" class="form-control" numbers-only ng-model="txtFarmerID" placeholder="Enter Farmer ID" maxlength="10" />
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="text-align: left; border: none; line-height: 0; padding: 0">and / or</td>
+                            </tr>
+                            <tr>
+                                <td style="padding-left: 0; vertical-align: middle; text-align: left; border: none"><b>Aadhaar No.</b></td>
+                                <td style="padding-right: 0; border: none">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                        <input type="text" class="form-control" numbers-only ng-model="txtAadhaarNo" placeholder="Enter Aadhaar No." maxlength="12" />
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10" style="text-align: left">
+                            <label style="padding-top: 8px" class="control-label">Add Farmer ID & / or Aadhaar No.</label><br />
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="padding-top: 6px">
+                            <button type="button" class="btn btn-xs btn-primary glyphicon glyphicon-plus" ng-click="addFAID()"></button>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-show="faArray.length > 0">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align: center">
+                            <label class="control-label fid-label" ng-repeat="i in faArray" style="width: 254px; height: 54px">
+                                <div class="table table-responsive" style="margin-bottom: 0">
+                                    <table class="table" style="background-color: inherit">
+                                        <tr>
+                                            <td style="padding: 0px; text-align: left"><b>Farmer ID :- {{i.FarmerID == null ? 'NA' : i.FarmerID}}</b></td>
+                                            <td style="padding: 0px; vertical-align: middle" rowspan="2">
+                                                <button type="button" class="btn btn-sm glyphicon glyphicon-remove" ng-click="removeFarmerID($index)" style="margin-top: -5px; color: red"></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 0px; text-align: left"><b>Aadhaar No :- {{i.AadhaarNo == null ? 'NA' : '********' + i.AadhaarNo.substring(8, 12)}}</b></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <!-- {{$last ? '' : ','}} -->
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-show="faArray.length == 0">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align: justify">
+                            <label class="control-label text-danger">Farmer ID or Aadhaar No. is not entered.</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Mobile No. <span style="color: red">*</span></label>
+                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                        <div class="input-group">
+                            <span class="input-group-addon" style="padding: 6px 5px"><b>+91-</b></span>
+                            <input type="text" name="mobileNo" class="form-control" mobile-no-only numbers-only ng-model="txtMobileNo" placeholder="Enter Mobile No." maxlength="10" required />
+                        </div>
+                        <div class="has-error" ng-show="aaoAppCDForm.$submitted || aaoAppCDForm.mobileNo.$touched" style="color:red">
+                            <span ng-show="aaoAppCDForm.mobileNo.$error.required">This is a required field</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Crop Category <span style="color: red">*</span></label>
+                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                            <select class="form-control" name="cropCategory" ng-model="ddlCaCo" ng-options="i.CategoryCode as i.CategoryName for i in cropCategories" ng-change="getCrops(ddlCaCo)" required>
+                                <option value="" disabled>Select Crop Category</option>
+                            </select>
+                        </div>
+                        <div class="has-error" ng-show="aaoAppCDForm.$submitted || aaoAppCDForm.cropCategory.$touched" style="color:red">
+                            <span ng-show="aaoAppCDForm.cropCategory.$error.required">This is a required field</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Select Crop <span style="color: red">*</span></label>
+                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                            <select class="form-control" name="selectCrop" ng-model="ddlCC" ng-options="i.CropCode as i.CropName for i in crops" ng-change="checkPest(ddlCC)" required>
+                                <option value="" disabled>Select Crop</option>
+                            </select>
+                        </div>
+                        <div class="has-error" ng-show="aaoAppCDForm.$submitted || aaoAppCDForm.selectCrop.$touched" style="color:red">
+                            <span ng-show="aaoAppCDForm.selectCrop.$error.required">This is a required field</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Crop Stage <span style="color: red">*</span></label>
+                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                            <select class="form-control" name="selectCropStage" ng-model="ddlCSC" ng-options="i.CropStageCode as i.CropStageName for i in cropStages" required>
+                                <option value="" disabled>Select Crop Stage</option>
+                            </select>
+                        </div>
+                        <div class="has-error" ng-show="aaoAppCDForm.$submitted || aaoAppCDForm.selectCropStage.$touched" style="color:red">
+                            <span ng-show="aaoAppCDForm.selectCropStage.$error.required">This is a required field</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="button" class="btn btn-default" style="background: #db4437; color: #ffffff" ng-click="cancelCropDetails()">Cancel <span class="glyphicon glyphicon-remove"></span></button>
+                    <button type="submit" class="btn btn-default" style="background: #2a5d1f; color: #ffffff">Update & Proceed <span class="glyphicon glyphicon-circle-arrow-left"></span></button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

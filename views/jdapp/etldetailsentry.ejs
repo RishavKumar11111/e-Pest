@@ -1,0 +1,202 @@
+<div class="right_col" role="main" ng-controller="myJDAPPETLCtrl" style="min-height: 100vh; max-width: 100vw;" ng-init="getCrops()">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>ETL Details Entry</h3>
+            </div>
+            <div class="title_right">
+                <!-- <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search for...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">Go!</button>
+                        </span>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Enter ETL details <small>(Select Crop, Pest, enter Moderate Intensity Population & High Intensity Population)</small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li>
+                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <br />
+                        <form class="form-horizontal" method="POST" role="form" name="etlForm" ng-submit="submitETL(etlForm.$valid)" autocomplete="off" novalidate>
+                            <div class="col-md-3 col-sm-3 col-xs-12"></div>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4 col-sm-4 col-xs-12" style="text-align: left">Crop</label>
+                                        <div class="col-md-8 col-sm-8 col-xs-12">
+                                            <select class="form-control" name="cropCode" ng-model="ddlCC" ng-options="i.CropCode as i.CropName for i in crops" ng-change="getPestDiseases(ddlCC)" required>
+                                                <option value="" disabled>Select Crop</option>
+                                            </select>
+                                        </div>
+                                        <div class="has-error" ng-show="etlForm.$submitted || etlForm.cropCode.$touched" style="color:red; text-align: center">
+                                            <span ng-show="etlForm.cropCode.$error.required">This is a required field</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-xs-12"></div>
+                            <div class="clearfix"></div>
+                            <div class="row">
+                                <div class="col-md-1 col-sm-1 col-xs-12"></div>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: left">Select Pest</label>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: left">ModerateIntensityPopulation</label>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: left">HighIntensityPopulation</label>
+                                <div class="col-md-2 col-sm-2 col-xs-12"></div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="row">
+                                <div class="col-md-1 col-sm-1 col-xs-12"></div>
+                                <div class="col-md-3 col-sm-3 col-xs-12">
+                                    <select class="form-control" ng-model="ddlPest" ng-options="i.PestDiseaseCode as i.PestDiseaseName for i in pests">
+                                        <option value="" disabled>Select Pest</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3 col-sm-3 col-xs-12">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" ng-model="txtModerateIntensityPopulation" placeholder="Enter Moderate Intensity Population" maxlength="100">
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-3 col-xs-12">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" ng-model="txtHighIntensityPopulation" placeholder="Enter High Intensity Population" maxlength="100">
+                                    </div>
+                                </div>
+                                <div class="col-md-1 col-sm-1 col-xs-12">
+                                    <button type="button" class="btn btn-xs btn-primary glyphicon glyphicon-plus" style="margin-top: 5px" ng-click="addPestIntensity()"></button>
+                                </div>
+                                <div class="col-md-1 col-sm-1 col-xs-12"></div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div ng-show="intensityArray.length > 0">
+                                <label class="control-label col-md-1 col-sm-1 col-xs-12"></label>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: center"><u>Pest</u></label>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: center"><u>Moderate Intensity Population</u></label>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: center"><u>High Intensity Population</u></label>
+                                <label class="control-label col-md-2 col-sm-2 col-xs-12"></label>
+                                <div class="clearfix"></div>
+                                <div ng-repeat="i in intensityArray">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-1 col-sm-1 col-xs-12"></label>
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: center">{{i.PestDiseaseDetails.PestDiseaseName}}</label>
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: center">{{i.ModerateIntensityPopulation}}</label>
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: center">{{i.HighIntensityPopulation}}</label>
+                                        <div class="col-md-1 col-sm-1 col-xs-12" style="text-align: left">
+                                            <button type="button" class="btn btn-xs btn-danger glyphicon glyphicon-minus" style="margin-top: 5px" ng-click="removePesticide()"></button>
+                                        </div>
+                                        <label class="control-label col-md-1 col-sm-1 col-xs-12"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="ln_solid"></div>
+                            <div class="form-group col-md-12 col-sm-12 col-xs-12" style="text-align: center">
+                                <input type="submit" class="btn btn-success" value="Submit" ng-disabled="etlForm.$invalid" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Modify ETL Details <small>(Choose Crops & Pests)</small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li>
+                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <br />
+                        <form class="form-horizontal" method="POST" role="form" name="metdForm" ng-submit="updateETLDetails(metdForm.$valid)" autocomplete="off" novalidate>
+                            <div class="col-md-3 col-sm-3 col-xs-12"></div>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4 col-sm-4 col-xs-12" style="text-align: left">Crop</label>
+                                        <div class="col-md-8 col-sm-8 col-xs-12">
+                                            <select class="form-control" name="cropCode" ng-model="ddlCrop" ng-options="i.CropCode as i.CropName for i in crops" ng-change="getPestDiseases(ddlCrop)" required>
+                                                <option value="" disabled>Select Crop</option>
+                                            </select>
+                                        </div>
+                                        <div class="has-error" ng-show="metdForm.$submitted || metdForm.cropCode.$touched" style="color:red; text-align: center">
+                                            <span ng-show="metdForm.cropCode.$error.required">This is a required field</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4 col-sm-4 col-xs-12" style="text-align: left">Pest</label>
+                                        <div class="col-md-8 col-sm-8 col-xs-12">
+                                            <select class="form-control" name="PestDiseaseCode" ng-model="ddlPestD" ng-options="i.PestDiseaseCode as i.PestDiseaseName for i in pests" ng-change="getETLDetails();" required>
+                                                <option value="" disabled>Select Pest</option>
+                                            </select>
+                                        </div>
+                                        <div class="has-error" ng-show="metdForm.$submitted || metdForm.PestDiseaseCode.$touched" style="color:red; text-align: center">
+                                            <span ng-show="metdForm.PestDiseaseCode.$error.required">This is a required field</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-xs-12"></div>
+                            <div class="clearfix"></div>
+                            <hr />
+                            <div class="col-md-12 col-sm-12 col-xs-12" ng-show="etlDetails.length > 0">
+                                <div class="form-group" style="text-align: center">
+                                    <div class="table table-responsive">
+                                        <table class="table table-hover table-striped jambo_table bulk_action">
+                                            <thead>
+                                                <tr class="headings">
+                                                    <th class="column-title text-center" style="white-space: nowrap">Serial No.</th>
+                                                    <th class="column-title text-center">Moderate Intensity Population</th>
+                                                    <th class="column-title text-center">High Intensity Population</th>
+                                                    <th ng-show="slht" class="column-title text-center">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tr ng-repeat="i in etlDetails">
+                                                <td style="vertical-align: middle">{{$index + 1}}</td>
+                                                <td ng-show="slht" style="vertical-align: middle">{{i.ModerateIntensityPopulation}}</td>
+                                                <td ng-show="sthl" style="vertical-align: middle">
+                                                    <input type="text" class="form-control" ng-model="i.ModerateIntensityPopulation" minlength="1" maxlength="300" />
+                                                </td>
+                                                <td ng-show="slht" style="vertical-align: middle">{{i.HighIntensityPopulation}}</td>
+                                                <td ng-show="sthl" style="vertical-align: middle">
+                                                    <input type="text" class="form-control" ng-model="i.HighIntensityPopulation" minlength="1" maxlength="300" />
+                                                </td>
+                                                <td ng-show="slht" style="vertical-align: middle">
+                                                    <input type="button" style="margin-bottom: 0" class="btn btn-xs btn-danger" value="Remove" ng-show="slht" ng-click="removeETL()" />
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-sm-12 col-xs-12" ng-show="etlDetails.length == 0">
+                                <div colspan="5" style="text-align: center; color: red"><b>No Records are found.</b></div>
+                            </div>
+                            <div class="col-md-12 col-sm-12 col-xs-12 text-center" ng-show="etlDetails.length > 0">
+                                <input type="button" class="btn btn-warning" value="Modify ETL Details" ng-show="slht" ng-click="showTextHideLabel()" />
+                                <input type="button" class="btn btn-danger" value="Cancel Modification" ng-show="sthl" ng-click="showLabelHideText()" />
+                                <input type="submit" class="btn btn-primary" value="Update ETL Details" ng-show="sthl"/>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

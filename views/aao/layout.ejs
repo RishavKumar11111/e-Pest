@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="<%= csrfToken %>">
+    <link rel="icon" href="../../gigw/nielit.gov.in/sites/all/themes/berry/images/favicon.ico" type="image/x-icon" />
+    <title>e-Pest Surveillance and Pest Management</title>
+    <!-- Bootstrap -->
+    <link href="../../gentelella/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../../gentelella/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../../gentelella/vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="../../gentelella/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+    <!-- bootstrap-wysiwyg -->
+    <link href="../../gentelella/vendors/google-code-prettify/bin/prettify.min.css" rel="stylesheet">
+    <!-- Select2 -->
+    <link href="../../gentelella/vendors/select2/dist/css/select2.min.css" rel="stylesheet">
+    <!-- Switchery -->
+    <link href="../../gentelella/vendors/switchery/dist/switchery.min.css" rel="stylesheet">
+    <!-- starrr -->
+    <link href="../../gentelella/vendors/starrr/dist/starrr.css" rel="stylesheet">
+    <!-- bootstrap-daterangepicker -->
+    <link href="../../gentelella/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <link href="../../gentelella/build/css/custom.min.css" rel="stylesheet">
+    <link href="../../public/stylesheets/loader.css" rel="stylesheet">
+    <!-- Angular Scripts -->
+    <script src="../../gentelella/vendors/jquery/dist/jquery.min.js"></script>
+    <script src="../../public/javascripts/angular.min.js"></script>
+    <script src="../../public/javascripts/angular-route.min.js"></script>
+    <script src="../../public/javascripts/angular-filter.min.js"></script>
+    <script src="../../public/javascripts/angularjs-dropdown-multiselect.min.js"></script>
+</head>
+<body class="nav-md" ng-app="myAAOApp">
+    <div data-loading></div>
+    <div class="container body">
+        <div class="main_container">
+            <div ng-controller="myAAOCtrl" ng-init="getBlock()">
+                <div class="col-md-3 left_col">
+                    <div class="left_col scroll-view">
+                        <div class="navbar nav_title" style="border: 0;">
+                            <a href="#" class="site_title"><i class="fa fa-leaf"></i> <span>e-Pest</span></a>
+                        </div>
+                        <div class="clearfix"></div>
+                        <!-- menu profile quick info -->
+                        <div class="profile clearfix">
+                            <div class="profile_info">
+                                <span>Welcome</span>
+                                <h2>AAO, {{block | capitalize}}</h2>
+                            </div>
+                        </div>
+                        <!-- /menu profile quick info -->
+                        <br />
+                        <!-- sidebar menu -->
+                        <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                            <div class="menu_section">
+                                <ul class="nav side-menu">
+                                    <li>
+                                        <a href="#!home"><i class="fa fa-home"></i> Home</span></a>
+                                    </li>
+                                    <li>
+                                        <a href="#!"><i class="fa fa-desktop"></i> Dashboard</span></a>
+                                    </li>
+                                    <li>
+                                        <a href="#!pestDetailsEntry"><i class="fa fa-edit"></i> Pest Details Entry</span></a>
+                                    </li>
+                                    <li>
+                                        <a href="#!lightTrapCatch"><i class="fa fa-edit"></i> Light Trap Catch</span></a>
+                                    </li>
+                                    <li>
+                                        <a href="#!vawDetailEntry"><i class="fa fa-edit"></i> VAW Detail Entry</span></a>
+                                    </li>
+                                    <li>
+                                        <a href="#!vawEPestGPTargets"><i class="fa fa-edit"></i> VAW GP Targets (e-Pest)</span></a>
+                                    </li>
+                                    <li>
+                                        <a href="#!removeRecords"><i class="fa fa-trash"></i> Remove Pest Records</span></a>
+                                    </li>
+                                    <li>
+                                        <a href="#!changePassword"><i class="fa fa-edit"></i> Change Password</span></a>
+                                    </li>
+                                    <li>
+                                        <a href=""><i class="fa fa-table"></i> Reports <span class="fa fa-chevron-down"></span></a>
+                                        <ul class="nav child_menu">
+                                            <li><a href="#!viewPestDetails"><i class="fa fa-table"></i> View Pest Details</span></a></li>
+                                            <li><a href="#!lightTrapCatchReport"><i class="fa fa-table"></i> Light Trap Catch Report</span></a></li>
+                                            <li><a href="#!vawInspectionReport"><i class="fa fa-table"></i> VAW Inspection Report</span></a></li>
+                                            <li><a href="#!vawDetails"><i class="fa fa-table"></i> VAW Details</span></a></li>
+                                            <li><a href="#!vawGPTargetDetails"><i class="fa fa-table"></i> VAW GP Target Details</span></a></li>
+                                            <li><a href="#!emergencyCaseReport"><i class="fa fa-table"></i> Emergency Case Report</span></a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- /sidebar menu -->
+                        <!-- /menu footer buttons -->
+                        <div class="sidebar-footer hidden-small">
+                            <a data-toggle="tooltip" data-placement="top" title="FullScreen" style="width: 50%">
+                                <span class="glyphicon glyphicon-fullscreen" aria-hidden="true" style="color: white"></span>
+                            </a>
+                            <a data-toggle="tooltip" data-placement="top" title="Logout" href="#" style="width: 50%">
+                                <span class="glyphicon glyphicon-off" aria-hidden="true" style="color: white"></span>
+                            </a>
+                        </div>
+                        <!-- /menu footer buttons -->
+                    </div>
+                </div>
+                <!-- top navigation -->
+                <div class="top_nav">
+                    <div class="nav_menu">
+                        <nav>
+                            <div class="nav toggle">
+                                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                            </div>
+                            <ul class="nav navbar-nav navbar-right">
+                                <li class="">
+                                    <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        e-Pest
+                                        <span class=" fa fa-angle-down"></span>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-usermenu pull-right">
+                                        <li><a href="http://localhost:3000/aao/logout"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                                    </ul>
+                                </li>
+                                <li role="presentation" class="dropdown">
+                                    <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa fa-envelope-o"></i>
+                                        <span class="badge bg-red">5</span>
+                                    </a>
+                                    <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
+                                        <li>
+                                            <a>
+                                                <span>
+                                                    <span>Alert 1</span>
+                                                    <span class="time">3 mins ago</span>
+                                                </span>
+                                                <span class="message">
+                                                    Message 1
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a>
+                                                <span>
+                                                    <span>Alert 2</span>
+                                                    <span class="time">3 mins ago</span>
+                                                </span>
+                                                <span class="message">
+                                                    Message 2
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a>
+                                                <span>
+                                                    <span>Alert 3</span>
+                                                    <span class="time">3 mins ago</span>
+                                                </span>
+                                                <span class="message">
+                                                    Message 3
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <div class="text-center">
+                                                <a>
+                                                    <strong>See All Alerts</strong>
+                                                    <i class="fa fa-angle-right"></i>
+                                                </a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <!-- /top navigation -->
+            </div>
+            <!-- page content -->
+            <div ng-view></div>
+            <!-- /page content -->
+            <!-- footer content -->
+            <footer>
+                <div class="pull-right">
+                    Designed and developed by <a href="https://www.nic.in/state/Odisha">National Informatics Centre, Odisha</a>
+                </div>
+                <div class="clearfix"></div>
+            </footer>
+            <!-- /footer content -->
+        </div>
+    </div>
+    <script>
+        var app = angular.module('myAAOApp', ['ngRoute', 'angular.filter', 'angularjs-dropdown-multiselect']);
+        app.controller('myAAOCtrl', function($scope, $http) {
+
+            $scope.getBlock = function() {
+                $http.get('http://localhost:3000/aao/getBlock').then(function success(response) {
+                    $scope.block = response.data[0].BlockName;
+                }, function error(response) {
+                    console.log(response.status);
+                }).catch(function err(error) {
+                    console.log('An error occurred...', error);
+                });
+            };
+
+        });
+        app.filter('capitalize', function () {
+            return function (input) {
+                if (input != null) {
+                    input = input.toLowerCase().split(' ');
+                    for (var i = 0; i < input.length; i++) {
+                        input[i] = input[i].charAt(0).toUpperCase() + input[i].substring(1);
+                    }
+                    return input.join(' ');
+                }
+                else {
+                    return false;
+                }
+            }
+            // return function (input) {
+            //     return (!!input) ? input.charAt(0).toUpperCase() + input.substr(1).toLowerCase() : '';
+            // }
+        });
+        app.config(['$routeProvider', function($routeProvider) {
+            $routeProvider
+            .when("/", {
+               templateUrl: "aao/dashboard",
+               controller: 'myAAODashboardCtrl'
+            }).when("/home", {
+                templateUrl: "aao/home",
+                controller: 'myAAOHomeCtrl'
+            }).when("/pestDetailsEntry", {
+                templateUrl: "aao/pestdetailsentry",
+                controller: 'myAAOPDECtrl'
+            }).when("/lightTrapCatch", {
+                templateUrl: "aao/lightTrapCatch",
+                controller: 'myAAOLTCCtrl'
+            }).when("/vawDetailEntry", {
+                templateUrl: "aao/vawDetailEntry",
+                controller: 'myVAWDECtrl'
+            }).when("/vawEPestGPTargets", {
+                templateUrl: "aao/vawEPestGPTargets",
+                controller: 'myVAWEGTCtrl'
+            }).when("/removeRecords", {
+                templateUrl: "aao/removeRecords",
+                controller: 'myAAORRCtrl'
+            }).when("/changePassword", {
+                templateUrl: "aao/changePassword",
+                controller: 'myAAOCPCtrl'
+            }).when("/vawDetails", {
+                templateUrl: "aao/vawDetails",
+                controller: 'myAAOVAWDetailsCtrl'
+            }).when("/vawGPTargetDetails", {
+                templateUrl: "aao/vawGPTargetDetails",
+                controller: 'myAAOVAWDetailsCtrl'
+            }).when("/viewPestDetails", {
+                templateUrl: "aao/viewPestDetails",
+                controller: 'myAAOVPDCtrl'
+            }).when("/lightTrapCatchReport", {
+                templateUrl: "aao/lightTrapCatchReport",
+                controller: 'myAAOLTCRCtrl'
+            }).when("/vawInspectionReport", {
+                templateUrl: "aao/vawInspectionReport",
+                controller: 'myAAOVAWIRCtrl'
+            }).when("/emergencyCaseReport", {
+                templateUrl: "aao/emergencyCaseReport",
+                controller: 'myAAOEMRCRCtrl'
+            }).otherwise({
+                  redirectTo: "/"
+            });
+        }]);
+        app.directive('loading', ['$http', function ($http) {
+            return {
+                restrict: 'A',
+                template: '<div class="lds-eclipse" style="background: white; z-index: 99999; position: fixed"><div style="margin: 15% 43%"></div></div>',
+                // Loading&#8230;
+                link: function (scope, elm, attrs) {
+                    scope.isLoading = function () {
+                        return $http.pendingRequests.length > 0;
+                    };
+                    scope.$watch(scope.isLoading, function (v) {
+                        if (v) {
+                            elm.css('display', 'block');
+                        } else {
+                            elm.css('display', 'none');
+                        }
+                    });
+                }
+            };
+        }]);
+    </script>
+    <script>
+        history.pushState(null, document.title, location.href);
+        window.addEventListener('popstate', function (event) {
+            history.pushState(null, document.title, location.href);
+        });
+    </script>
+    <script src="../../public/controllers/aao/myAAOHomeCtrl.js"></script>
+    <script src="../../public/controllers/aao/myAAODashboardCtrl.js"></script>
+    <script src="../../public/controllers/aao/myAAOPDECtrl.js"></script>
+    <script src="../../public/controllers/aao/myAAOLTCCtrl.js"></script>
+    <script src="../../public/controllers/aao/myVAWDECtrl.js"></script>
+    <script src="../../public/controllers/aao/myVAWEGTCtrl.js"></script>
+    <script src="../../public/controllers/aao/myAAORRCtrl.js"></script>
+    <script src="../../public/controllers/aao/myAAOCPCtrl.js"></script>
+    <script src="../../public/controllers/aao/myAAOVAWDetailsCtrl.js"></script>
+    <script src="../../public/controllers/aao/myAAOVPDCtrl.js"></script>
+    <script src="../../public/controllers/aao/myAAOLTCRCtrl.js"></script>
+    <script src="../../public/controllers/aao/myAAOVAWIRCtrl.js"></script>
+    <script src="../../public/controllers/aao/myAAOEMRCRCtrl.js"></script>
+    <!-- jQuery -->
+    <script src="../../gentelella/vendors/jquery/dist/jquery.min.js"></script>
+    <script src="../../public/javascripts/jquery.table2excel.min.js"></script>
+    <script type="text/javascript">
+        var idleTime = 0;
+        $(document).ready(function () {
+            //Increment the idle time counter every minute.
+            var idleInterval = setInterval(timerIncrement, 60000); // 1 minute
+            //Zero the idle timer on mouse movement.
+            $(this).mousemove(function (e) {
+                idleTime = 0;
+            });
+            $(this).keypress(function (e) {
+                idleTime = 0;
+            });
+            // $(this).click(function (e) {
+            //     idleTime = 0;
+            // });
+            // $(this).scroll(function (e) {
+            //     idleTime = 0;
+            // });
+        });
+        function timerIncrement() {
+            idleTime = idleTime + 1;
+            if (idleTime > 9) { // 10 minutes
+                httpGetAsync('http://localhost:3000/aao/logout', function (res) {
+                    alert('Your session is expired. Please login again to continue.');
+                    window.location.href = 'http://localhost:3000/login';
+                });
+            }
+        };
+        function httpGetAsync(theUrl, callback) {
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.onreadystatechange = function () {
+                if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+                    callback(xmlHttp.response);
+            }
+            xmlHttp.open("GET", theUrl, true);
+            xmlHttp.send(null);
+        };
+    </script>
+    <!-- Bootstrap -->
+    <script src="../../gentelella/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="../../gentelella/vendors/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="../../gentelella/vendors/nprogress/nprogress.js"></script>
+    <!-- bootstrap-progressbar -->
+    <script src="../../gentelella/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+    <!-- jQuery Sparklines -->
+    <script src="../../gentelella/vendors/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+    <!-- Flot -->
+    <script src="../../gentelella/vendors/Flot/jquery.flot.js"></script>
+    <script src="../../gentelella/vendors/Flot/jquery.flot.pie.js"></script>
+    <script src="../../gentelella/vendors/Flot/jquery.flot.time.js"></script>
+    <script src="../../gentelella/vendors/Flot/jquery.flot.stack.js"></script>
+    <script src="../../gentelella/vendors/Flot/jquery.flot.resize.js"></script>
+    <!-- Flot plugins -->
+    <script src="../../gentelella/vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
+    <script src="../../gentelella/vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
+    <script src="../../gentelella/vendors/flot.curvedlines/curvedLines.js"></script>
+    <!-- DateJS -->
+    <script src="../../gentelella/vendors/DateJS/build/date.js"></script>
+    <!-- iCheck -->
+    <script src="../../gentelella/vendors/iCheck/icheck.min.js"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="../../gentelella/vendors/moment/min/moment.min.js"></script>
+    <script src="../../gentelella/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <!-- bootstrap-wysiwyg -->
+    <script src="../../gentelella/vendors/bootstrap-wysiwyg/js/bootstrap-wysiwyg.min.js"></script>
+    <script src="../../gentelella/vendors/jquery.hotkeys/jquery.hotkeys.js"></script>
+    <script src="../../gentelella/vendors/google-code-prettify/src/prettify.js"></script>
+    <!-- jQuery Tags Input -->
+    <script src="../../gentelella/vendors/jquery.tagsinput/src/jquery.tagsinput.js"></script>
+    <!-- Switchery -->
+    <script src="../../gentelella/vendors/switchery/dist/switchery.min.js"></script>
+    <!-- Select2 -->
+    <script src="../../gentelella/vendors/select2/dist/js/select2.full.min.js"></script>
+    <!-- Parsley -->
+    <!-- <script src="../../gentelella/vendors/parsleyjs/dist/parsley.min.js"></script> -->
+    <!-- Autosize -->
+    <script src="../../gentelella/vendors/autosize/dist/autosize.min.js"></script>
+    <!-- jQuery autocomplete -->
+    <script src="../../gentelella/vendors/devbridge-autocomplete/dist/jquery.autocomplete.min.js"></script>
+    <!-- starrr -->
+    <script src="../../gentelella/vendors/starrr/dist/starrr.js"></script>
+    <!-- Custom Theme Scripts -->
+    <script src="../../gentelella/build/js/custom.min.js"></script>
+    <script type="text/javascript" src="../../public/javascripts/sha256.js"></script>
+</body>
+</html>

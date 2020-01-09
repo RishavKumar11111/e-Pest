@@ -1,0 +1,60 @@
+<div ng-controller="myAAOAppDashboardCtrl" class="form-horizontal" ng-init="getCropPhotoDetailsData()">
+    <div class="row container">
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Reference No.</label>
+            <label style="padding-top: 8px" class="control-label col-lg-7 col-md-7 col-sm-7 col-xs-7">{{referenceNo}}</label>
+        </div>
+        <div class="form-group">
+            <label style="text-align: center; padding-top: 8px" class="control-label col-lg-12 col-md-12 col-sm-12 col-xs-12">1st Land Photo</label>
+        </div>
+        <div class="form-group">
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10" style="border: 1px solid black; height: 175px; padding: 0">
+                <img id="flp" style="width: 100%; height: 172.8px" />
+            </div>
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; font-size: 13px" class="control-label col-lg-6 col-md-6 col-sm-6 col-xs-6">Latitude: {{result.FixedLandLatitude}}</label>
+            <label style="text-align: left; font-size: 13px" class="control-label col-lg-6 col-md-6 col-sm-6 col-xs-6">Longitude: {{result.FixedLandLongitude}}</label>
+        </div>
+        <div class="form-group">
+            <label style="text-align: center; padding-top: 8px" class="control-label col-lg-12 col-md-12 col-sm-12 col-xs-12">2nd Land Photo</label>
+        </div>
+        <div class="form-group">
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10" style="border: 1px solid black; height: 175px; padding: 0">
+                <div ng-show="result.RLP1 != null">
+                    <img id="rlp1" style="width: 100%; height: 172.8px" />
+                </div>
+                <div ng-show="result.RLP1 == null" style="padding-top: 75px"><b>NA</b></div>
+            </div>
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; font-size: 13px" class="control-label col-lg-6 col-md-6 col-sm-6 col-xs-6">Latitude: {{result.RandomLandLatitude1 == null ? 'NA' : result.RandomLandLatitude1}}</label>
+            <label style="text-align: left; font-size: 13px" class="control-label col-lg-6 col-md-6 col-sm-6 col-xs-6">Longitude: {{result.RandomLandLongitude1 == null ? 'NA' : result.RandomLandLongitude1}}</label>
+        </div>
+        <div class="form-group">
+            <label style="text-align: center; padding-top: 8px" class="control-label col-lg-12 col-md-12 col-sm-12 col-xs-12">3rd Land Photo</label>
+        </div>
+        <div class="form-group">
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10" style="border: 1px solid black; height: 175px; padding: 0">
+                <div ng-show="result.RLP2 != null">
+                    <img id="rlp2" style="width: 100%; height: 172.8px" />
+                </div>
+                <div ng-show="result.RLP2 == null" style="padding-top: 75px"><b>NA</b></div>
+            </div>
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; font-size: 13px" class="control-label col-lg-6 col-md-6 col-sm-6 col-xs-6">Latitude: {{result.RandomLandLatitude2 == null ? 'NA' : result.RandomLandLatitude2}}</label>
+            <label style="text-align: left; font-size: 13px" class="control-label col-lg-6 col-md-6 col-sm-6 col-xs-6">Longitude: {{result.RandomLandLongitude2 == null ? 'NA' : result.RandomLandLongitude2}}</label>
+        </div>
+        <div class="form-group">
+            <button type="button" class="btn btn-default" style="background: #f4b400; color: #ffffff" ng-click="backToCropDetails()">Back <span class="glyphicon glyphicon-circle-arrow-left"></span></button>
+            <button type="button" class="btn btn-default" style="background: #2a5d1f; color: #ffffff" ng-click="proceedToPestDetails()">Proceed <span class="glyphicon glyphicon-circle-arrow-right"></span></button>
+        </div>
+    </div>
+</div>

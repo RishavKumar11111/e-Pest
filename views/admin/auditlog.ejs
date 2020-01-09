@@ -1,0 +1,94 @@
+<div class="right_col" role="main" ng-controller="myAdminALCtrl" style="min-height: 100vh" ng-init="getAuditLog()">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>Audit Log <small>Login and other activities history</small></h3>
+            </div>
+            <div class="title_right">
+                <!-- <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search for...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">Go!</button>
+                        </span>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <div class="col-md-8 col-sm-8 col-xs-12"><h2>Audit Log</h2></div>
+                        <div class="col-md-4 col-sm-4 col-xs-12">
+                            <input type="text" class="form-control" ng-model="txtSearch" placeholder="Search for...">
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="table-responsive">
+                            <table style="white-space: nowrap" class="table table-bordered table-striped jambo_table bulk_action">
+                                <thead>
+                                    <tr class="headings">
+                                        <th ng-click="sort('slno')" class="column-title">Serial No.
+                                            <span class="glyphicon sort-icon" ng-show="sortKey=='slno'" ng-class="{'glyphicon-chevron-up':!reverse,'glyphicon-chevron-down':reverse}"></span>
+                                        </th>
+                                        <th ng-click="sort('ipaddress')" class="column-title">IP Address
+                                            <span class="glyphicon sort-icon" ng-show="sortKey=='ipaddress'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                                        </th>
+                                        <th ng-click="sort('userid')" class="column-title">User ID
+                                            <span class="glyphicon sort-icon" ng-show="sortKey=='userid'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                                        </th>
+                                        <th ng-click="sort('url')" class="column-title">URL
+                                            <span class="glyphicon sort-icon" ng-show="sortKey=='url'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                                        </th>
+                                        <th ng-click="sort('devicetype')" class="column-title">Device Type
+                                            <span class="glyphicon sort-icon" ng-show="sortKey=='devicetype'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                                        </th>
+                                        <th ng-click="sort('os')" class="column-title">OS
+                                            <span class="glyphicon sort-icon" ng-show="sortKey=='os'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                                        </th>
+                                        <th ng-click="sort('browser')" class="column-title">Browser
+                                            <span class="glyphicon sort-icon" ng-show="sortKey=='browser'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                                        </th>
+                                        <th ng-click="sort('datetime')" class="column-title">Date Time
+                                            <span class="glyphicon sort-icon" ng-show="sortKey=='datetime'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                                        </th>
+                                        <th ng-click="sort('action')" class="column-title">Action
+                                            <span class="glyphicon sort-icon" ng-show="sortKey=='action'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                                        </th>
+                                        <th ng-click="sort('attack')" class="column-title">Attack
+                                            <span class="glyphicon sort-icon" ng-show="sortKey=='attack'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                                        </th>
+                                        <th ng-click="sort('mode')" class="column-title">Mode
+                                            <span class="glyphicon sort-icon" ng-show="sortKey=='mode'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr dir-paginate="i in auditLogs | orderBy: sortKey: reverse | filter: txtSearch | itemsPerPage: 5">
+                                        <td style="vertical-align: middle">{{i.ActivityCode}}</td>
+                                        <td style="vertical-align: middle">{{i.IPAddress}}</td>
+                                        <td style="vertical-align: middle">{{i.UserID}}</td>
+                                        <td style="vertical-align: middle">{{i.URL}}</td>
+                                        <td style="vertical-align: middle">{{i.DeviceType}}</td>
+                                        <td style="vertical-align: middle">{{i.OS}}</td>
+                                        <td style="vertical-align: middle; white-space: normal">{{i.Browser}}</td>
+                                        <td style="vertical-align: middle">{{i.DateTime}}</td>
+                                        <td style="vertical-align: middle">{{i.Action}}</td>
+                                        <td style="vertical-align: middle">{{i.Attack}}</td>
+                                        <td style="vertical-align: middle">{{i.Mode}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div style="text-align: center">
+                                <dir-pagination-controls max-size="10" direction-links="true" boundary-links="true" ></dir-pagination-controls>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

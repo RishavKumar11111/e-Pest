@@ -1,0 +1,45 @@
+<div class="form-horizontal" ng-controller="myADOAppDashboardCtrl" ng-init="getADORef(); getRefNoDetails()">
+    <div class="row container">
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Reference No.</label>
+            <label style="text-align: left;padding-top: 8px" class="control-label col-lg-7 col-md-7 col-sm-7 col-xs-7">{{referenceNo}}</label>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Block</label>
+            <label style="text-align: left;padding-top: 8px" class="control-label col-lg-7 col-md-7 col-sm-7 col-xs-7">{{refNoDetails.BlockName | capitalize}}</label>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">GP</label>
+            <label style="text-align: left;padding-top: 8px" class="control-label col-lg-7 col-md-7 col-sm-7 col-xs-7">{{refNoDetails.GPName | capitalize}}</label>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Village</label>
+            <label style="text-align: left;padding-top: 8px" class="control-label col-lg-7 col-md-7 col-sm-7 col-xs-7">{{refNoDetails.VillageName | capitalize}}</label>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Mobile No.</label>
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-7 col-md-7 col-sm-7 col-xs-7">{{refNoDetails.MobileNo}}</label>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Season</label>
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-7 col-md-7 col-sm-7 col-xs-7">{{refNoDetails.Season}}</label>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Crop Category</label>
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-7 col-md-7 col-sm-7 col-xs-7">{{refNoDetails.CategoryName}}</label>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Crop</label>
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-7 col-md-7 col-sm-7 col-xs-7">{{refNoDetails.CropName}}</label>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Crop Stage</label>
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-7 col-md-7 col-sm-7 col-xs-7">{{refNoDetails.CropStageName}}</label>
+        </div>
+        <div class="form-group">
+            <button type="button" class="btn btn-default" style="background: #2a5d1f; color: #ffffff" ng-click="gotoPhotoDetails()">
+                Proceed <span class="glyphicon glyphicon-circle-arrow-right"></span>
+            </button>
+        </div>
+    </div>
+</div>

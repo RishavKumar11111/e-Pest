@@ -1,0 +1,175 @@
+<form ng-controller="myEmergencyAppHomeCtrl" class="form-horizontal" role="form" name="emergencyAppPCDForm" ng-submit="submitCropPhotoDetails(emergencyAppPCDForm.$valid)" ng-init="getCropCategories(); getDistricts()" autocomplete="off" novalidate>
+    <div class="row container">
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Farmer ID</label>
+            <label style="text-align: center; padding-top: 8px" class="control-label col-lg-7 col-md-7 col-sm-7 col-xs-7">{{farmerID}}</label>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Crop Category <span style="color: red">*</span></label>
+            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                    <select class="form-control" name="cropCategory" ng-model="ddlCaCo" ng-options="i.CategoryCode as i.CategoryName for i in cropCategories" ng-change="getCrops(ddlCaCo)" required>
+                        <option value="" disabled>Select Crop Category</option>
+                    </select>
+                </div>
+                <div class="has-error" ng-show="emergencyAppPCDForm.$submitted || emergencyAppPCDForm.cropCategory.$touched" style="color:red">
+                    <span ng-show="emergencyAppPCDForm.cropCategory.$error.required">This is a required field</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Select Crop <span style="color: red">*</span></label>
+            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                    <select class="form-control" name="selectCrop" ng-model="ddlCrop" ng-options="i.CropCode as i.CropName for i in crops" required>
+                        <option value="" disabled>Select Crop</option>
+                    </select>
+                </div>
+                <div class="has-error" ng-show="emergencyAppPCDForm.$submitted || emergencyAppPCDForm.selectCrop.$touched" style="color:red">
+                    <span ng-show="emergencyAppPCDForm.selectCrop.$error.required">This is a required field</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group" style="border-bottom: 1px dashed #cccccc">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-12 col-md-12 col-sm-12 col-xs-12">Land Details :---</label>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-6 col-md-6 col-sm-6 col-xs-6">District <span style="color: red">*</span></label>
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-6 col-md-6 col-sm-6 col-xs-6">Block <span style="color: red">*</span></label>
+        </div>
+        <div class="form-group">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                    <select class="form-control" name="selectDistrict" ng-model="ddlDistrict" ng-options="i.DistrictCode as i.DistrictName for i in districts" ng-change="getBlocksByDistrict(ddlDistrict)" required>
+                        <option value="" disabled>Select District</option>
+                    </select>
+                </div>
+                <div class="has-error" ng-show="emergencyAppPCDForm.$submitted || emergencyAppPCDForm.selectDistrict.$touched" style="color:red">
+                    <span ng-show="emergencyAppPCDForm.selectDistrict.$error.required">This is a required field</span>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                    <select class="form-control" name="selectBlock" ng-model="ddlBlock" ng-options="i.BlockCode as i.BlockName for i in blocks" ng-change="getGPsByBlock(ddlBlock)" required>
+                        <option value="" disabled>Select Block</option>
+                    </select>
+                </div>
+                <div class="has-error" ng-show="emergencyAppPCDForm.$submitted || emergencyAppPCDForm.selectBlock.$touched" style="color:red">
+                    <span ng-show="emergencyAppPCDForm.selectBlock.$error.required">This is a required field</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-6 col-md-6 col-sm-6 col-xs-6">GP <span style="color: red">*</span></label>
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-6 col-md-6 col-sm-6 col-xs-6">Village <span style="color: red">*</span></label>
+        </div>
+        <div class="form-group">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                    <select class="form-control" name="selectGP" ng-model="ddlGP" ng-options="i.GPCode as i.GPName for i in gps" ng-change="getVillagesByGP(ddlGP)" required>
+                        <option value="" disabled>Select GP</option>
+                    </select>
+                </div>
+                <div class="has-error" ng-show="emergencyAppPCDForm.$submitted || emergencyAppPCDForm.selectGP.$touched" style="color:red">
+                    <span ng-show="emergencyAppPCDForm.selectGP.$error.required">This is a required field</span>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                    <select class="form-control" name="selectVillage" ng-model="ddlVillage" ng-options="i.VillageCode as i.VillageName for i in villages" required>
+                        <option value="" disabled>Select Village</option>
+                    </select>
+                </div>
+                <div class="has-error" ng-show="emergencyAppPCDForm.$submitted || emergencyAppPCDForm.selectVillage.$touched" style="color:red">
+                    <span ng-show="emergencyAppPCDForm.selectVillage.$error.required">This is a required field</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-8 col-md-8 col-sm-8 col-xs-8">1st Land Photo <span style="color: red">*</span></label>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align: right; padding-top: 3px">
+                <a id="recapture1" href="javascript:void(0)" style="padding: 5px" class="btn btn-warning btn-xs imageBtn">
+                    <span class="glyphicon glyphicon-camera"></span> Recapture
+                    <input id="file4" type="file" accept="image/*" capture="environment" onchange="angular.element(this).scope().readFile(this)" style="visibility: hidden; width: 100%; margin-top: -20px">
+                </a>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10" style="border: 1px solid black; height: 175px; padding: 0">
+                <div id="cameraBtn1" class="glyphicon glyphicon-camera imageBtn" style="height: 172px; font-size: 3em; padding: 66px">
+                    <input id="file1" type="file" accept="image/*" capture="environment" onchange="angular.element(this).scope().readFile(this)" style="visibility: hidden; width: 100%; margin-top: -83px">
+                </div>
+            </div>
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; font-size: 13px" class="control-label col-lg-6 col-md-6 col-sm-6 col-xs-6">Latitude: {{firstLatitude}}</label>
+            <label style="text-align: left; font-size: 13px" class="control-label col-lg-6 col-md-6 col-sm-6 col-xs-6">Longitude: {{firstLongitude}}</label>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-8 col-md-8 col-sm-8 col-xs-8">2nd Land Photo</label>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align: right; padding-top: 3px">
+                <a id="recapture2" href="javascript:void(0)" style="padding: 5px" class="btn btn-warning btn-xs imageBtn">
+                    <span class="glyphicon glyphicon-camera"></span> Recapture
+                    <input id="file5" type="file" accept="image/*" capture="environment" onchange="angular.element(this).scope().readFile(this)" style="visibility: hidden; width: 100%; margin-top: -20px">
+                </a>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10" style="border: 1px solid black; height: 175px; padding: 0">
+                <div id="cameraBtn2" class="glyphicon glyphicon-camera imageBtn" style="height: 172px; font-size: 3em; padding: 66px">
+                    <input id="file2" type="file" accept="image/*" capture="environment" onchange="angular.element(this).scope().readFile(this)" style="visibility: hidden; width: 100%; margin-top: -83px">
+                </div>
+            </div>
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; font-size: 13px" class="control-label col-lg-6 col-md-6 col-sm-6 col-xs-6">Latitude: {{secondLatitude}}</label>
+            <label style="text-align: left; font-size: 13px" class="control-label col-lg-6 col-md-6 col-sm-6 col-xs-6">Longitude: {{secondLongitude}}</label>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-8 col-md-8 col-sm-8 col-xs-8">3rd Land Photo</label>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="text-align: right; padding-top: 3px">
+                <a id="recapture3" href="javascript:void(0)" style="padding: 5px" class="btn btn-warning btn-xs imageBtn">
+                    <span class="glyphicon glyphicon-camera"></span> Recapture
+                    <input id="file6" type="file" accept="image/*" capture="environment" onchange="angular.element(this).scope().readFile(this)" style="visibility: hidden; width: 100%; margin-top: -20px">
+                </a>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10" style="border: 1px solid black; height: 175px; padding: 0">
+                <div id="cameraBtn3" class="glyphicon glyphicon-camera imageBtn" style="height: 172px; font-size: 3em; padding: 66px">
+                    <input id="file3" type="file" accept="image/*" capture="environment" onchange="angular.element(this).scope().readFile(this)" style="visibility: hidden; width: 100%; margin-top: -83px">
+                </div>
+            </div>
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; font-size: 13px" class="control-label col-lg-6 col-md-6 col-sm-6 col-xs-6">Latitude: {{thirdLatitude}}</label>
+            <label style="text-align: left; font-size: 13px" class="control-label col-lg-6 col-md-6 col-sm-6 col-xs-6">Longitude: {{thirdLongitude}}</label>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-default" style="background: #2a5d1f; color: #ffffff">
+                Submit <span class="glyphicon glyphicon-circle-arrow-right"></span>
+            </button>
+        </div>
+    </div>
+</form>
+<script>
+    (function() {
+        $('.imageBtn').click(function(e) {
+            if (e.target.id == 'cameraBtn1' || e.target.id == 'cameraBtn2' || e.target.id == 'cameraBtn3' || e.target.id == 'recapture1' || e.target.id == 'recapture2' || e.target.id == 'recapture3') {
+                return document.getElementById(e.target.lastElementChild.id).click();
+            }
+        });
+    }).call(this);
+</script>

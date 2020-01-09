@@ -1,0 +1,165 @@
+<form ng-controller="myVAWAppDashboardCtrl" class="form-horizontal" role="form" name="vawAppCDForm" ng-submit="submitCropDetails(vawAppCDForm.$valid)" ng-init="checkUserDetails(); checkDay(); clearData(); getVAWGPs(); month(); getCropCategories(); getCropStages()" autocomplete="off" novalidate>
+    <div class="row container">
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Select GP <span style="color: red">*</span></label>
+            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                    <select class="form-control" name="selectGP" ng-model="ddlGP" ng-options="i.GPCode as i.GPName for i in vawGPs | unique: 'GPCode'" ng-change="getVillages(ddlGP)" required>
+                        <option value="" disabled>Select GP</option>
+                    </select>
+                </div>
+                <div class="has-error" ng-show="vawAppCDForm.$submitted || vawAppCDForm.selectGP.$touched" style="color:red">
+                    <span ng-show="vawAppCDForm.selectGP.$error.required">This is a required field</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Select Village <span style="color: red">*</span></label>
+            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                    <select class="form-control" name="selectVillage" ng-model="ddlVillage" ng-options="i.VillageCode as i.VillageName for i in villages" required>
+                        <option value="" disabled>Select Village</option>
+                    </select>
+                </div>
+                <div class="has-error" ng-show="vawAppCDForm.$submitted || vawAppCDForm.selectVillage.$touched" style="color:red">
+                    <span ng-show="vawAppCDForm.selectVillage.$error.required">This is a required field</span>
+                </div>
+            </div>
+        </div>
+        <div style="padding: 10px; background: #ffffff; margin-bottom: 10px; border-radius: 5px; box-shadow: 3px 3px 5px 1px #aaaaaa; -webkit-box-shadow: 3px 3px 5px 1px #aaaaaa; -moz-box-shadow: 3px 3px 5px 1px #aaaaaa">
+            <div class="table table-responsive" style="border: none">
+                <table class="table">
+                    <tr>
+                        <td style="padding-left: 0; vertical-align: middle; text-align: left; border: none"><b>Farmer ID</b></td>
+                        <td style="padding-right: 0; border: none">
+                            <div class="input-group">
+                                <span class="input-group-addon" style="padding: 6px 1px"><b>{{districtName}}/</b></span>
+                                <input type="text" class="form-control" numbers-only ng-model="txtFarmerID" placeholder="Enter Farmer ID" maxlength="10" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: left; border: none; line-height: 0; padding: 0">and / or</td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left: 0; vertical-align: middle; text-align: left; border: none"><b>Aadhaar No.</b></td>
+                        <td style="padding-right: 0; border: none">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                <input type="text" class="form-control" numbers-only ng-model="txtAadhaarNo" placeholder="Enter Aadhaar No." maxlength="12" />
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10" style="text-align: left">
+                    <label style="padding-top: 8px" class="control-label">Add Farmer ID & / or Aadhaar No.</label><br />
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="padding-top: 6px">
+                    <button type="button" class="btn btn-xs btn-primary glyphicon glyphicon-plus" ng-click="addFAID()"></button>
+                </div>
+            </div>
+            <div class="form-group" ng-show="faArray.length > 0">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align: center">
+                    <label class="control-label fid-label" ng-repeat="i in faArray" style="width: 254px; height: 54px">
+                        <div class="table table-responsive" style="margin-bottom: 0">
+                            <table class="table" style="background-color: inherit">
+                                <tr>
+                                    <td style="padding: 0px; text-align: left"><b>Farmer ID :- {{i.FarmerID == null ? 'NA' : i.FarmerID}}</b></td>
+                                    <td style="padding: 0px; vertical-align: middle" rowspan="2">
+                                        <button type="button" class="btn btn-sm glyphicon glyphicon-remove" ng-click="removeFarmerID($index)" style="margin-top: -5px; color: red"></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 0px; text-align: left"><b>Aadhaar No :- {{i.AadhaarNo == null ? 'NA' : '********' + i.AadhaarNo.substring(8, 12)}}</b></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <!-- {{$last ? '' : ','}} -->
+                    </label>
+                </div>
+            </div>
+            <div class="form-group" ng-show="faArray.length == 0">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align: justify">
+                    <label class="control-label text-danger">Farmer ID or Aadhaar No. is not entered.</label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Mobile No. <span style="color: red">*</span></label>
+            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                <div class="input-group">
+                    <span class="input-group-addon" style="padding: 6px 1px"><b>+91-</b></span>
+                    <input type="text" name="mobileNo" class="form-control" mobile-no-only numbers-only ng-model="txtMobileNo" placeholder="Enter Mobile No." maxlength="10" required />
+                </div>
+                <div class="has-error" ng-show="vawAppCDForm.$submitted || vawAppCDForm.mobileNo.$touched" style="color:red">
+                    <span ng-show="vawAppCDForm.mobileNo.$error.required">This is a required field</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Season</label>
+            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7" style="margin-top: 6px">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label><input type="radio" name="season" ng-model="rbSeason" value="Kharif" disabled />Kharif</label>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label><input type="radio" name="season" ng-model="rbSeason" value="Rabi" disabled />Rabi</label>
+                </div>
+                <div class="has-error" ng-show="vawAppCDForm.$submitted || vawAppCDForm.season.$touched" style="color:red">
+                    <span ng-show="vawAppCDForm.season.$error.required">This is a required field</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Crop Category <span style="color: red">*</span></label>
+            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                    <select class="form-control" name="cropCategory" ng-model="ddlCropCategory" ng-options="i.CategoryCode as i.CategoryName for i in cropCategories" ng-change="getCrops(ddlCropCategory)" required>
+                        <option value="" disabled>Select Crop Category</option>
+                    </select>
+                </div>
+                <div class="has-error" ng-show="vawAppCDForm.$submitted || vawAppCDForm.cropCategory.$touched" style="color:red">
+                    <span ng-show="vawAppCDForm.cropCategory.$error.required">This is a required field</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Select Crop <span style="color: red">*</span></label>
+            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                    <select class="form-control" name="selectCrop" ng-model="ddlCrop" ng-options="i.CropCode as i.CropName for i in crops" ng-change="checkPest(ddlCrop)" required>
+                        <option value="" disabled>Select Crop</option>
+                    </select>
+                </div>
+                <div class="has-error" ng-show="vawAppCDForm.$submitted || vawAppCDForm.selectCrop.$touched" style="color:red">
+                    <span ng-show="vawAppCDForm.selectCrop.$error.required">This is a required field</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label style="text-align: left; padding-top: 8px" class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Crop Stage <span style="color: red">*</span></label>
+            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                    <select class="form-control" name="selectCropStage" ng-model="ddlCropStage" ng-options="i.CropStageCode as i.CropStageName for i in cropStages" required>
+                        <option value="" disabled>Select Crop Stage</option>
+                    </select>
+                </div>
+                <div class="has-error" ng-show="vawAppCDForm.$submitted || vawAppCDForm.selectCropStage.$touched" style="color:red">
+                    <span ng-show="vawAppCDForm.selectCropStage.$error.required">This is a required field</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-default" style="background: #2a5d1f; color: #ffffff">
+                Submit & Proceed <span class="glyphicon glyphicon-circle-arrow-right"></span>
+            </button>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,61 @@
+<div class="right_col" role="main" ng-controller="myOUATDashbord1Ctrl" ng-init="getDashboardDetails();" style="min-height: 100vh">
+    <div class="">
+        <div class="row top_tiles">
+            <div class="animated flipInY col-md-3 col-sm-3 col-xs-12">
+                <div class="tile-stats" style="background-color: #4285f4; height: 125px; padding: 10px">
+                    <h3 style="color: white">Total Area Affected</h3>
+                    <div class="count" style="color: white; padding-top: -10px">
+                        <span>{{getOUATDetails[2][0].TotalAffectedArea == null ? 0 : getOUATDetails[2][0].TotalAffectedArea}} ha</span>
+                    </div>
+                </div>
+            </div>
+            <div class="animated flipInY col-md-3 col-sm-3 col-xs-12">
+                <div class="tile-stats" style="background-color: #db4437; height: 125px; padding: 10px">
+                    <h3 style="color: white">Total Area Treated</h3>
+                    <div class="count" style="color: white; padding-top: -10px">
+                        <span>{{getOUATDetails[2][0].TotalTreatedArea == null ? 0 : getOUATDetails[2][0].TotalTreatedArea}} ha</span>
+                    </div>
+                </div>
+            </div>
+            <div class="animated flipInY col-md-3 col-sm-3 col-xs-12">
+                <div class="tile-stats" style="background-color: #f4b400; height: 125px; padding: 10px">
+                    <h3 style="color: white; font-size: 19px">Area inspected by VAW</h3>
+                    <div class="count" style="color: white; padding-top: 13px">
+                        <span>{{getOUATDetails[3][0].TotalAreaAffected == null ? 0 : getOUATDetails[3][0].TotalAreaAffected}} ha</span>
+                    </div>
+                </div>
+            </div>
+            <div class="animated flipInY col-md-3 col-sm-3 col-xs-12">
+                <div class="tile-stats" style="background-color: #179928; height: 125px; padding: 10px">
+                    <h3 style="color: white">Light trap catch</h3>
+                    <div class="count" style="color: white; padding-top: -10px">
+                        <span>{{getOUATDetails[4][0].TotalLightTrap == null ? 0 : getOUATDetails[4][0].TotalLightTrap}} no.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h3>Area affected & Area treated (in ha)</h3>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="col-md-3 col-sm-3 col-xs-12"></div>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <script type="text/javascript" src="../../public/javascripts/chart.min.js"></script>
+                                    <canvas id="myChart3"></canvas>
+                                </div>
+                                <div class="col-md-3 col-sm-3 col-xs-12"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="../../public/javascripts/dashboardGraph.js"></script>

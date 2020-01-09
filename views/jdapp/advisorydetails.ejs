@@ -1,0 +1,288 @@
+<div class="right_col" role="main" ng-controller="myJDAPPADCtrl" style="min-height: 100vh; max-width: 100vw;" ng-init="getCrops()">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>Advisory Details</h3>
+            </div>
+            <div class="title_right">
+                <!-- <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search for...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">Go!</button>
+                        </span>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Enter Advisory Details <small>(Choose Crops, Enter Pests, Pesticides & its units)</small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li>
+                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <br />
+                        <form class="form-horizontal" method="POST" role="form" name="adForm" ng-submit="submitAD(adForm.$valid)" autocomplete="off" novalidate>
+                            <div class="col-md-3 col-sm-3 col-xs-12"></div>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4 col-sm-4 col-xs-12" style="text-align: left">Crop</label>
+                                        <div class="col-md-8 col-sm-8 col-xs-12">
+                                            <select class="form-control" name="cropCode" ng-model="ddlCC" ng-options="i.CropCode as i.CropName for i in crops" ng-change="pesticideArray = []; txtPestName = null;" required>
+                                                <option value="" disabled>Select Crop</option>
+                                            </select>
+                                        </div>
+                                        <div class="has-error" ng-show="adForm.$submitted || adForm.cropCode.$touched" style="color:red; text-align: center">
+                                            <span ng-show="adForm.cropCode.$error.required">This is a required field</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4 col-sm-4 col-xs-12" style="text-align: left">Pest's Name</label>
+                                        <div class="col-md-8 col-sm-8 col-xs-12">
+                                            <input type="text" class="form-control" name="pestName" ng-model="txtPestName" placeholder="Enter Pest Name" maxlength="100" required>
+                                        </div>
+                                        <div class="has-error" ng-show="adForm.$submitted || adForm.pestName.$touched" style="color:red; text-align: center">
+                                            <span ng-show="adForm.pestName.$error.required">This is a required field</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-xs-12"></div>
+                            <div class="clearfix"></div>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <label class="control-label col-md-2 col-sm-2 col-xs-12" style="text-align: left">Pesticide's Name</label>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: left">Pesticide's Name (in Odia)</label>
+                                <label class="control-label col-md-2 col-sm-2 col-xs-12" style="text-align: left">Recommended Dose (200 litre per Acre)</label>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: left">Recommended Dose (200 litre per Acre) (in Odia)</label>
+                                <label class="control-label col-md-2 col-sm-2 col-xs-12"></label>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="col-md-2 col-sm-2 col-xs-12">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" ng-model="txtPesticideName" placeholder="Enter Pesticide's Name" maxlength="300">
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-3 col-xs-12">
+                                    <div class="form-group">
+                                        <input list="odia-pno-texts" type="text" class="form-control" ng-model="txtPesticideNameOdia" id="pno" ng-keyup="convertE2O(txtPesticideNameOdia, $event)" placeholder="Enter Pesticide's Name (in Odia)" maxlength="300">
+                                        <datalist id="odia-pno-texts"></datalist>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-12">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" ng-model="txtRecommendedDose" placeholder="Enter Recommended Dose" maxlength="100">
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-3 col-xs-12">
+                                    <div class="form-group">
+                                        <input list="odia-rdo-texts" type="text" class="form-control" ng-model="txtRecommendedDoseOdia" id="rdo" ng-keyup="convertE2O(txtRecommendedDoseOdia, $event)" placeholder="Enter Recommended Dose (in Odia)" maxlength="100">
+                                        <datalist id="odia-rdo-texts"></datalist>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-12">
+                                    <button type="button" class="btn btn-xs btn-primary glyphicon glyphicon-plus" style="margin-top: 5px" ng-click="addPesticide()"></button>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div ng-show="pesticideArray.length > 0">
+                                <label class="control-label col-md-2 col-sm-2 col-xs-12" style="text-align: left">Pesticide's Name</label>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: left">Pesticide's Name (in Odia)</label>
+                                <label class="control-label col-md-2 col-sm-2 col-xs-12" style="text-align: left">Recommended Dose (200 litre per Acre)</label>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: left">Recommended Dose (200 litre per Acre) (in Odia)</label>
+                                <label class="control-label col-md-2 col-sm-2 col-xs-12"></label>
+                                <div class="clearfix"></div>
+                                <div ng-repeat="i in pesticideArray">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2 col-sm-2 col-xs-12" style="text-align: center">{{i.PesticideName}}</label>
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: center">{{i.PesticideNameOdia}}</label>
+                                        <label class="control-label col-md-2 col-sm-2 col-xs-12" style="text-align: center">{{i.RecommendedDose}}</label>
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: center">{{i.RecommendedDoseOdia}}</label>
+                                        <div class="col-md-2 col-sm-2 col-xs-12" style="text-align: left">
+                                            <button type="button" class="btn btn-xs btn-danger glyphicon glyphicon-minus" style="margin-top: 5px" ng-click="removePesticide()"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="ln_solid"></div>
+                            <div class="form-group col-md-12 col-sm-12 col-xs-12" style="text-align: center">
+                                <input type="submit" class="btn btn-success" value="Submit" ng-disabled="adForm.$invalid" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Modify Advisory Details <small>(Choose Crops & Pests)</small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li>
+                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <br />
+                        <form class="form-horizontal" method="POST" role="form" name="madForm" ng-submit="updateAdvisoryDetails(madForm.$valid)" autocomplete="off" novalidate>
+                            <div class="col-md-3 col-sm-3 col-xs-12"></div>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4 col-sm-4 col-xs-12" style="text-align: left">Crop</label>
+                                        <div class="col-md-8 col-sm-8 col-xs-12">
+                                            <select class="form-control" name="cropCode" ng-model="ddlCrop" ng-options="i.CropCode as i.CropName for i in crops" ng-change="getPestDiseases();" required>
+                                                <option value="" disabled>Select Crop</option>
+                                            </select>
+                                        </div>
+                                        <div class="has-error" ng-show="madForm.$submitted || madForm.cropCode.$touched" style="color:red; text-align: center">
+                                            <span ng-show="madForm.cropCode.$error.required">This is a required field</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4 col-sm-4 col-xs-12" style="text-align: left">Pest</label>
+                                        <div class="col-md-8 col-sm-8 col-xs-12">
+                                            <select class="form-control" name="PestDiseaseCode" ng-model="ddlPest" ng-options="i.PestDiseaseCode as i.PestDiseaseName for i in pests" ng-change="getPesticideDetails();" required>
+                                                <option value="" disabled>Select Pest</option>
+                                            </select>
+                                        </div>
+                                        <div class="has-error" ng-show="madForm.$submitted || madForm.PestDiseaseCode.$touched" style="color:red; text-align: center">
+                                            <span ng-show="madForm.PestDiseaseCode.$error.required">This is a required field</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-xs-12"></div>
+                            <div class="clearfix"></div>
+                            <hr />
+                            <div class="col-md-12 col-sm-12 col-xs-12" ng-show="pesticideDetails.length > 0">
+                                <div class="form-group" style="text-align: center">
+                                    <div class="table table-responsive">
+                                        <table class="table table-hover table-striped jambo_table bulk_action">
+                                            <thead>
+                                                <tr class="headings">
+                                                    <th class="column-title text-center">Serial No.</th>
+                                                    <th class="column-title text-center">Pesticides</th>
+                                                    <th class="column-title text-center">Pesticides (in Odia)</th>
+                                                    <th class="column-title text-center">Recommended Doses</th>
+                                                    <th class="column-title text-center">Recommended Doses (in Odia)</th>
+                                                    <th ng-show="slht" class="column-title text-center">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tr ng-repeat="i in pesticideDetails">
+                                                <td style="vertical-align: middle">{{$index + 1}}</td>
+                                                <td ng-show="slht" style="vertical-align: middle">{{i.PesticideName}}</td>
+                                                <td ng-show="sthl" style="vertical-align: middle">
+                                                    <input type="text" class="form-control" ng-model="i.PesticideName" minlength="1" maxlength="300" />
+                                                </td>
+                                                <td ng-show="slht" style="vertical-align: middle">{{i.PesticideNameOdia == null ? 'NA' : i.PesticideNameOdia}}</td>
+                                                <td ng-show="sthl" style="vertical-align: middle">
+                                                    <input list="odia-upno-texts" type="text" class="form-control" ng-model="i.PesticideNameOdia" id="upno{{$index}}" ng-keyup="convertE2O(i.PesticideNameOdia, $event)" minlength="1" maxlength="300" />
+                                                    <datalist id="odia-upno-texts"></datalist>
+                                                </td>
+                                                <td ng-show="slht" style="vertical-align: middle">{{i.RecommendedDose}}</td>
+                                                <td ng-show="sthl" style="vertical-align: middle">
+                                                    <input type="text" class="form-control" ng-model="i.RecommendedDose" minlength="1" maxlength="100" />
+                                                </td>
+                                                <td ng-show="slht" style="vertical-align: middle">{{i.RecommendedDoseOdia == null ? 'NA' : i.RecommendedDoseOdia}}</td>
+                                                <td ng-show="sthl" style="vertical-align: middle">
+                                                    <input list="odia-urdo-texts" type="text" class="form-control" ng-model="i.RecommendedDoseOdia" id="urdo{{$index}}" ng-keyup="convertE2O(i.RecommendedDoseOdia, $event)" minlength="1" maxlength="100" />
+                                                    <datalist id="odia-urdo-texts"></datalist>
+                                                </td>
+                                                <td ng-show="slht" style="vertical-align: middle">
+                                                    <input type="button" style="margin-bottom: 0" class="btn btn-xs btn-danger" value="Remove" ng-show="slht" ng-click="removeAD(i.PesticideCode)" />
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-sm-12 col-xs-12 text-center" ng-show="pesticideDetails.length > 0">
+                                <input type="button" class="btn btn-warning" value="Modify Advisory Details" ng-show="slht" ng-click="showTextHideLabel()" />
+                                <input type="button" class="btn btn-danger" value="Cancel Modification" ng-show="sthl" ng-click="showLabelHideText()" />
+                                <input type="submit" class="btn btn-primary" value="Update Advisory Details" ng-show="sthl"/>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Enter Advisory Details using Excelsheet <small>(Upload file in .xls / .xlsx format)</small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li>
+                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <br />
+                        <form class="form-horizontal" method="POST" role="form" name="efForm" ng-submit="submitEF(efForm.$valid)" autocomplete="off" novalidate>
+                            <div class="col-md-2 col-sm-2 col-xs-12"></div>
+                            <div class="col-md-8 col-sm-8 col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" style="text-align: left">Upload Excel File</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input class="form-control" type="file" ngf-select="SelectFile($file)" required />
+                                    </div>
+                                    <div class="col-md-3 col-sm-3 col-xs-12">
+                                        <input class="btn btn-primary" type="button" value="Upload" ng-click="Upload()" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-xs-12"></div>
+                            <div class="clearfix"></div>
+                            <div class="form-horizontal table table-responsive">
+                                <table class="table table-hover table-striped jambo_table bulk_action text-center">
+                                    <thead>
+                                        <tr class="headings">
+                                            <th class="column-title text-center" style="white-space: nowrap">Serial No.</th>
+                                            <th class="column-title text-center">Crops</th>
+                                            <th class="column-title text-center">Pests</th>
+                                            <th class="column-title text-center">Pesticides</th>
+                                            <th class="column-title text-center">Recommended Doses</th>
+                                        </tr>
+                                    </thead>
+                                    <tr ng-repeat="i in advisoryDetails">
+                                        <td style="vertical-align: middle">{{$index + 1}}</td>
+                                        <td style="vertical-align: middle">{{i.Crops}}</td>
+                                        <td style="vertical-align: middle">{{i.Pests}}</td>
+                                        <td style="vertical-align: middle">{{i.Pesticides}}</td>
+                                        <td style="vertical-align: middle">{{i.RecommendedDoses200LitresperAcre}}</td>
+                                    </tr>
+                                    <tr ng-show="advisoryDetails.length == 0">
+                                        <td colspan="5" style="text-align: center; color: red"><b>No Records are found.</b></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="ln_solid"></div>
+                            <div class="form-group col-md-12 col-sm-12 col-xs-12" style="text-align: center">
+                                <input type="submit" class="btn btn-success" value="Submit" ng-disabled="efForm.$invalid" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
