@@ -53,7 +53,7 @@ if (window.location.href.indexOf("jdapp") > -1) {
                     found.ModerateAdvisoryNo += "-" + adc[i].Month;
                 }
                 else {
-                    array1.push({"ModerateAdvisoryNo": adc[i].ModerateAdvisoryNo + "-" + adc[i].Month, "PestDiseaseName": adc[i].PestDiseaseName});
+                    array1.push({ "ModerateAdvisoryNo": adc[i].ModerateAdvisoryNo + "-" + adc[i].Month, "PestDiseaseName": adc[i].PestDiseaseName });
                 }
             }
             for (var i = 0; i < months.length; i++) {
@@ -70,14 +70,14 @@ if (window.location.href.indexOf("jdapp") > -1) {
                         else if (months[i] == "November") {
                             array1[j].ModerateAdvisoryNo = array1[j].ModerateAdvisoryNo + ", 0-November";
                         }
-                    } 
+                    }
                 }
             }
             var finalArray = [];
             for (var i = 0; i < array1.length; i++) {
                 array1[i].ModerateAdvisoryNo = array1[i].ModerateAdvisoryNo.replace(/-September|-October|-November/g, "");
                 array1[i].ModerateAdvisoryNo = array1[i].ModerateAdvisoryNo.split(", ");
-                finalArray.push({"data": array1[i].ModerateAdvisoryNo, "label": array1[i].PestDiseaseName, "borderColor": 'rgb(' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ')', "fill": false});
+                finalArray.push({ "data": array1[i].ModerateAdvisoryNo, "label": array1[i].PestDiseaseName, "borderColor": 'rgb(' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ')', "fill": false });
             }
             var taa = barChartData1[6][0].TotalAffectedArea;
             var tat = barChartData1[6][0].TotalTreatedArea;
@@ -119,7 +119,7 @@ if (window.location.href.indexOf("jdapp") > -1) {
             }
         });
     });
-    var croCategoryName = [];
+    var cropCategoryName = [];
     var affectedPestArea = [];
     var categoryCode = [];
     var bColor = [];
@@ -130,12 +130,12 @@ if (window.location.href.indexOf("jdapp") > -1) {
                 var categoryName = pieData[i].CategoryName;
                 var affectArea = pieData[i].totalAffectedArea;
                 var catCode = pieData[i].CropCategoryCode;
-                croCategoryName.push(categoryName);
+                cropCategoryName.push(categoryName);
                 affectedPestArea.push(affectArea);
                 categoryCode.push(catCode);
             }
-            for(var i = 0; i<= croCategoryName.length; i++){
-                bColor.push('#'+Math.floor(Math.random()*16777215).toString(16));
+            for (var i = 0; i < cropCategoryName.length; i++) {
+                bColor.push('#' + Math.floor(Math.random() * 16777215).toString(16));
             }
         }
     });
@@ -144,7 +144,7 @@ if (window.location.href.indexOf("jdapp") > -1) {
         var myChart7 = new Chart(ctx, {
             type: 'pie',
             data: {
-                labels: croCategoryName,
+                labels: cropCategoryName,
                 datasets: [{
                     label: 'Total Affected Area (in HA)',
                     backgroundColor: bColor,
@@ -178,8 +178,8 @@ if (window.location.href.indexOf("jdapp") > -1) {
                             cropHecterName.push(cropName);
                             affectedCropArea.push(affectArea);
                         }
-                        for(var i = 0; i<= cropName.length; i++){
-                            bagColor.push('#'+Math.floor(Math.random()*16777215).toString(16));
+                        for (var i = 0; i < cropName.length; i++) {
+                            bagColor.push('#' + Math.floor(Math.random() * 16777215).toString(16));
                         }
                     }
                 });

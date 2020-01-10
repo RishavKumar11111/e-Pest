@@ -1057,7 +1057,7 @@ exports.getCropCategoryPestDiseases = function(cropCategoryCode) {
 };
 
 exports.getPestGraphData = function(arr, callback) {
-    return sequelize.query('select PestDiseaseName,a.PestDiseaseCode,sum(MediumIntensityAttackArea+HighIntensityAttackArea) as totalAffectedArea from VAWFarmerPestDetailsEntry a right join PestDisease b on a.PestDiseaseCode = b.PestDiseaseCode where a.PestDiseaseCode IN(:status) group by PestDiseaseName,a.PestDiseaseCode', {
+    return sequelize.query('select PestDiseaseName, a.PestDiseaseCode, sum(MediumIntensityAttackArea + HighIntensityAttackArea) as totalAffectedArea from VAWFarmerPestDetailsEntry a right join PestDisease b on a.PestDiseaseCode = b.PestDiseaseCode where a.PestDiseaseCode in(:status) group by PestDiseaseName, a.PestDiseaseCode', {
         replacements: { status: arr }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
         callback(data);
@@ -1079,8 +1079,8 @@ exports.getGraphforCrop = function() {
 };
 
 exports.getCropDetailsCategory = function(cropCategoryCode) {
-    return sequelize.query('select sum(MediumAffectedArea + HighAffectedArea) as totalAffectedArea, b.CropName, b.CropCode from AAOPestDetailsEntry a left join Crop b on a.CropCategoryCode= b.CropCategoryCode where a.CropCategoryCode = :cro_category_code and b.IsActive = 1 group by b.CropCode , CropName', {
-        replacements: { cro_category_code: cropCategoryCode }, type: sequelize.QueryTypes.SELECT
+    return sequelize.query('select sum(MediumAffectedArea + HighAffectedArea) as totalAffectedArea, b.CropName, b.CropCode from AAOPestDetailsEntry a left join Crop b on a.CropCategoryCode = b.CropCategoryCode where a.CropCategoryCode = :crop_category_code and b.IsActive = 1 group by b.CropCode, CropName', {
+        replacements: { crop_category_code: cropCategoryCode }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
         console.log(data);
         return data;
