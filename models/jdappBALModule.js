@@ -1066,3 +1066,25 @@ exports.getPestGraphData = function(arr, callback) {
         console.log('An error occurred...', err);
     });
 };
+
+exports.getGraphforCrop = function() {
+    return sequelize.query('select sum(MediumAffectedArea + HighAffectedArea) as totalAffectedArea, b.CategoryName, CropCategoryCode from AAOPestDetailsEntry a left join CropCategory b on a.CropCategoryCode = b.CategoryCode and b.IsActive = 1 group by CropCategoryCode, b.CategoryName', {
+        type: sequelize.QueryTypes.SELECT
+    }).then(function success(data) {
+        console.log(data);
+        return data;
+    }).catch(function error(err) {
+        console.log('An error occurred...', err);
+    });
+};
+
+exports.getCropDetailsCategory = function(cropCategoryCode) {
+    return sequelize.query('select sum(MediumAffectedArea + HighAffectedArea) as totalAffectedArea, b.CropName, b.CropCode from AAOPestDetailsEntry a left join Crop b on a.CropCategoryCode= b.CropCategoryCode where a.CropCategoryCode = :cro_category_code and b.IsActive = 1 group by b.CropCode , CropName', {
+        replacements: { cro_category_code: cropCategoryCode }, type: sequelize.QueryTypes.SELECT
+    }).then(function success(data) {
+        console.log(data);
+        return data;
+    }).catch(function error(err) {
+        console.log('An error occurred...', err);
+    });
+};

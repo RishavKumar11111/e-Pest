@@ -1205,4 +1205,27 @@ router.post('/getPestGraphData', parseForm, csrfProtection, permit.permission('J
   });
 });
 
+router.get('/getGraphforCrop', function (req, res, next) {
+  res.get('X-Frame-Options');
+  balModule.getGraphforCrop().then(function success(response) {
+    res.send(response);
+  }, function error(response) {
+    console.log(response.status);
+  }).catch(function err(error) {
+    console.log('An error occurred...', error);
+  });
+});
+
+router.get('/getCropDetailsCategory', function (req, res, next) {
+  var cropCategoryCode = req.query.cropCode;
+  res.get('X-Frame-Options');
+  balModule.getCropDetailsCategory(cropCategoryCode).then(function success(response) {
+    res.send(response);
+  }, function error(response) {
+    console.log(response.status);
+  }).catch(function err(error) {
+    console.log('An error occurred...', error);
+  });
+});
+
 module.exports = router;

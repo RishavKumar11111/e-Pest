@@ -119,6 +119,91 @@ if (window.location.href.indexOf("jdapp") > -1) {
             }
         });
     });
+    var croCategoryName = [];
+    var affectedPestArea = [];
+    var categoryCode = [];
+    var bColor = [];
+    httpGetAsync('http://localhost:3000/jdapp/getGraphforCrop', function (res) {
+        var pieData = JSON.parse(res);
+        if (pieData.length > 0) {
+            for (var i = 0; i < pieData.length; i++) {
+                var categoryName = pieData[i].CategoryName;
+                var affectArea = pieData[i].totalAffectedArea;
+                var catCode = pieData[i].CropCategoryCode;
+                croCategoryName.push(categoryName);
+                affectedPestArea.push(affectArea);
+                categoryCode.push(catCode);
+            }
+            for(var i = 0; i<= croCategoryName.length; i++){
+                bColor.push('#'+Math.floor(Math.random()*16777215).toString(16));
+            }
+        }
+    });
+    setTimeout(function () {
+        var ctx = document.getElementById('myChart7').getContext('2d');
+        var myChart7 = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: croCategoryName,
+                datasets: [{
+                    label: 'Total Affected Area (in HA)',
+                    backgroundColor: bColor,
+                    data: affectedPestArea,
+                    code: categoryCode
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'Area Affected Under Crop Category (in HA)'
+                }
+            }
+        });
+        ctx.canvas.onclick = function (evt) {
+            var activePoints = myChart5.getElementsAtEvent(evt);
+            if (activePoints[0]) {
+                var chartData = activePoints[0]['_chart'].config.data;
+                var idx = activePoints[0]['_index'];
+                var label = chartData.labels[idx];
+                var cropCode = chartData.datasets[0].code[idx];
+                var cropHecterName = [];
+                var affectedCropArea = [];
+                var bagColor = [];
+                httpGetAsync('http://localhost:3000/jdapp/getCropDetailsCategory?cropCode=' + cropCode, function (res) {
+                    var barData = JSON.parse(res);
+                    if (barData.length > 0) {
+                        for (var i = 0; i < barData.length; i++) {
+                            var cropName = barData[i].CropName;
+                            var affectArea = barData[i].totalAffectedArea;
+                            cropHecterName.push(cropName);
+                            affectedCropArea.push(affectArea);
+                        }
+                        for(var i = 0; i<= cropName.length; i++){
+                            bagColor.push('#'+Math.floor(Math.random()*16777215).toString(16));
+                        }
+                    }
+                });
+                var ctx = document.getElementById('myChart8').getContext('2d');
+                var myChart8 = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: cropHecterName,
+                        datasets: [{
+                            label: 'Total Affected Area (in HA)',
+                            backgroundColor: bColor,
+                            data: affectedCropArea
+                        }]
+                    },
+                    options: {
+                        title: {
+                            display: true,
+                            text: 'Pest Affected Area (in HA)'
+                        }
+                    }
+                });
+            }
+        };
+    }, 3000);
 }
 
 if (window.location.href.indexOf("cdao") > -1) {
