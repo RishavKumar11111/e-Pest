@@ -139,10 +139,10 @@
                                                         <input type="text" class="form-control" valid-number-upto-one-decimal ng-model="i.txtLTA" minlength="1" maxlength="10" disabled />
                                                     </td>
                                                     <td style="vertical-align: middle">
-                                                        <input type="text" class="form-control" valid-number-upto-one-decimal ng-model="i.txtMTA" minlength="1" maxlength="10" />
+                                                        <input type="text" class="form-control" valid-number-upto-one-decimal ng-model="i.txtMTA" ng-change="checkMArea(i)" minlength="1" maxlength="10" />
                                                     </td>
                                                     <td style="vertical-align: middle">
-                                                        <input type="text" class="form-control" valid-number-upto-one-decimal ng-model="i.txtHTA" minlength="1" maxlength="10" />
+                                                        <input type="text" class="form-control" valid-number-upto-one-decimal ng-model="i.txtHTA" ng-change="checkHArea(i)" minlength="1" maxlength="10" />
                                                     </td>
                                                     <td class="cd" style="vertical-align: middle">{{i.txtLTA -- i.txtMTA -- i.txtHTA}}</td>
                                                 </tr>

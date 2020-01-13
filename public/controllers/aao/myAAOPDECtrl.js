@@ -82,6 +82,34 @@ app.controller('myAAOPDECtrl', function($scope, $http, $window) {
         });
     };
 
+    var laa = null; var maa = null; var haa = null; var lta = null; var mta = null; var hta = null;
+    var convertValid = function(i) {
+        laa = i.txtLAA == null ? '0' : i.txtLAA == undefined ? '0' : i.txtLAA == '' ? '0' : i.txtLAA;
+        maa = i.txtMAA == null ? '0' : i.txtMAA == undefined ? '0' : i.txtMAA == '' ? '0' : i.txtMAA;
+        haa = i.txtHAA == null ? '0' : i.txtHAA == undefined ? '0' : i.txtHAA == '' ? '0' : i.txtHAA;
+        lta = i.txtLTA == null ? '0' : i.txtLTA == undefined ? '0' : i.txtLTA == '' ? '0' : i.txtLTA;
+        mta = i.txtMTA == null ? '0' : i.txtMTA == undefined ? '0' : i.txtMTA == '' ? '0' : i.txtMTA;
+        hta = i.txtHTA == null ? '0' : i.txtHTA == undefined ? '0' : i.txtHTA == '' ? '0' : i.txtHTA;
+        var obj = { laa: parseFloat(laa), maa: parseFloat(maa), haa: parseFloat(haa), lta: parseFloat(lta), mta: parseFloat(mta), hta: parseFloat(hta) };
+        return obj;
+    };
+
+    $scope.checkMArea = function(i) {
+        var k = convertValid(i);
+        if (!(k.mta <= k.maa && ((k.lta + k.mta + k.hta) <= (k.laa + k.maa + k.haa)))) {
+            alert('Medium Treated Area cannot be more than Medium Affected Area. Total Treated Area must be less than Total Affected Area.');
+            i.txtMTA = null;
+        }
+    };
+
+    $scope.checkHArea = function(i) {
+        var k = convertValid(i);
+        if (!(k.hta <= k.haa && ((k.lta + k.mta + k.hta) <= (k.laa + k.maa + k.haa)))) {
+            alert('High Treated Area cannot be more than High Affected Area. Total Treated Area must be less than Total Affected Area.');
+            i.txtHTA = null;
+        }
+    };
+
     $scope.submitAAOPDE = function(isValid) {
         if (isValid) {
             var message = confirm('Do you really want to submit the form?');

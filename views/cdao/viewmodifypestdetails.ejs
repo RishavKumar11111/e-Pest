@@ -184,11 +184,11 @@
                                                 </td>
                                                 <td ng-show="slht" style="vertical-align: middle">{{(i.MediumTreatedArea).toFixed(1)}}</td>
                                                 <td ng-show="sthl" style="vertical-align: middle">
-                                                    <input type="text" class="form-control" valid-number-upto-one-decimal ng-model="i.MediumTreatedArea" minlength="1" maxlength="10" />
+                                                    <input type="text" class="form-control" valid-number-upto-one-decimal ng-model="i.MediumTreatedArea" ng-change="checkMArea(i)" minlength="1" maxlength="10" />
                                                 </td>
                                                 <td ng-show="slht" style="vertical-align: middle">{{(i.HighTreatedArea).toFixed(1)}}</td>
                                                 <td ng-show="sthl" style="vertical-align: middle">
-                                                    <input type="text" class="form-control" valid-number-upto-one-decimal ng-model="i.HighTreatedArea" minlength="1" maxlength="10" />
+                                                    <input type="text" class="form-control" valid-number-upto-one-decimal ng-model="i.HighTreatedArea" ng-change="checkHArea(i)" minlength="1" maxlength="10" />
                                                 </td>
                                                 <td style="vertical-align: middle">{{(i.LowTreatedArea -- i.MediumTreatedArea -- i.HighTreatedArea).toFixed(1)}}</td>
                                             </tr>

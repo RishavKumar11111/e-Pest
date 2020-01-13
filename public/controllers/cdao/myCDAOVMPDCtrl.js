@@ -145,6 +145,34 @@ app.controller('myCDAOVMPDCtrl', function($scope, $http) {
         $scope.getPestDetails();
     };
 
+    var laa = null; var maa = null; var haa = null; var lta = null; var mta = null; var hta = null;
+    var convertValid = function(i) {
+        laa = i.LowAffectedArea == null ? '0' : i.LowAffectedArea == undefined ? '0' : i.LowAffectedArea == '' ? '0' : i.LowAffectedArea,
+        maa = i.MediumAffectedArea == null ? '0' : i.MediumAffectedArea == undefined ? '0' : i.MediumAffectedArea == '' ? '0' : i.MediumAffectedArea,
+        haa = i.HighAffectedArea == null ? '0' : i.HighAffectedArea == undefined ? '0' : i.HighAffectedArea == '' ? '0' : i.HighAffectedArea,
+        lta = i.LowTreatedArea == null ? '0' : i.LowTreatedArea == undefined ? '0' : i.LowTreatedArea == '' ? '0' : i.LowTreatedArea,
+        mta = i.MediumTreatedArea == null ? '0' : i.MediumTreatedArea == undefined ? '0' : i.MediumTreatedArea == '' ? '0' : i.MediumTreatedArea,
+        hta = i.HighTreatedArea == null ? '0' : i.HighTreatedArea == undefined ? '0' : i.HighTreatedArea == '' ? '0' : i.HighTreatedArea
+        var obj = { laa: parseFloat(laa), maa: parseFloat(maa), haa: parseFloat(haa), lta: parseFloat(lta), mta: parseFloat(mta), hta: parseFloat(hta) };
+        return obj;
+    };
+
+    $scope.checkMArea = function(i) {
+        var k = convertValid(i);
+        if (!(k.mta <= k.maa && ((k.lta + k.mta + k.hta) <= (k.laa + k.maa + k.haa)))) {
+            alert('Medium Treated Area cannot be more than Medium Affected Area. Total Treated Area must be less than Total Affected Area.');
+            i.MediumTreatedArea = null;
+        }
+    };
+
+    $scope.checkHArea = function(i) {
+        var k = convertValid(i);
+        if (!(k.hta <= k.haa && ((k.lta + k.mta + k.hta) <= (k.laa + k.maa + k.haa)))) {
+            alert('High Treated Area cannot be more than High Affected Area. Total Treated Area must be less than Total Affected Area.');
+            i.HighTreatedArea = null;
+        }
+    };
+
     $scope.updatePDE = function(isValid) {
         if (isValid) {
             if ($scope.ddlBlock != null && $scope.ddlBlock != undefined) {
