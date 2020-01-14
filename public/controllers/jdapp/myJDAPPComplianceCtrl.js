@@ -42,7 +42,7 @@ app.controller('myJDAPPComplianceCtrl', function($scope, $http) {
     };
 
     $scope.getTargetedGP = function (blockCode) {
-            $http.get('http://localhost:3000/jdapp/getTargetedGP?blockCode=' + blockCode).then(function success(response) {
+            $http.get('http://localhost:3000/jdapp/getTargetedGP?blockCode=' + blockCode + '&season=' + $scope.rbs).then(function success(response) {
             $scope.targetedGPData = response.data;
         }, function error(response) {
             console.log(response.status);

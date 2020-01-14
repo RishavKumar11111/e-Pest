@@ -687,7 +687,8 @@ router.get('/getComplianceReport', function (req, res, next) {
 router.get('/getTargetedGP', function (req, res, next) {
   res.get('X-Frame-Options');
   var blockCode = req.query.blockCode;
-  balModule.getTargetedGP(blockCode).then(function success(response) {
+  var season = req.query.season;
+  balModule.getTargetedGP(blockCode, season).then(function success(response) {
     res.send(response);
   }, function error(response) {
     console.log(response.status);

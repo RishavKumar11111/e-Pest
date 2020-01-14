@@ -454,9 +454,9 @@ exports.getComplianceReport = function (dateOfEntry, season, userType, userName,
     });
 };
 
-exports.getTargetedGP = function (blockCode) {
-    return sequelize.query('select a.GPCode, GPName from VAWGPTargets a left join LGDGP b on a.GPCode = b.GPCode left join LGDBlock c on c.BlockCode = b.BlockCode where c.BlockCode = :block_code', {
-        replacements: { block_code: blockCode }, type: sequelize.QueryTypes.SELECT
+exports.getTargetedGP = function (blockCode, season) {
+    return sequelize.query('select a.GPCode, GPName from VAWGPTargets a left join LGDGP b on a.GPCode = b.GPCode left join LGDBlock c on c.BlockCode = b.BlockCode where c.BlockCode = :block_code and season = :season', {
+        replacements: { block_code: blockCode, season: season }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
         return data;
     }).catch(function error(err) {
