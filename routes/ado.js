@@ -137,6 +137,11 @@ router.get('/emergencyCaseReport', csrfProtection, permit.permission('ADO'), cac
   res.render('ado/emergencycasereport', { title: 'ADO Emergency Case Report', csrfToken: req.csrfToken() });
 });
 
+router.get('/complianceReport', csrfProtection, permit.permission('ADO'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+  res.get('X-Frame-Options');
+  res.render('ado/compliancereport', { title: 'ADO Compliance Report', csrfToken: req.csrfToken() });
+});
+
 router.get('/changePassword', csrfProtection, permit.permission('ADO'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
   req.session.RandomNo = randomNumber();
   res.get('X-Frame-Options');
@@ -636,6 +641,44 @@ router.get('/getEMRReferenceNoDetailsADO', function(req, res, next) {
     console.log(response.status);
   }).catch(function err(error) {
     console.log('An error occurred...', error);
+  });
+});
+
+router.get('/getComplianceReport', function (req, res, next) {
+  res.get('X-Frame-Options');
+  var dateOfEntry = req.query.dateOfEntry;
+  var season = req.query.season;
+  var userType = req.session.role;
+  var userName = req.session.username;
+  var financialYear = req.query.financialYear;
+  balModule.getComplianceReport(dateOfEntry, season,userType, userName, financialYear, function success(response) {
+    res.send(response);
+  }, function error(response) {
+    console.log(response.status);
+  });
+});
+
+router.get('/getTargetedGP', function (req, res, next) {
+  res.get('X-Frame-Options');
+  var blockCode = req.query.blockCode;
+  balModule.getTargetedGP(blockCode).then(function success(response) {
+    res.send(response);
+  }, function error(response) {
+    console.log(response.status);
+  }).catch(function err(error) {
+    console.log('An error occurred...', error);
+  });
+});
+
+router.get('/getSurveyGP', function (req, res, next) {
+  res.get('X-Frame-Options');
+  var dateOfEntry = req.query.dateOfEntry;
+  var blockCode = req.query.blockCode;
+  var season = req.query.season;
+  balModule.getSurveyGP(dateOfEntry, blockCode, season, function success(response) {
+    res.send(response);
+  }, function error(response) {
+    console.log(response.status);
   });
 });
 

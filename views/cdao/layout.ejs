@@ -81,6 +81,7 @@
                                             <li><a href="#!viewPestDetails"><i class="fa fa-table"></i> View Pest Details</span></a></li>
                                             <li><a href="#!lighTtrapCatchReport"><i class="fa fa-table"></i> Light Trap Catch Report</span></a></li>
                                             <li><a href="#!vawInspectionReport"><i class="fa fa-table"></i> View Inspection Report</span></a></li>
+                                            <li><a href="#!complianceReport"><i class="fa fa-table"></i> Compliance Report</span></a></li>
                                             <li><a href="#!aaoDetails"><i class="fa fa-table"></i> AAO Details</span></a></li>
                                             <li><a href="#!vawDetails"><i class="fa fa-table"></i> VAW Details</span></a></li>
                                             <li><a href="#!vawGPTargetDetails"><i class="fa fa-table"></i> VAW GP Target Details</span></a></li>
@@ -258,6 +259,9 @@
             }).when("/emergencyCaseReport", {
                 templateUrl: "cdao/emergencyCaseReport",
                 controller: 'myCDAOEMRCRCtrl'
+            }).when("/complianceReport", {
+                templateUrl: "cdao/complianceReport",
+                controller: 'myCDAOComplianceCtrl'
             }).otherwise({
                   redirectTo: "/"
             });
@@ -299,6 +303,7 @@
     <script src="../../public/controllers/cdao/myCDAOLTCRCtrl.js"></script>
     <script src="../../public/controllers/cdao/myCDAOVAWIRCtrl.js"></script>
     <script src="../../public/controllers/cdao/myCDAOEMRCRCtrl.js"></script>
+    <script src="../../public/controllers/cdao/myCDAOComplianceCtrl.js"></script>
     <!-- jQuery -->
     <script src="../../gentelella/vendors/jquery/dist/jquery.min.js"></script>
     <script src="../../public/javascripts/jquery.table2excel.min.js"></script>

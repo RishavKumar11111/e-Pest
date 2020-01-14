@@ -430,3 +430,57 @@ exports.getEMRReferenceNoDetailsADO = function (emrRefNo) {
         console.log('An error occurred...', err);
     });
 };
+
+exports.getComplianceReport = function (dateOfEntry, season, userType, userName, financialYear, callback) {
+    var con = new sql.ConnectionPool(locConfig);
+    con.connect().then(function success() {
+        const request = new sql.Request(con);
+        request.input('DateOfEntry', dateOfEntry);
+        request.input('Season', season);
+        request.input('FinancialYear', financialYear);
+        request.input('UserType', userType);
+        request.input('Username', userName);
+        request.execute('spComplianceReport', function (err, result) {
+            if (err) {
+                console.log('An error occurred...', err);
+            }
+            else {
+                callback(result.recordsets);
+            }
+            con.close();
+        });
+    }).catch(function error(err) {
+        console.log('An error occurred...', err);
+    });
+};
+
+exports.getTargetedGP = function (blockCode) {
+    return sequelize.query('select a.GPCode, GPName from VAWGPTargets a left join LGDGP b on a.GPCode = b.GPCode left join LGDBlock c on c.BlockCode = b.BlockCode where c.BlockCode = :block_code', {
+        replacements: { block_code: blockCode }, type: sequelize.QueryTypes.SELECT
+    }).then(function success(data) {
+        return data;
+    }).catch(function error(err) {
+        console.log('An error occurred...', err);
+    });
+};
+
+exports.getSurveyGP = function (dateOfEntry, blockCode, season, callback) {
+    var con = new sql.ConnectionPool(locConfig);
+    con.connect().then(function success() {
+        const request = new sql.Request(con);
+        request.input('DateOfEntry', dateOfEntry);
+        request.input('BlockCode', blockCode);
+        request.input('Season', season);
+        request.execute('spComplianceReportSurvey', function (err, result) {
+            if (err) {
+                console.log('An error occurred...', err);
+            }
+            else {
+                callback(result.recordsets);
+            }
+            con.close();
+        });
+    }).catch(function error(err) {
+        console.log('An error occurred...', err);
+    });
+};

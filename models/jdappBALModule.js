@@ -938,6 +938,8 @@ exports.getComplianceReport = function (dateOfEntry, season, financialYear, call
         request.input('DateOfEntry', dateOfEntry);
         request.input('Season', season);
         request.input('FinancialYear', financialYear);
+        request.input('Username', '');
+        request.input('UserType', '');
         request.execute('spComplianceReport', function (err, result) {
             if (err) {
                 console.log('An error occurred...', err);
@@ -962,12 +964,13 @@ exports.getTargetedGP = function (blockCode) {
     });
 };
 
-exports.getSurveyGP = function (dateOfEntry, blockCode, callback) {
+exports.getSurveyGP = function (dateOfEntry, blockCode, season, callback) {
     var con = new sql.ConnectionPool(locConfig);
     con.connect().then(function success() {
         const request = new sql.Request(con);
         request.input('DateOfEntry', dateOfEntry);
         request.input('BlockCode', blockCode);
+        request.input('Season', season);
         request.execute('spComplianceReportSurvey', function (err, result) {
             if (err) {
                 console.log('An error occurred...', err);

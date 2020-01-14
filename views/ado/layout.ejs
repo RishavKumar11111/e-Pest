@@ -80,6 +80,7 @@
                                         <li><a href="#!viewPestDetails"><i class="fa fa-table"></i> View Pest details</a></li>
                                         <li><a href="#!lighttTrapcatchReport"><i class="fa fa-table"></i> Light Trap Catch Report</a></li>
                                         <li><a href="#!vawInspectionReport"><i class="fa fa-table"></i> VAW Inspection Report</a></li>
+                                        <li><a href="#!complianceReport"><i class="fa fa-table"></i> Compliance Report</span></a></li>
                                         <li><a href="#!aaoDetails"><i class="fa fa-table"></i> AAO Details</span></a></li>
                                         <li><a href="#!vawDetails"><i class="fa fa-table"></i> VAW Details</span></a></li>
                                         <li><a href="#!vawGPTargetDetails"><i class="fa fa-table"></i> VAW GP Target Details</span></a></li>
@@ -246,6 +247,9 @@
             }).when("/emergencyCaseReport", {
                templateUrl: "ado/emergencyCaseReport",
                controller: 'myADOEMRCRCtrl'
+            }).when("/complianceReport", {
+                templateUrl: "ado/complianceReport",
+                controller: 'myADOComplianceCtrl'
             }).otherwise({
                   redirectTo: "/"
             });
@@ -288,6 +292,7 @@
     <script src="../../public/controllers/ado/myADOLTCRCtrl.js"></script>
     <script src="../../public/controllers/ado/myADOVAWIRCtrl.js"></script>
     <script src="../../public/controllers/ado/myADOEMRCRCtrl.js"></script>
+    <script src="../../public/controllers/ado/myADOComplianceCtrl.js"></script>
     <!-- jQuery -->
     <script src="../../gentelella/vendors/jquery/dist/jquery.min.js"></script>
     <script src="../../public/javascripts/jquery.table2excel.min.js"></script>

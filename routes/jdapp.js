@@ -1058,7 +1058,8 @@ router.get('/getSurveyGP', function (req, res, next) {
   res.get('X-Frame-Options');
   var dateOfEntry = req.query.dateOfEntry;
   var blockCode = req.query.blockCode;
-  balModule.getSurveyGP(dateOfEntry, blockCode, function success(response) {
+  var season = req.query.season;
+  balModule.getSurveyGP(dateOfEntry, blockCode, season, function success(response) {
     res.send(response);
   }, function error(response) {
     console.log(response.status);

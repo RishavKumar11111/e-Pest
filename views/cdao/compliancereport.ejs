@@ -1,4 +1,4 @@
-<div class="right_col" role="main" ng-controller="myJDAPPComplianceCtrl" style="min-height: 100vh">
+<div class="right_col" role="main" ng-controller="myCDAOComplianceCtrl" style="min-height: 100vh">
     <div class="">
         <div class="page-title">
             <div class="title_left">
@@ -89,12 +89,12 @@
                     <div class="x_content">
                         <br />
                         <div class="form-horizontal table table-responsive" ng-show="complianceDetails.length > 0">
+                            <input type="button" class="btn btn-info" value="Print" ng-click="printNext($event, 'Compliance Report')" style="margin-bottom: 10px; float: right" />
                             <input type="button" class="btn btn-primary" value="Export to Excel" onclick="ExportToExcel(this, 'Compliance Report')" style="margin-bottom: 10px; float: right" />
-                            <table style="display: none" id="sadData" class="table table-hover table-striped jambo_table bulk_action">
+                            <table id="sadData" class="table table-hover table-striped jambo_table bulk_action">
                                 <thead>
                                     <tr class="headings">
                                         <td style="vertical-align: middle"><b>Serial No.</b></td>
-                                        <td style="vertical-align: middle"><b>District</b></td>
                                         <td style="vertical-align: middle"><b>Block</b></td>
                                         <td style="vertical-align: middle"><b>Number of GPs selected for survey</b></td>
                                         <td style="vertical-align: middle"><b>Number of GPs in which survey was conducted</b></td>
@@ -102,50 +102,13 @@
                                         <td style="vertical-align: middle"><b>Actual area surveyed by VAWs (in Ha)</b></td>
                                     </tr>
                                 </thead>
-                                <tr ng-repeat="i in complianceDetails | orderBy: 'DistrictName'">
+                                <tr ng-repeat="i in complianceDetails | orderBy: 'BlockName'">
                                     <td style="vertical-align: middle">{{$index + 1}}</td>
-                                    <td style="vertical-align: middle">{{i.DistrictName | capitalize}}</td>
                                     <td style="vertical-align: middle">{{i.BlockName | capitalize}}</td>
-                                    <td style="vertical-align: middle">{{i.GPCount}}</td>
-                                    <td style="vertical-align: middle">{{i.GPSurveyed}}</td>
-                                    <td style="vertical-align: middle">{{i.GPNotSurveyed}}</td>
+                                    <td style="vertical-align: middle" ng-click="getTargetedGP(i.BlockCode)" data-toggle="modal" data-target="#TargetedGPModal"><a href="">{{i.GPCount}}</a></td>
+                                    <td style="vertical-align: middle" ng-click="getSurveyGP(i.BlockCode)" data-toggle="modal" data-target="#SurveyGPModal"><a href="">{{i.GPSurveyed}}</a></td>
+                                    <td style="vertical-align: middle" ng-click="getSurveyGP(i.BlockCode)" data-toggle="modal" data-target="#NotSurveyGPModal"><a href="">{{i.GPNotSurveyed}}</a></td>
                                     <td style="vertical-align: middle">{{i.AreaOfLand == null ? 0 : i.AreaOfLand}}</td>
-                                </tr>
-                            </table>
-                            <input type="button" class="btn btn-info" value="Print" ng-click="print($event, 'Compliance Report')" style="margin-bottom: 10px; float: right" />
-                            <table id="sadPrint" class="table table-hover table-striped jambo_table bulk_action">
-                                <thead>
-                                    <tr class="headings">
-                                        <td style="vertical-align: middle"><b>Serial No.</b></td>
-                                        <td style="vertical-align: middle"><b>District</b></td>
-                                        <td style="vertical-align: middle"><b>Block Details</b></td>
-                                    </tr>
-                                </thead>
-                                <tr ng-repeat="(key, value) in complianceDetails | orderBy: 'DistrictName' | groupBy: 'DistrictName'">
-                                    <td style="vertical-align: middle">{{$index + 1}}</td>
-                                    <td style="vertical-align: middle">{{key | capitalize}}</td>
-                                    <td>
-                                        <table class="table table-hover table-striped jambo_table bulk_action">
-                                            <thead>
-                                                <tr class="headings">
-                                                    <td><b>Serial No.</b></td>
-                                                    <td><b>Block</b></td>
-                                                    <td><b>Number of GPs selected for survey</b></td>
-                                                    <td><b>Number of GPs in which survey was conducted</b></td>
-                                                    <td><b>Number of GPs in which survey was not conducted</b></td>
-                                                    <td><b>Actual area surveyed by VAWs (in Ha)</b></td>
-                                                </tr>
-                                            </thead>
-                                            <tr ng-repeat="i in value | orderBy: 'BlockName'">
-                                                <td style="vertical-align: middle">{{$index + 1}}</td>
-                                                <td style="vertical-align: middle">{{i.BlockName | capitalize}}</td>
-                                                <td style="vertical-align: middle" ng-click="getTargetedGP(i.BlockCode)" data-toggle="modal" data-target="#TargetedGPModal"><a href="">{{i.GPCount}}</a></td>
-                                                <td style="vertical-align: middle" ng-click="getSurveyGP(i.BlockCode)" data-toggle="modal" data-target="#SurveyGPModal"><a href="">{{i.GPSurveyed}}</a></td>
-                                                <td style="vertical-align: middle" ng-click="getSurveyGP(i.BlockCode)" data-toggle="modal" data-target="#NotSurveyGPModal"><a href="">{{i.GPNotSurveyed}}</a></td>
-                                                <td style="vertical-align: middle">{{i.AreaOfLand == null ? 0 : i.AreaOfLand}}</td>
-                                            </tr>
-                                        </table>
-                                    </td>
                                 </tr>
                             </table>
                         </div>
