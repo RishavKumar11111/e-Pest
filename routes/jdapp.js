@@ -1180,18 +1180,6 @@ router.get('/getEMRReferenceNoDetails', function(req, res, next) {
   });
 });
 
-router.get('/getCropCategoryPestDiseases', function(req, res, next) {
-  res.get('X-Frame-Options');
-  var cropCategoryCode = req.query.cropCategoryCode;
-  balModule.getCropCategoryPestDiseases(cropCategoryCode).then(function success(response) {
-    res.send(response);
-  }, function error(response) {
-    console.log(response.status);
-  }).catch(function err(error) {
-    console.log('An error occurred...', error);
-  });
-});
-
 router.post('/getPestGraphData', parseForm, csrfProtection, permit.permission('JDA_PP'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
   res.get('X-Frame-Options');
   balModule.addActivityLog(req.connection.remoteAddress, req.session.username, getURL(req), req.device.type.toUpperCase(), os.platform(), req.headers['user-agent'], '/getPestGraphData', 'INSERT', 'POST', function success(response) {

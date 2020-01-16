@@ -3,9 +3,9 @@ var sequelize = dbConfig.sequelize;
 var sql = dbConfig.sql;
 var locConfig = dbConfig.locConfig;
 
-exports.addActivityLog = function(ipAddress, userID, url, deviceType, os, browser, action, attack, mode) {
+exports.addActivityLog = function (ipAddress, userID, url, deviceType, os, browser, action, attack, mode) {
     sequelize.query('insert into ActivityLog (IPAddress, UserID, URL, DeviceType, OS, Browser, DateTime, Action, Attack, Mode) values (:ip_address, :user_id, :url, :device_type, :os, :browser, getdate(), :action, :attack, :mode)', {
-    replacements: { ip_address: ipAddress, user_id: userID, url: url, device_type: deviceType, os: os, browser: browser, action: action, attack: attack, mode: mode}, type: sequelize.QueryTypes.SELECT
+        replacements: { ip_address: ipAddress, user_id: userID, url: url, device_type: deviceType, os: os, browser: browser, action: action, attack: attack, mode: mode }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
         return data;
     }).catch(function error(err) {
@@ -13,7 +13,7 @@ exports.addActivityLog = function(ipAddress, userID, url, deviceType, os, browse
     });
 };
 
-exports.getCrops = function() {
+exports.getCrops = function () {
     return sequelize.query('select CropCode, CropName from Crop where IsActive = 1 order by CropName', {
         type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
@@ -23,15 +23,15 @@ exports.getCrops = function() {
     });
 };
 
-exports.getPestCount = function(obj, arr, callback) {
+exports.getPestCount = function (obj, arr, callback) {
     var con = new sql.ConnectionPool(locConfig);
     con.connect().then(function success() {
         const tablePesticideEntry = new sql.Table();
         tablePesticideEntry.create = true;
-        tablePesticideEntry.columns.add('PesticideName', sql.VarChar(300), {nullable: false});
-        tablePesticideEntry.columns.add('PesticideNameOdia', sql.NVarChar(300), {nullable: false});
-        tablePesticideEntry.columns.add('RecommendedDose', sql.VarChar(100), {nullable: false});
-        tablePesticideEntry.columns.add('RecommendedDoseOdia', sql.NVarChar(100), {nullable: false});
+        tablePesticideEntry.columns.add('PesticideName', sql.VarChar(300), { nullable: false });
+        tablePesticideEntry.columns.add('PesticideNameOdia', sql.NVarChar(300), { nullable: false });
+        tablePesticideEntry.columns.add('RecommendedDose', sql.VarChar(100), { nullable: false });
+        tablePesticideEntry.columns.add('RecommendedDoseOdia', sql.NVarChar(100), { nullable: false });
         for (var i = 0; i < arr.length; i++) {
             tablePesticideEntry.rows.add(arr[i].PesticideName, arr[i].PesticideNameOdia, arr[i].RecommendedDose, arr[i].RecommendedDoseOdia);
         }
@@ -40,7 +40,7 @@ exports.getPestCount = function(obj, arr, callback) {
         request.input('CropType', obj.CropType);
         request.input('PestDiseaseName', obj.PestDiseaseName);
         request.input('tablePesticideEntry', tablePesticideEntry)
-        request.execute('spGetPestCount', function(err, result) {
+        request.execute('spGetPestCount', function (err, result) {
             if (err) {
                 console.log('An error occurred...', err);
             }
@@ -54,17 +54,17 @@ exports.getPestCount = function(obj, arr, callback) {
     });
 };
 
-exports.submitAD = function(obj, arr, callback) {
+exports.submitAD = function (obj, arr, callback) {
     var con = new sql.ConnectionPool(locConfig);
     con.connect().then(function success() {
         const tableAdvisoryEntry = new sql.Table();
         tableAdvisoryEntry.create = true;
-        tableAdvisoryEntry.columns.add('PesticideCode', sql.Int, {nullable: false, primary: true});
-        tableAdvisoryEntry.columns.add('PesticideName', sql.VarChar(300), {nullable: false});
-        tableAdvisoryEntry.columns.add('PesticideNameOdia', sql.NVarChar(300), {nullable: false});
-        tableAdvisoryEntry.columns.add('RecommendedDose', sql.VarChar(100), {nullable: false});
-        tableAdvisoryEntry.columns.add('RecommendedDoseOdia', sql.NVarChar(100), {nullable: false});
-        tableAdvisoryEntry.columns.add('PestDiseaseCode', sql.Int, {nullable: false});
+        tableAdvisoryEntry.columns.add('PesticideCode', sql.Int, { nullable: false, primary: true });
+        tableAdvisoryEntry.columns.add('PesticideName', sql.VarChar(300), { nullable: false });
+        tableAdvisoryEntry.columns.add('PesticideNameOdia', sql.NVarChar(300), { nullable: false });
+        tableAdvisoryEntry.columns.add('RecommendedDose', sql.VarChar(100), { nullable: false });
+        tableAdvisoryEntry.columns.add('RecommendedDoseOdia', sql.NVarChar(100), { nullable: false });
+        tableAdvisoryEntry.columns.add('PestDiseaseCode', sql.Int, { nullable: false });
         for (var i = 0; i < arr.length; i++) {
             tableAdvisoryEntry.rows.add(arr[i].PesticideCode, arr[i].PesticideName, arr[i].PesticideNameOdia, arr[i].RecommendedDose, arr[i].RecommendedDoseOdia, arr[i].PestDiseaseCode);
         }
@@ -74,36 +74,7 @@ exports.submitAD = function(obj, arr, callback) {
         request.input('CropType', obj.CropType);
         request.input('CropCode', obj.CropCode);
         request.input('tableAdvisoryEntry', tableAdvisoryEntry);
-        request.execute('spSubmitAD', function(err, result) {
-            if (err) {
-                console.log('An error occurred...', err);
-            }
-            else{
-                callback(result.returnValue);
-            }
-            con.close();
-        });
-    }).catch(function error(err) {
-        console.log('An error occurred...', err);
-    });
-};
-
-exports.submitEF = function(arr, callback) {
-    var con = new sql.ConnectionPool(locConfig);
-    con.connect().then(function success() {
-        const tableEFAdvisoryEntry = new sql.Table();
-        tableEFAdvisoryEntry.create = true;
-        tableEFAdvisoryEntry.columns.add('CropCode', sql.Int, {nullable: false});
-        tableEFAdvisoryEntry.columns.add('CropType', sql.VarChar(10), {nullable: false});
-        tableEFAdvisoryEntry.columns.add('PestDiseaseName', sql.VarChar(300), {nullable: false});
-        tableEFAdvisoryEntry.columns.add('PesticideName', sql.VarChar(300), {nullable: false});
-        tableEFAdvisoryEntry.columns.add('RecommendedDose', sql.VarChar(100), {nullable: false});
-        for (var i = 0; i < arr.length; i++) {
-            tableEFAdvisoryEntry.rows.add(arr[i].CropCode, arr[i].CropType, arr[i].PestDiseaseName, arr[i].PesticideName, arr[i].RecommendedDose);
-        }
-        const request = new sql.Request(con);
-        request.input('tableEFAdvisoryEntry', tableEFAdvisoryEntry)
-        request.execute('spSubmitEF', function(err, result) {
+        request.execute('spSubmitAD', function (err, result) {
             if (err) {
                 console.log('An error occurred...', err);
             }
@@ -117,7 +88,36 @@ exports.submitEF = function(arr, callback) {
     });
 };
 
-exports.getLockedAccounts = function() {
+exports.submitEF = function (arr, callback) {
+    var con = new sql.ConnectionPool(locConfig);
+    con.connect().then(function success() {
+        const tableEFAdvisoryEntry = new sql.Table();
+        tableEFAdvisoryEntry.create = true;
+        tableEFAdvisoryEntry.columns.add('CropCode', sql.Int, { nullable: false });
+        tableEFAdvisoryEntry.columns.add('CropType', sql.VarChar(10), { nullable: false });
+        tableEFAdvisoryEntry.columns.add('PestDiseaseName', sql.VarChar(300), { nullable: false });
+        tableEFAdvisoryEntry.columns.add('PesticideName', sql.VarChar(300), { nullable: false });
+        tableEFAdvisoryEntry.columns.add('RecommendedDose', sql.VarChar(100), { nullable: false });
+        for (var i = 0; i < arr.length; i++) {
+            tableEFAdvisoryEntry.rows.add(arr[i].CropCode, arr[i].CropType, arr[i].PestDiseaseName, arr[i].PesticideName, arr[i].RecommendedDose);
+        }
+        const request = new sql.Request(con);
+        request.input('tableEFAdvisoryEntry', tableEFAdvisoryEntry)
+        request.execute('spSubmitEF', function (err, result) {
+            if (err) {
+                console.log('An error occurred...', err);
+            }
+            else {
+                callback(result.returnValue);
+            }
+            con.close();
+        });
+    }).catch(function error(err) {
+        console.log('An error occurred...', err);
+    });
+};
+
+exports.getLockedAccounts = function () {
     return sequelize.query('select UserID, b.RoleName from UserLogin a inner join UserRole b on a.RoleID = b.RoleID where AccessFailedCount = 5', {
         type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
@@ -127,9 +127,9 @@ exports.getLockedAccounts = function() {
     });
 };
 
-exports.unlock = function(userID, callback) {
+exports.unlock = function (userID, callback) {
     sequelize.query('update UserLogin set AccessFailedCount = 0 where UserID = :user_id', {
-    replacements: { user_id: userID }, type: sequelize.QueryTypes.SELECT
+        replacements: { user_id: userID }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
         callback(true);
     }).catch(function error(err) {
@@ -137,22 +137,22 @@ exports.unlock = function(userID, callback) {
     });
 };
 
-exports.unlockAll = function(userIDs, callback) {
+exports.unlockAll = function (userIDs, callback) {
     var con = new sql.ConnectionPool(locConfig);
     con.connect().then(function success() {
         const tableUserIDs = new sql.Table();
         tableUserIDs.create = true;
-        tableUserIDs.columns.add('UserID', sql.VarChar(50), {nullable: false, primary: true});
+        tableUserIDs.columns.add('UserID', sql.VarChar(50), { nullable: false, primary: true });
         for (var i = 0; i < userIDs.length; i++) {
             tableUserIDs.rows.add(userIDs[i].UserID);
         }
         const request = new sql.Request(con);
         request.input('tableUserIDs', tableUserIDs);
-        request.execute('spUnlockAll', function(err, result) {
+        request.execute('spUnlockAll', function (err, result) {
             if (err) {
                 console.log('An error occurred...', err);
             }
-            else{
+            else {
                 callback(result.returnValue);
             }
             con.close();
@@ -162,22 +162,22 @@ exports.unlockAll = function(userIDs, callback) {
     });
 };
 
-exports.resetPasswords = function(userIDs, callback) {
+exports.resetPasswords = function (userIDs, callback) {
     var con = new sql.ConnectionPool(locConfig);
     con.connect().then(function success() {
         const tableUserIDs = new sql.Table();
         tableUserIDs.create = true;
-        tableUserIDs.columns.add('UserID', sql.VarChar(50), {nullable: false, primary: true});
+        tableUserIDs.columns.add('UserID', sql.VarChar(50), { nullable: false, primary: true });
         for (var i = 0; i < userIDs.length; i++) {
             tableUserIDs.rows.add(userIDs[i].UserID);
         }
         const request = new sql.Request(con);
         request.input('tableUserIDs', tableUserIDs);
-        request.execute('spResetPasswords', function(err, result) {
+        request.execute('spResetPasswords', function (err, result) {
             if (err) {
                 console.log('An error occurred...', err);
             }
-            else{
+            else {
                 callback(result.returnValue);
             }
             con.close();
@@ -187,7 +187,7 @@ exports.resetPasswords = function(userIDs, callback) {
     });
 };
 
-exports.getCropCategories = function() {
+exports.getCropCategories = function () {
     return sequelize.query('select * from CropCategory where IsActive = 1', {
         type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
@@ -197,7 +197,7 @@ exports.getCropCategories = function() {
     });
 };
 
-exports.getCropsByCategory = function(cropCategoryCode) {
+exports.getCropsByCategory = function (cropCategoryCode) {
     return sequelize.query('select CropCode, CropName from Crop where CropCategoryCode = :crop_category_code and IsActive = 1', {
         replacements: { crop_category_code: cropCategoryCode }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
@@ -207,7 +207,7 @@ exports.getCropsByCategory = function(cropCategoryCode) {
     });
 };
 
-exports.getRefNoDetails = function(cropCode, season, pestDiseaseCode, intensityType, callback) {
+exports.getRefNoDetails = function (cropCode, season, pestDiseaseCode, intensityType, callback) {
     var con = new sql.ConnectionPool(locConfig);
     con.connect().then(function success() {
         const request = new sql.Request(con);
@@ -215,7 +215,7 @@ exports.getRefNoDetails = function(cropCode, season, pestDiseaseCode, intensityT
         request.input('Season', season);
         request.input('PestDiseaseCode', pestDiseaseCode);
         request.input('IntensityType', intensityType);
-        request.execute('spGetRefNoDetailsJDAPP', function(err, result) {
+        request.execute('spGetRefNoDetailsJDAPP', function (err, result) {
             if (err) {
                 console.log('An error occurred...', err);
             }
@@ -259,16 +259,16 @@ exports.getPD = function (referenceNo) {
     });
 };
 
-exports.getPestDiseases = function(cropCode, callback) {
+exports.getPestDiseases = function (cropCode, callback) {
     var con = new sql.ConnectionPool(locConfig);
     con.connect().then(function success() {
         const request = new sql.Request(con);
         request.input('CropCode', cropCode);
-        request.execute('spGetPestDisease', function(err, result) {
+        request.execute('spGetPestDisease', function (err, result) {
             if (err) {
                 console.log('An error occurred...', err);
             }
-            else{
+            else {
                 callback(result.recordset);
             }
             con.close();
@@ -278,7 +278,7 @@ exports.getPestDiseases = function(cropCode, callback) {
     });
 };
 
-exports.getPestPopulation = function(pestDiseaseCode) {
+exports.getPestPopulation = function (pestDiseaseCode) {
     return sequelize.query('select pdi.PestDiseaseCode, pd.PestDiseaseName, pdi.HighIntensityPopulation, pdi.ModerateIntensityPopulation from PestDiseaseIntensity pdi inner join PestDisease pd on pdi.PestDiseaseCode = pd.PestDiseaseCode where pdi.PestDiseaseCode = :pest_disease_code', {
         replacements: { pest_disease_code: pestDiseaseCode }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
@@ -288,7 +288,7 @@ exports.getPestPopulation = function(pestDiseaseCode) {
     });
 };
 
-exports.getPesticide = function(pestDiseaseCode) {
+exports.getPesticide = function (pestDiseaseCode) {
     return sequelize.query('select * from Pesticide where PestDiseaseCode = :pest_disease_code', {
         replacements: { pest_disease_code: pestDiseaseCode }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
@@ -298,7 +298,7 @@ exports.getPesticide = function(pestDiseaseCode) {
     });
 };
 
-exports.updatePestDetails = function(obj, callback) {
+exports.updatePestDetails = function (obj, callback) {
     var con = new sql.ConnectionPool(locConfig);
     con.connect().then(function success() {
         const request = new sql.Request(con);
@@ -321,11 +321,11 @@ exports.updatePestDetails = function(obj, callback) {
         request.input('Status', obj.Status);
         request.input('IPAddress', obj.IPAddress);
         request.input('FinancialYear', obj.FinancialYear);
-        request.execute('spUpdatePestDetailsJDAPP', function(err, result) {
+        request.execute('spUpdatePestDetailsJDAPP', function (err, result) {
             if (err) {
                 console.log('An error occurred...', err);
             }
-            else{
+            else {
                 callback(result.returnValue);
             }
             con.close();
@@ -335,13 +335,13 @@ exports.updatePestDetails = function(obj, callback) {
     });
 };
 
-exports.updateMADetails = function(arr, obj, callback) {
+exports.updateMADetails = function (arr, obj, callback) {
     var con = new sql.ConnectionPool(locConfig);
     con.connect().then(function success() {
         const request = new sql.Request(con);
         const tableVAWRefNo = new sql.Table();
         tableVAWRefNo.create = true;
-        tableVAWRefNo.columns.add('ReferenceNo', sql.VarChar(30), {nullable: false, primary: true});
+        tableVAWRefNo.columns.add('ReferenceNo', sql.VarChar(30), { nullable: false, primary: true });
         for (var i = 0; i < arr.length; i++) {
             tableVAWRefNo.rows.add(arr[i].ReferenceNo);
         }
@@ -354,11 +354,11 @@ exports.updateMADetails = function(arr, obj, callback) {
         request.input('IPAddress', obj.IPAddress);
         request.input('FinancialYear', obj.FinancialYear);
         request.input('tableVAWRefNo', tableVAWRefNo);
-        request.execute('spUpdateAdvisoryJDAPP', function(err, result) {
+        request.execute('spUpdateAdvisoryJDAPP', function (err, result) {
             if (err) {
                 console.log('An error occurred...', err);
             }
-            else{
+            else {
                 callback(result.returnValue);
             }
             con.close();
@@ -368,29 +368,29 @@ exports.updateMADetails = function(arr, obj, callback) {
     });
 };
 
-exports.submitDetails = function(arr, callback) {
+exports.submitDetails = function (arr, callback) {
     var con = new sql.ConnectionPool(locConfig);
     con.connect().then(function success() {
         const tableJDAPPSubmit = new sql.Table();
         tableJDAPPSubmit.create = true;
-        tableJDAPPSubmit.columns.add('ReferenceNo', sql.VarChar(30), {nullable: false, primary: true});
-        tableJDAPPSubmit.columns.add('JDAPPAdvisoryModerate', sql.VarChar(1000), {nullable: true});
-        tableJDAPPSubmit.columns.add('JDAPPAdvisoryHigh', sql.VarChar(1000), {nullable: true});
-        tableJDAPPSubmit.columns.add('JDAPPUserID', sql.VarChar(30), {nullable: false});
-        tableJDAPPSubmit.columns.add('JDAPPStatus', sql.Bit, {nullable: false});
-        tableJDAPPSubmit.columns.add('Status', sql.Bit, {nullable: false});
-        tableJDAPPSubmit.columns.add('IPAddress', sql.VarChar(50), {nullable: false});
-        tableJDAPPSubmit.columns.add('FinancialYear', sql.VarChar(10), {nullable: false});
+        tableJDAPPSubmit.columns.add('ReferenceNo', sql.VarChar(30), { nullable: false, primary: true });
+        tableJDAPPSubmit.columns.add('JDAPPAdvisoryModerate', sql.VarChar(1000), { nullable: true });
+        tableJDAPPSubmit.columns.add('JDAPPAdvisoryHigh', sql.VarChar(1000), { nullable: true });
+        tableJDAPPSubmit.columns.add('JDAPPUserID', sql.VarChar(30), { nullable: false });
+        tableJDAPPSubmit.columns.add('JDAPPStatus', sql.Bit, { nullable: false });
+        tableJDAPPSubmit.columns.add('Status', sql.Bit, { nullable: false });
+        tableJDAPPSubmit.columns.add('IPAddress', sql.VarChar(50), { nullable: false });
+        tableJDAPPSubmit.columns.add('FinancialYear', sql.VarChar(10), { nullable: false });
         for (var i = 0; i < arr.length; i++) {
             tableJDAPPSubmit.rows.add(arr[i].ReferenceNo, arr[i].JDAPPAdvisoryModerate, arr[i].JDAPPAdvisoryHigh, arr[i].JDAPPUserID, arr[i].JDAPPStatus, arr[i].Status, arr[i].IPAddress, arr[i].FinancialYear);
         }
         const request = new sql.Request(con);
         request.input('tableJDAPPSubmit', tableJDAPPSubmit);
-        request.execute('spJDAPPSubmit', function(err, result) {
+        request.execute('spJDAPPSubmit', function (err, result) {
             if (err) {
                 console.log('An error occurred...', err);
             }
-            else{
+            else {
                 callback(result.returnValue);
             }
             con.close();
@@ -400,7 +400,7 @@ exports.submitDetails = function(arr, callback) {
     });
 };
 
-exports.getDistricts = function() {
+exports.getDistricts = function () {
     return sequelize.query('select DistrictCode, DistrictName from LGDDistrict', {
         type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
@@ -410,9 +410,9 @@ exports.getDistricts = function() {
     });
 };
 
-exports.getBlocksByDistrict = function(districtCode) {
+exports.getBlocksByDistrict = function (districtCode) {
     return sequelize.query('select BlockCode, BlockName from LGDBlock where DistrictCode = :district_code', {
-        replacements: { district_code : districtCode }, type: sequelize.QueryTypes.SELECT
+        replacements: { district_code: districtCode }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
         return data;
     }).catch(function error(err) {
@@ -420,9 +420,9 @@ exports.getBlocksByDistrict = function(districtCode) {
     });
 };
 
-exports.getAAOVAWMobileNo = function(blockCode) {
+exports.getAAOVAWMobileNo = function (blockCode) {
     return sequelize.query('select AAOMobileNo as MobileNo from AAOBlockMapping where BlockCode = :block_code select VAWMobileNo as MobileNo from VAWGPMapping where BlockCode = :block_code group by VAWMobileNo', {
-        replacements: { block_code : blockCode }, type: sequelize.QueryTypes.SELECT
+        replacements: { block_code: blockCode }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
         return data;
     }).catch(function error(err) {
@@ -430,9 +430,9 @@ exports.getAAOVAWMobileNo = function(blockCode) {
     });
 };
 
-exports.submitBAS = function(obj, callback) {
+exports.submitBAS = function (obj, callback) {
     sequelize.query('insert into BlockwiseAdvisorySMS (AdvisorySMS, DistrictCode, BlockCode, Status, DateTime, IPAddress, FinancialYear) values (:advisory_sms, :district_code, :block_code, :status, getdate(), :ip_address, :financial_year)', {
-    replacements: { advisory_sms: obj.AdvisorySMS, district_code: obj.DistrictCode, block_code: obj.BlockCode, status: obj.Status, ip_address: obj.IPAddress, financial_year: obj.FinancialYear }, type: sequelize.QueryTypes.INSERT
+        replacements: { advisory_sms: obj.AdvisorySMS, district_code: obj.DistrictCode, block_code: obj.BlockCode, status: obj.Status, ip_address: obj.IPAddress, financial_year: obj.FinancialYear }, type: sequelize.QueryTypes.INSERT
     }).then(function success(data) {
         callback(true);
     }).catch(function error(err) {
@@ -440,7 +440,7 @@ exports.submitBAS = function(obj, callback) {
     });
 };
 
-exports.getAdvisorySMS = function() {
+exports.getAdvisorySMS = function () {
     return sequelize.query('select AdvisorySMS, a.DistrictCode, DistrictName, a.BlockCode, BlockName, convert(varchar(10), DateTime, 105) as Date from BlockwiseAdvisorySMS a inner join LGDDistrict b on a.DistrictCode = b.DistrictCode inner join LGDBlock c on a.BlockCode = c.BlockCode', {
         type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
@@ -450,7 +450,7 @@ exports.getAdvisorySMS = function() {
     });
 };
 
-exports.getPestIntensity = function(pestCode) {
+exports.getPestIntensity = function (pestCode) {
     return sequelize.query('select * from PestDiseaseIntensity where PestDiseaseCode = :pest_code', {
         replacements: { pest_code: pestCode }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
@@ -460,25 +460,25 @@ exports.getPestIntensity = function(pestCode) {
     });
 };
 
-exports.submitETL = function(obj, arr, callback) {
+exports.submitETL = function (obj, arr, callback) {
     var con = new sql.ConnectionPool(locConfig);
     con.connect().then(function success() {
         const tableETLEntry = new sql.Table();
         tableETLEntry.create = true;
-        tableETLEntry.columns.add('PestDiseaseCode', sql.Int, {nullable: false, primary: true});
-        tableETLEntry.columns.add('ModerateIntensityPopulation', sql.VarChar(300), {nullable: false});
-        tableETLEntry.columns.add('HighIntensityPopulation', sql.VarChar(100), {nullable: false});
+        tableETLEntry.columns.add('PestDiseaseCode', sql.Int, { nullable: false, primary: true });
+        tableETLEntry.columns.add('ModerateIntensityPopulation', sql.VarChar(300), { nullable: false });
+        tableETLEntry.columns.add('HighIntensityPopulation', sql.VarChar(100), { nullable: false });
         for (var i = 0; i < arr.length; i++) {
             tableETLEntry.rows.add(arr[i].PestDiseaseDetails.PestDiseaseCode, arr[i].ModerateIntensityPopulation, arr[i].HighIntensityPopulation);
         }
         const request = new sql.Request(con);
         request.input('CropCode', obj.CropCode);
         request.input('tableETLEntry', tableETLEntry);
-        request.execute('spSubmitETL', function(err, result) {
+        request.execute('spSubmitETL', function (err, result) {
             if (err) {
                 console.log('An error occurred...', err);
             }
-            else{
+            else {
                 callback(result.returnValue);
             }
             con.close();
@@ -488,7 +488,7 @@ exports.submitETL = function(obj, arr, callback) {
     });
 };
 
-exports.getUserDetails = function(userName) {
+exports.getUserDetails = function (userName) {
     return sequelize.query('select ul.UserID, ul.PasswordHash, ul.RoleID, ul.ContactNo, ul.AccessFailedCount, ul.Status, ur.RoleName from UserLogin ul inner join UserRole ur on ul.RoleID = ur.RoleID where UserID = :user_name', {
         replacements: { user_name: userName }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
@@ -508,7 +508,7 @@ exports.getPasswordHistory = function (userName) {
     });
 };
 
-exports.changePasssword = function(obj, callback) {
+exports.changePasssword = function (obj, callback) {
     var con = new sql.ConnectionPool(locConfig);
     con.connect().then(function success() {
         const request = new sql.Request(con);
@@ -517,11 +517,11 @@ exports.changePasssword = function(obj, callback) {
         request.input('Status', obj.Status);
         request.input('IPAddress', obj.IPAddress);
         request.input('FinancialYear', obj.FinancialYear);
-        request.execute('spChangePassword', function(err, result) {
+        request.execute('spChangePassword', function (err, result) {
             if (err) {
                 console.log('An error occurred...', err);
             }
-            else{
+            else {
                 callback(result.returnValue);
             }
             con.close();
@@ -531,9 +531,9 @@ exports.changePasssword = function(obj, callback) {
     });
 };
 
-exports.updateIsLoggedIn = function(isLoggedIn, userID) {
+exports.updateIsLoggedIn = function (isLoggedIn, userID) {
     sequelize.query('update UserLogin set IsLoggedIn = :is_logged_in where UserID = :user_id', {
-    replacements: { is_logged_in: isLoggedIn, user_id: userID }, type: sequelize.QueryTypes.SELECT
+        replacements: { is_logged_in: isLoggedIn, user_id: userID }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
         return data;
     }).catch(function error(err) {
@@ -541,9 +541,9 @@ exports.updateIsLoggedIn = function(isLoggedIn, userID) {
     });
 };
 
-exports.getAAODetails = function(districtCode) {
+exports.getAAODetails = function (districtCode) {
     return sequelize.query('select a.AAOMobileNo, a.AAOName, a.AAOCode, b.BlockName from AAOBlockMapping a inner join LGDBlock b on a.BlockCode = b.BlockCode where b.DistrictCode = :district_code', {
-        replacements: { district_code : districtCode }, type: sequelize.QueryTypes.SELECT
+        replacements: { district_code: districtCode }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
         return data;
     }).catch(function error(err) {
@@ -551,15 +551,15 @@ exports.getAAODetails = function(districtCode) {
     });
 };
 
-exports.getDashboardDetails = function(callback) {
+exports.getDashboardDetails = function (callback) {
     var con = new sql.ConnectionPool(locConfig);
     con.connect().then(function success() {
         const request = new sql.Request(con);
-        request.execute('spGetJDAPPDashboardDetails', function(err, result) {
+        request.execute('spGetJDAPPDashboardDetails', function (err, result) {
             if (err) {
                 console.log('An error occurred...', err);
             }
-            else{
+            else {
                 callback(result.recordsets);
             }
             con.close();
@@ -569,9 +569,9 @@ exports.getDashboardDetails = function(callback) {
     });
 };
 
-exports.getVAWDetails = function(blockCode) {
+exports.getVAWDetails = function (blockCode) {
     return sequelize.query('select a.VAWCode, a.VAWName, a.VAWMobileNo, b.GPName, a.Status from VAWGPMapping a inner join LGDGP b on a.GPCode = b.GPCode where a.BlockCode = :block_code', {
-        replacements: { block_code : blockCode }, type: sequelize.QueryTypes.SELECT
+        replacements: { block_code: blockCode }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
         return data;
     }).catch(function error(err) {
@@ -579,9 +579,9 @@ exports.getVAWDetails = function(blockCode) {
     });
 };
 
-exports.getVAWGPDetails = function(blockCode, season, financialYear) {
+exports.getVAWGPDetails = function (blockCode, season, financialYear) {
     return sequelize.query('select b.VAWCode, a.VAWMobileNo, a.VAWName, c.GPName from VAWGPMapping a inner join VAWGPTargets b on a.GPCode = b.GPCode inner join LGDGP c on c.GPCode = b.GPCode where a.BlockCode = :block_code and a.Status = 1 and Season = :season and b.FinancialYear = :financial_year', {
-        replacements: { block_code : blockCode, season: season, financial_year: financialYear }, type: sequelize.QueryTypes.SELECT
+        replacements: { block_code: blockCode, season: season, financial_year: financialYear }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
         return data;
     }).catch(function error(err) {
@@ -630,11 +630,11 @@ exports.submitCDAODetails = function (obj, callback) {
         request.input('Status', obj.Status);
         request.input('IPAddress', obj.IPAddress);
         request.input('FinancialYear', obj.FinancialYear);
-        request.execute('spSubmitCDAODetails', function(err, result) {
+        request.execute('spSubmitCDAODetails', function (err, result) {
             if (err) {
                 console.log('An error occurred...', err);
             }
-            else{
+            else {
                 callback(result.returnValue);
             }
             con.close();
@@ -644,7 +644,7 @@ exports.submitCDAODetails = function (obj, callback) {
     });
 };
 
-exports.getPestDetails = function(dateOfEntry, season, financialYear, districtCode, blockCode, cropCategoryCode, cropCode, pestDiseaseCode, userType, username, role, callback) {
+exports.getPestDetails = function (dateOfEntry, season, financialYear, districtCode, blockCode, cropCategoryCode, cropCode, pestDiseaseCode, userType, username, role, callback) {
     var con = new sql.ConnectionPool(locConfig);
     con.connect().then(function success() {
         const request = new sql.Request(con);
@@ -659,11 +659,11 @@ exports.getPestDetails = function(dateOfEntry, season, financialYear, districtCo
         request.input('UserType', userType);
         request.input('Username', username);
         request.input('Role', role);
-        request.execute('spGetPDJDAPPOUAT', function(err, result) {
+        request.execute('spGetPDJDAPPOUAT', function (err, result) {
             if (err) {
                 console.log('An error occurred...', err);
             }
-            else{
+            else {
                 callback(result.recordset);
             }
             con.close();
@@ -694,11 +694,11 @@ exports.submitADODetails = function (obj, callback) {
         request.input('Status', obj.Status);
         request.input('IPAddress', obj.IPAddress);
         request.input('FinancialYear', obj.FinancialYear);
-        request.execute('spSubmitADODetails', function(err, result) {
+        request.execute('spSubmitADODetails', function (err, result) {
             if (err) {
                 console.log('An error occurred...', err);
             }
-            else{
+            else {
                 callback(result.returnValue);
             }
             con.close();
@@ -708,7 +708,7 @@ exports.submitADODetails = function (obj, callback) {
     });
 };
 
-exports.getGISMapDetails = function(financialYear, season, districtCode, dateOfEntry) {
+exports.getGISMapDetails = function (financialYear, season, districtCode, dateOfEntry) {
     if (districtCode != 0) {
         return sequelize.query("select a.ReferenceNo, FixedLandLatitude, FixedLandLongitude, CropName, case when PestDiseaseName is null then 'NA' else PestDiseaseName end as PestName, MediumIntensityAttackArea, HighIntensityAttackArea, MediumIntensityTreatedArea, HighIntensityTreatedArea, DistrictName, BlockName, GPName, VillageName from VAWFarmerPhotoLocationEntry a inner join VAWFarmerCropDetailsEntry b on a.ReferenceNo = b.ReferenceNo inner join Crop c on b.CropCode = c.CropCode inner join VAWFarmerPestDetailsEntry d on d.ReferenceNo = b.ReferenceNo left join PestDisease e on e.PestDiseaseCode = d.PestDiseaseCode inner join LGDGP f on f.GPCode = b.GPCode inner join LGDBlock g on g.BlockCode = f.BlockCode inner join LGDDistrict h on h.DistrictCode = g.DistrictCode inner join LGDVillage i on i.VillageCode = b.VillageCode where a.FinancialYear = :financial_year and b.Season = :season and g.DistrictCode = :district_code and convert(datetime, convert(varchar(10), b.DateTime, 103), 103) = :date_of_entry", {
             replacements: { financial_year: financialYear, season: season, district_code: districtCode, date_of_entry: dateOfEntry }, type: sequelize.QueryTypes.SELECT
@@ -729,7 +729,7 @@ exports.getGISMapDetails = function(financialYear, season, districtCode, dateOfE
     }
 };
 
-exports.getPestPhoto = function(refNo) {
+exports.getPestPhoto = function (refNo) {
     return sequelize.query('select FixedLandPhoto from VAWFarmerPhotoLocationEntry where ReferenceNo = :ref_no', {
         replacements: { ref_no: refNo }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
@@ -749,9 +749,9 @@ exports.removeRefNo = function (referenceNo, callback) {
     });
 };
 
-exports.getVAWRecordDetails = function(vawCode) {
+exports.getVAWRecordDetails = function (vawCode) {
     return sequelize.query('select DistrictName, BlockName, GPName, VAWName, VAWMobileNo from VAWGPMapping a inner join LGDBlock b on a.BlockCode = b.BlockCode inner join LGDDistrict c on c.DistrictCode = b.DistrictCode inner join LGDGP d on d.GPCode = a.GPCode where VAWCode = :vaw_code', {
-        replacements: { vaw_code : vawCode }, type: sequelize.QueryTypes.SELECT
+        replacements: { vaw_code: vawCode }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
         return data;
     }).catch(function error(err) {
@@ -759,7 +759,7 @@ exports.getVAWRecordDetails = function(vawCode) {
     });
 };
 
-exports.getVAWInspectionDetails = function(dateOfEntry, season, financialYear, districtCode, blockCode, callback) {
+exports.getVAWInspectionDetails = function (dateOfEntry, season, financialYear, districtCode, blockCode, callback) {
     var con = new sql.ConnectionPool(locConfig);
     con.connect().then(function success() {
         const request = new sql.Request(con);
@@ -768,7 +768,7 @@ exports.getVAWInspectionDetails = function(dateOfEntry, season, financialYear, d
         request.input('FinancialYear', financialYear);
         request.input('DistrictCode', districtCode);
         request.input('BlockCode', blockCode);
-        request.execute('spGetVAWInspectionReport', function(err, result) {
+        request.execute('spGetVAWInspectionReport', function (err, result) {
             if (err) {
                 console.log('An error occurred...', err);
             }
@@ -825,7 +825,7 @@ exports.updateAdvisoryDetails = function (arr, obj, pestCode, callback) {
     });
 };
 
-exports.getLTCCrops = function() {
+exports.getLTCCrops = function () {
     return sequelize.query("select CropCode, CropName, CategoryCode, CategoryName from crop a inner join CropCategory b on a.CropCategoryCode = b.CategoryCode where Status = 'LTC'", {
         type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
@@ -835,7 +835,7 @@ exports.getLTCCrops = function() {
     });
 };
 
-exports.getLTCPestDiseases = function(cropCode) {
+exports.getLTCPestDiseases = function (cropCode) {
     return sequelize.query("select PestDiseaseCode, PestDiseaseName from PestDisease a inner join Crop b on a.CropCode = b.CropCode where ((a.CropCode = :crop_code and a.Status = 'LTC') or (CropCategoryCode = :crop_code and a.Status = 'LTC' and b.Status = 'LTC'))", {
         replacements: { crop_code: cropCode }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
@@ -845,7 +845,7 @@ exports.getLTCPestDiseases = function(cropCode) {
     });
 };
 
-exports.getLTCDetails = function(dateOfEntry, season, financialYear, districtCode, blockCode, cropCode, pestDiseaseCode, callback) {
+exports.getLTCDetails = function (dateOfEntry, season, financialYear, districtCode, blockCode, cropCode, pestDiseaseCode, callback) {
     var con = new sql.ConnectionPool(locConfig);
     con.connect().then(function success() {
         const request = new sql.Request(con);
@@ -856,11 +856,11 @@ exports.getLTCDetails = function(dateOfEntry, season, financialYear, districtCod
         request.input('BlockCode', blockCode);
         request.input('CropCode', cropCode);
         request.input('PestDiseaseCode', pestDiseaseCode);
-        request.execute('spGetLTCReport', function(err, result) {
+        request.execute('spGetLTCReport', function (err, result) {
             if (err) {
                 console.log('An error occurred...', err);
             }
-            else{
+            else {
                 callback(result.recordset);
             }
             con.close();
@@ -880,7 +880,7 @@ exports.getETLDetails = function (pestdiseaseCode) {
     });
 };
 
-exports.updateETLDetails = function (arr,obj,pestCode, callback) {
+exports.updateETLDetails = function (arr, obj, pestCode, callback) {
     var con = new sql.ConnectionPool(locConfig);
     con.connect().then(function success() {
         const tableETLModifyEntry = new sql.Table();
@@ -1015,7 +1015,7 @@ exports.submitEMRDetails = function (obj, callback) {
     });
 };
 
-exports.getEMRNos = function(dateOfEntry, cropCategory, crop, financialYear, districtCode, blockCode, callback) {
+exports.getEMRNos = function (dateOfEntry, cropCategory, crop, financialYear, districtCode, blockCode, callback) {
     var con = new sql.ConnectionPool(locConfig);
     con.connect().then(function success() {
         const request = new sql.Request(con);
@@ -1025,7 +1025,7 @@ exports.getEMRNos = function(dateOfEntry, cropCategory, crop, financialYear, dis
         request.input('FinancialYear', financialYear);
         request.input('DistrictCode', districtCode);
         request.input('BlockCode', blockCode);
-        request.execute('spGetEMRReferenceNoDetails', function(err, result) {
+        request.execute('spGetEMRReferenceNoDetails', function (err, result) {
             if (err) {
                 console.log('An error occurred...', err);
             }
@@ -1049,18 +1049,8 @@ exports.getEMRReferenceNoDetails = function (emrRefNo) {
     });
 };
 
-exports.getCropCategoryPestDiseases = function(cropCategoryCode) {
-    return sequelize.query('select PestDiseaseCode, PestDiseaseName from PestDisease a inner join Crop b on a.CropCode = b.CropCode inner join CropCategory c on c.CategoryCode = b.CropCategoryCode where c.CategoryCode = :crop_category_code and a.IsActive = 1 and b.IsActive = 1 and c.IsActive = 1', {
-        replacements: { crop_category_code: cropCategoryCode }, type: sequelize.QueryTypes.SELECT
-    }).then(function success(data) {
-        return data;
-    }).catch(function error(err) {
-        console.log('An error occurred...', err);
-    });
-};
-
-exports.getPestGraphData = function(arr, callback) {
-    return sequelize.query('select PestDiseaseName, a.PestDiseaseCode, sum(MediumIntensityAttackArea + HighIntensityAttackArea) as totalAffectedArea from VAWFarmerPestDetailsEntry a right join PestDisease b on a.PestDiseaseCode = b.PestDiseaseCode where a.PestDiseaseCode in(:status) group by PestDiseaseName, a.PestDiseaseCode', {
+exports.getPestGraphData = function (arr, callback) {
+    return sequelize.query('select PestDiseaseName, a.PestDiseaseCode, sum(MediumAffectedArea + HighAffectedArea) as totalAffectedArea from AAOPestDetailsEntry a right join PestDisease b on a.PestDiseaseCode = b.PestDiseaseCode where a.PestDiseaseCode in(:status) group by PestDiseaseName, a.PestDiseaseCode', {
         replacements: { status: arr }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
         callback(data);
@@ -1070,22 +1060,20 @@ exports.getPestGraphData = function(arr, callback) {
     });
 };
 
-exports.getGraphforCrop = function() {
+exports.getGraphforCrop = function () {
     return sequelize.query('select sum(MediumAffectedArea + HighAffectedArea) as totalAffectedArea, b.CategoryName, CropCategoryCode from AAOPestDetailsEntry a left join CropCategory b on a.CropCategoryCode = b.CategoryCode and b.IsActive = 1 group by CropCategoryCode, b.CategoryName', {
         type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
-        console.log(data);
         return data;
     }).catch(function error(err) {
         console.log('An error occurred...', err);
     });
 };
 
-exports.getCropDetailsCategory = function(cropCategoryCode) {
+exports.getCropDetailsCategory = function (cropCategoryCode) {
     return sequelize.query('select sum(MediumAffectedArea + HighAffectedArea) as totalAffectedArea, b.CropName, b.CropCode from AAOPestDetailsEntry a left join Crop b on a.CropCategoryCode = b.CropCategoryCode where a.CropCategoryCode = :crop_category_code and b.IsActive = 1 group by b.CropCode, CropName', {
         replacements: { crop_category_code: cropCategoryCode }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
-        console.log(data);
         return data;
     }).catch(function error(err) {
         console.log('An error occurred...', err);
