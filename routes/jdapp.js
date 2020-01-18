@@ -1186,9 +1186,9 @@ router.post('/getPestGraphData', parseForm, csrfProtection, permit.permission('J
   }, function error(response) {
     console.log(response.status);
   });
-  var arr = req.body.data;
-  balModule.getPestGraphData(arr, function success(response1) {
-    console.log(response1);
+  var arr = req.body.data.pestData;
+  var obj = req.body.data.monthData;
+  balModule.getPestGraphData(arr, obj, function success(response1) {
     res.send(response1);
   }, function error(response1) {
     console.log(response1.status);

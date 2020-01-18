@@ -1049,15 +1049,27 @@ exports.getEMRReferenceNoDetails = function (emrRefNo) {
     });
 };
 
-exports.getPestGraphData = function (arr, callback) {
-    return sequelize.query('select PestDiseaseName, a.PestDiseaseCode, sum(MediumAffectedArea + HighAffectedArea) as totalAffectedArea from AAOPestDetailsEntry a right join PestDisease b on a.PestDiseaseCode = b.PestDiseaseCode where a.PestDiseaseCode in(:status) group by PestDiseaseName, a.PestDiseaseCode', {
-        replacements: { status: arr }, type: sequelize.QueryTypes.SELECT
-    }).then(function success(data) {
-        callback(data);
-        console.log(data);
-    }).catch(function error(err) {
-        console.log('An error occurred...', err);
-    });
+exports.getPestGraphData = function (arr, obj, callback) {
+    if (obj.Month == 0 && obj.FinancialYear == 0) {
+        return sequelize.query('select PestDiseaseName, a.PestDiseaseCode, sum(MediumAffectedArea + HighAffectedArea) as totalAffectedArea from AAOPestDetailsEntry a right join PestDisease b on a.PestDiseaseCode = b.PestDiseaseCode where a.PestDiseaseCode in(:status) group by PestDiseaseName, a.PestDiseaseCode', {
+            replacements: { status: arr }, type: sequelize.QueryTypes.SELECT
+        }).then(function success(data) {
+            callback(data);
+            console.log(data);
+        }).catch(function error(err) {
+            console.log('An error occurred...', err);
+        });
+    }
+    else {
+        return sequelize.query("select PestDiseaseName, a.PestDiseaseCode, sum(MediumAffectedArea + HighAffectedArea) as totalAffectedArea from AAOPestDetailsEntry a right join PestDisease b on a.PestDiseaseCode = b.PestDiseaseCode where a.PestDiseaseCode in(:status) and FinancialYear = :financial_year and right('0' + ltrim(rtrim(datepart(MM, DateTime))), 2) = :month group by PestDiseaseName, a.PestDiseaseCode", {
+            replacements: { status: arr, month: obj.Month, financial_year: obj.FinancialYear }, type: sequelize.QueryTypes.SELECT
+        }).then(function success(data) {
+            callback(data);
+            console.log(data);
+        }).catch(function error(err) {
+            console.log('An error occurred...', err);
+        });
+    }
 };
 
 exports.getGraphforCrop = function () {

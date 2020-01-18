@@ -71,7 +71,11 @@ app.controller('myJDAPPDashbord1Ctrl', function ($scope, $http, $filter) {
     $scope.getPestGraphData = function () {
         var graphData = [];
         if ($scope.pests.length > 0) {
-            $http.post('http://localhost:3000/jdapp/getPestGraphData', { data: $scope.pests }, { credentials: 'same-origin', headers: { 'CSRF-Token': token } }).then(function success(response) {
+            var obj = {
+                Month: $scope.ddlMonth == undefined || $scope.ddlMonth == null ? Month = 0 : Month = $scope.ddlMonth,
+                FinancialYear:$scope.ddlFY == undefined || $scope.ddlFY == null ? FinancialYear = 0 : FinancialYear = $scope.ddlFY
+            };
+            $http.post('http://localhost:3000/jdapp/getPestGraphData', { data: { pestData: $scope.pests, monthData: obj } }, { credentials: 'same-origin', headers: { 'CSRF-Token': token } }).then(function success(response) {
                 graphData = response.data;
                 if (graphData.length > 0) {
                     var pestName = [];
@@ -139,6 +143,11 @@ app.controller('myJDAPPDashbord1Ctrl', function ($scope, $http, $filter) {
         else {
             alert('Please select atleast one Pest.');
         }
+    };
+
+    $scope.destroyGraph = function () {
+        if (myChart7) myChart7.destroy();
+        if (myChart8) myChart8.destroy();
     };
 
     var cropCategoryName = [];

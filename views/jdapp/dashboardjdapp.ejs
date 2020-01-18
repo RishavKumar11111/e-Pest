@@ -173,6 +173,43 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-12 col-sm-12 col-sm-12" style="padding-top: 10px">
+                            <div class="col-md-6 col-sm-6 col-sm-12">
+                                <label style="text-align: left; padding-top: 8px" class="control-label col-md-5 col-sm-5 col-xs-12">Month : </label>
+                                <div class="col-md-7 col-sm-7 col-xs-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                        <select class="form-control" ng-model="ddlMonth" ng-change="destroyGraph()">
+                                            <option value="">Select Month</option>
+                                            <option value="01">January</option>
+                                            <option value="02">February</option>
+                                            <option value="03">March</option>
+                                            <option value="04">April</option>
+                                            <option value="05">May</option>
+                                            <option value="06">June</option>
+                                            <option value="07">Jully</option>
+                                            <option value="08">August</option>
+                                            <option value="09">September</option>
+                                            <option value="10">October</option>
+                                            <option value="11">November</option>
+                                            <option value="12">December</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-sm-12">
+                                <label style="text-align: left; padding-top: 8px" class="control-label col-md-5 col-sm-5 col-xs-12">Financial Year :</label>
+                                <div class="col-md-7 col-sm-7 col-xs-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                        <select class="form-control" ng-model="ddlFY" ng-change="destroyGraph()">
+                                            <option value="">Select Financial Year</option>
+                                            <option value="2019-20">2019-20</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-md-12 col-sm-12 col-xs-12" ng-show="pestDiseases.length > 0" style="padding: 30px">
                             <div class="form-group">
                                 <div class="col-md-4 col-sm-4 col-xs-12" ng-repeat="i in pestDiseases">
