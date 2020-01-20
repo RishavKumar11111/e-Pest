@@ -1090,7 +1090,7 @@ exports.getGraphforCrop = function () {
 };
 
 exports.getCropDetailsCategory = function (cropCategoryCode) {
-    return sequelize.query('select sum(MediumAffectedArea + HighAffectedArea) as totalAffectedArea, b.CropName, b.CropCode from AAOPestDetailsEntry a left join Crop b on a.CropCategoryCode = b.CropCategoryCode where a.CropCategoryCode = :crop_category_code and b.IsActive = 1 group by b.CropCode, CropName', {
+    return sequelize.query('select sum(a.MediumAffectedArea + a.HighAffectedArea) as totalAffectedArea, b.CropName, a.CropCode from AAOPestDetailsEntry a inner join crop b on a.CropCode = b.CropCode where a.CropCategoryCode = :crop_category_code and b.IsActive = 1 group by a.CropCode, CropName', {
         replacements: { crop_category_code: cropCategoryCode }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
         return data;

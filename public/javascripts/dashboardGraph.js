@@ -89,8 +89,8 @@ if (window.location.href.indexOf("jdapp") > -1) {
                 labels: ['Total Area Affected (in HA)', 'Total Area Treated (in HA)'],
                 datasets: [{
                     backgroundColor: [
-                        "#4285f4",
-                        "#db4437"
+                        "#a52a2a",
+                        "#2aa52a"
                     ],
                     data: [totalAreaAffected, totalAreaTreated]
                 }]
