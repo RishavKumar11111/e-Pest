@@ -1055,7 +1055,15 @@ exports.getPestGraphData = function (arr, obj, callback) {
             replacements: { status: arr }, type: sequelize.QueryTypes.SELECT
         }).then(function success(data) {
             callback(data);
-            console.log(data);
+        }).catch(function error(err) {
+            console.log('An error occurred...', err);
+        });
+    }
+    else if (obj.Month == 0 && obj.FinancialYear != 0) {
+        return sequelize.query('select PestDiseaseName, a.PestDiseaseCode, sum(MediumAffectedArea + HighAffectedArea) as totalAffectedArea from AAOPestDetailsEntry a right join PestDisease b on a.PestDiseaseCode = b.PestDiseaseCode where a.PestDiseaseCode in(:status) and FinancialYear = :financial_year group by PestDiseaseName, a.PestDiseaseCode', {
+            replacements: { status: arr, financial_year: obj.FinancialYear }, type: sequelize.QueryTypes.SELECT
+        }).then(function success(data) {
+            callback(data);
         }).catch(function error(err) {
             console.log('An error occurred...', err);
         });
@@ -1065,7 +1073,6 @@ exports.getPestGraphData = function (arr, obj, callback) {
             replacements: { status: arr, month: obj.Month, financial_year: obj.FinancialYear }, type: sequelize.QueryTypes.SELECT
         }).then(function success(data) {
             callback(data);
-            console.log(data);
         }).catch(function error(err) {
             console.log('An error occurred...', err);
         });

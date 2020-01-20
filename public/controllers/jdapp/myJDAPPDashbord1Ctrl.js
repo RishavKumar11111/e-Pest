@@ -69,79 +69,84 @@ app.controller('myJDAPPDashbord1Ctrl', function ($scope, $http, $filter) {
     var ctx1 = document.getElementById('myChart8').getContext('2d');
     var myChart8 = null;
     $scope.getPestGraphData = function () {
-        var graphData = [];
-        if ($scope.pests.length > 0) {
-            var obj = {
-                Month: $scope.ddlMonth == undefined || $scope.ddlMonth == null ? Month = 0 : Month = $scope.ddlMonth,
-                FinancialYear:$scope.ddlFY == undefined || $scope.ddlFY == null ? FinancialYear = 0 : FinancialYear = $scope.ddlFY
-            };
-            $http.post('http://localhost:3000/jdapp/getPestGraphData', { data: { pestData: $scope.pests, monthData: obj } }, { credentials: 'same-origin', headers: { 'CSRF-Token': token } }).then(function success(response) {
-                graphData = response.data;
-                if (graphData.length > 0) {
-                    var pestName = [];
-                    var affectedPestArea = [];
-                    var bColor = [];
-                    for (var i = 0; i < graphData.length; i++) {
-                        var pest = graphData[i].PestDiseaseName;
-                        var affectedArea = graphData[i].totalAffectedArea;
-                        pestName.push(pest);
-                        affectedPestArea.push(affectedArea);
-                    }
-                    for (var i = 0; i <= pestName.length; i++) {
-                        bColor.push('#' + Math.floor(Math.random() * 16777215).toString(16));
-                    }
-                    myChart7 = new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: pestName,
-                            datasets: [
-                                {
-                                    label: "Total Area Affected (In HA)",
-                                    backgroundColor: bColor,
-                                    data: affectedPestArea
+        if ((($scope.ddlMonth == undefined || $scope.ddlMonth == null) && ($scope.ddlFY == undefined && $scope.ddlFY == null)) || ($scope.ddlMonth != undefined && $scope.ddlMonth != null && $scope.ddlFY != undefined && $scope.ddlFY != null) || (($scope.ddlMonth == undefined || $scope.ddlMonth == null) && $scope.ddlFY != undefined && $scope.ddlFY != null)) {
+            var graphData = [];
+            if ($scope.pests.length > 0) {
+                var obj = {
+                    Month: $scope.ddlMonth == undefined || $scope.ddlMonth == null ? Month = 0 : Month = $scope.ddlMonth,
+                    FinancialYear: $scope.ddlFY == undefined || $scope.ddlFY == null ? FinancialYear = 0 : FinancialYear = $scope.ddlFY
+                };
+                $http.post('http://localhost:3000/jdapp/getPestGraphData', { data: { pestData: $scope.pests, monthData: obj } }, { credentials: 'same-origin', headers: { 'CSRF-Token': token } }).then(function success(response) {
+                    graphData = response.data;
+                    if (graphData.length > 0) {
+                        var pestName = [];
+                        var affectedPestArea = [];
+                        var bColor = [];
+                        for (var i = 0; i < graphData.length; i++) {
+                            var pest = graphData[i].PestDiseaseName;
+                            var affectedArea = graphData[i].totalAffectedArea;
+                            pestName.push(pest);
+                            affectedPestArea.push(affectedArea);
+                        }
+                        for (var i = 0; i <= pestName.length; i++) {
+                            bColor.push('#' + Math.floor(Math.random() * 16777215).toString(16));
+                        }
+                        myChart7 = new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: pestName,
+                                datasets: [
+                                    {
+                                        label: "Total Area Affected (In HA)",
+                                        backgroundColor: bColor,
+                                        data: affectedPestArea
+                                    }
+                                ]
+                            },
+                            options: {
+                                legend: { display: false },
+                                title: {
+                                    display: true,
+                                    text: 'Pest Affected Area (in HA)'
                                 }
-                            ]
-                        },
-                        options: {
-                            legend: { display: false },
-                            title: {
-                                display: true,
-                                text: 'Pest Affected Area (in HA)'
                             }
-                        }
-                    });
-                    myChart8 = new Chart(ctx1, {
-                        type: 'line',
-                        data: {
-                            labels: pestName,
-                            datasets: [{
-                                data: affectedPestArea,
-                                label: "Total Area Affected (in HA)",
-                                borderColor: ["#265e32"]
-                            }]
-                        },
-                        options: {
-                            legend: { display: false },
-                            title: {
-                                display: true,
-                                text: 'Pest Affected Area (in HA)'
+                        });
+                        myChart8 = new Chart(ctx1, {
+                            type: 'line',
+                            data: {
+                                labels: pestName,
+                                datasets: [{
+                                    data: affectedPestArea,
+                                    label: "Total Area Affected (in HA)",
+                                    borderColor: ["#265e32"]
+                                }]
+                            },
+                            options: {
+                                legend: { display: false },
+                                title: {
+                                    display: true,
+                                    text: 'Pest Affected Area (in HA)'
+                                }
                             }
-                        }
-                    });
-                }
-                else {
-                    alert("No record for graph.");
-                    pestName = null;
-                    affectedPestArea = null;
-                }
-            }, function error(response) {
-                console.log(response.status);
-            }).catch(function err(error) {
-                console.log('An error occurred...', error);
-            });
+                        });
+                    }
+                    else {
+                        alert("No record for graph.");
+                        pestName = null;
+                        affectedPestArea = null;
+                    }
+                }, function error(response) {
+                    console.log(response.status);
+                }).catch(function err(error) {
+                    console.log('An error occurred...', error);
+                });
+            }
+            else {
+                alert('Please select atleast one Pest.');
+            }
         }
         else {
-            alert('Please select atleast one Pest.');
+            alert('Please select the month as well as financial year.');
         }
     };
 
