@@ -551,10 +551,12 @@ exports.getAAODetails = function (districtCode) {
     });
 };
 
-exports.getDashboardDetails = function (callback) {
+exports.getDashboardDetails = function (season, financialYear, callback) {
     var con = new sql.ConnectionPool(locConfig);
     con.connect().then(function success() {
         const request = new sql.Request(con);
+        request.input('Season', season);
+        request.input('FinancialYear', financialYear);
         request.execute('spGetJDAPPDashboardDetails', function (err, result) {
             if (err) {
                 console.log('An error occurred...', err);
@@ -1049,19 +1051,10 @@ exports.getEMRReferenceNoDetails = function (emrRefNo) {
     });
 };
 
-exports.getPestGraphData = function (arr, obj, callback) {
-    if (obj.Month == 0 && obj.FinancialYear == 0) {
-        return sequelize.query('select PestDiseaseName, a.PestDiseaseCode, sum(MediumAffectedArea + HighAffectedArea) as totalAffectedArea from AAOPestDetailsEntry a right join PestDisease b on a.PestDiseaseCode = b.PestDiseaseCode where a.PestDiseaseCode in(:status) group by PestDiseaseName, a.PestDiseaseCode', {
-            replacements: { status: arr }, type: sequelize.QueryTypes.SELECT
-        }).then(function success(data) {
-            callback(data);
-        }).catch(function error(err) {
-            console.log('An error occurred...', err);
-        });
-    }
-    else if (obj.Month == 0 && obj.FinancialYear != 0) {
-        return sequelize.query('select PestDiseaseName, a.PestDiseaseCode, sum(MediumAffectedArea + HighAffectedArea) as totalAffectedArea from AAOPestDetailsEntry a right join PestDisease b on a.PestDiseaseCode = b.PestDiseaseCode where a.PestDiseaseCode in(:status) and FinancialYear = :financial_year group by PestDiseaseName, a.PestDiseaseCode', {
-            replacements: { status: arr, financial_year: obj.FinancialYear }, type: sequelize.QueryTypes.SELECT
+exports.getPestGraphData = function (arr, month, season, financialYear, callback) {
+    if (month == 0) {
+        return sequelize.query('select a.PestDiseaseCode, PestDiseaseName, isnull(sum(MediumAffectedArea + HighAffectedArea), 0) as TotalAffectedArea from PestDisease a left join AAOPestDetailsEntry b on a.PestDiseaseCode = b.PestDiseaseCode and FinancialYear = :financial_year and Season = :season where a.PestDiseaseCode in (:pests) group by a.PestDiseaseCode, PestDiseaseName order by PestDiseaseName', {
+            replacements: { pests: arr, season: season, financial_year: financialYear }, type: sequelize.QueryTypes.SELECT
         }).then(function success(data) {
             callback(data);
         }).catch(function error(err) {
@@ -1069,8 +1062,8 @@ exports.getPestGraphData = function (arr, obj, callback) {
         });
     }
     else {
-        return sequelize.query("select PestDiseaseName, a.PestDiseaseCode, sum(MediumAffectedArea + HighAffectedArea) as totalAffectedArea from AAOPestDetailsEntry a right join PestDisease b on a.PestDiseaseCode = b.PestDiseaseCode where a.PestDiseaseCode in(:status) and FinancialYear = :financial_year and right('0' + ltrim(rtrim(datepart(MM, DateTime))), 2) = :month group by PestDiseaseName, a.PestDiseaseCode", {
-            replacements: { status: arr, month: obj.Month, financial_year: obj.FinancialYear }, type: sequelize.QueryTypes.SELECT
+        return sequelize.query("select a.PestDiseaseCode, PestDiseaseName, isnull(sum(MediumAffectedArea + HighAffectedArea), 0) as TotalAffectedArea from PestDisease a left join AAOPestDetailsEntry b on a.PestDiseaseCode = b.PestDiseaseCode and FinancialYear = :financial_year and Season = :season and right('0' + ltrim(rtrim(datepart(MM, DateTime))), 2) = :month where a.PestDiseaseCode in (:pests) group by a.PestDiseaseCode, PestDiseaseName order by PestDiseaseName", {
+            replacements: { pests: arr, month: month, season: season, financial_year: financialYear }, type: sequelize.QueryTypes.SELECT
         }).then(function success(data) {
             callback(data);
         }).catch(function error(err) {
@@ -1079,9 +1072,9 @@ exports.getPestGraphData = function (arr, obj, callback) {
     }
 };
 
-exports.getGraphforCrop = function () {
-    return sequelize.query('select sum(MediumAffectedArea + HighAffectedArea) as totalAffectedArea, b.CategoryName, CropCategoryCode from AAOPestDetailsEntry a left join CropCategory b on a.CropCategoryCode = b.CategoryCode and b.IsActive = 1 group by CropCategoryCode, b.CategoryName', {
-        type: sequelize.QueryTypes.SELECT
+exports.getGraphforCrop = function (season, financialYear) {
+    return sequelize.query('select sum(MediumAffectedArea + HighAffectedArea) as TotalAffectedArea, b.CategoryName, CropCategoryCode from AAOPestDetailsEntry a left join CropCategory b on a.CropCategoryCode = b.CategoryCode where b.IsActive = 1 and Season = :season and FinancialYear = :financial_year group by CropCategoryCode, b.CategoryName', {
+        replacements: { season: season, financial_year: financialYear }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
         return data;
     }).catch(function error(err) {
@@ -1089,9 +1082,9 @@ exports.getGraphforCrop = function () {
     });
 };
 
-exports.getCropDetailsCategory = function (cropCategoryCode) {
-    return sequelize.query('select sum(a.MediumAffectedArea + a.HighAffectedArea) as totalAffectedArea, b.CropName, a.CropCode from AAOPestDetailsEntry a inner join crop b on a.CropCode = b.CropCode where a.CropCategoryCode = :crop_category_code and b.IsActive = 1 group by a.CropCode, CropName', {
-        replacements: { crop_category_code: cropCategoryCode }, type: sequelize.QueryTypes.SELECT
+exports.getCropDetailsCategory = function (season, financialYear, cropCategoryCode) {
+    return sequelize.query('select sum(a.MediumAffectedArea + a.HighAffectedArea) as TotalAffectedArea, a.CropCode, b.CropName from AAOPestDetailsEntry a inner join crop b on a.CropCode = b.CropCode where b.CropCategoryCode = :crop_category_code and b.IsActive = 1 and Season = :season and FinancialYear = :financial_year group by a.CropCode, CropName order by CropName', {
+        replacements: { season: season, financial_year: financialYear, crop_category_code: cropCategoryCode }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
         return data;
     }).catch(function error(err) {

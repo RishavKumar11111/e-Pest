@@ -6,7 +6,7 @@
                     <div class="tile-stats" style="background-color: #db4437; height: 125px; padding: 10px">
                         <h3 style="color: white">Total AAO registered</h3>
                         <div class="count" style="color: white; padding-top: -10px">
-                            <span>{{getJDAPPDetails[0][0].AAORegistered == null ? 0 : getJDAPPDetails[0][0].AAORegistered}} no.</span>                   
+                            <span>{{getJDAPPDetails[0][0].AAORegistered == null ? 0 : getJDAPPDetails[0][0].AAORegistered}}</span>                   
                         </div>
                     </div>
                 </div>
@@ -16,45 +16,87 @@
                     <div class="tile-stats" style="background-color: #179928; height: 125px; padding: 10px">
                         <h3 style="color: white">Total VAW registered</h3>
                         <div class="count" style="color: white; padding-top: -10px">
-                            <span>{{getJDAPPDetails[1][0].VAWRegistered == null ? 0 : getJDAPPDetails[1][0].VAWRegistered}} no.</span>
+                            <span>{{getJDAPPDetails[1][0].VAWRegistered == null ? 0 : getJDAPPDetails[1][0].VAWRegistered}}</span>
                         </div>
                     </div>
                 </div>
             </a>
             <div class="animated flipInY col-md-2 col-sm-2 col-xs-12">
                 <div class="tile-stats" style="background-color: #4285f4; height: 125px; padding: 10px">
-                    <h3 style="color: white">Total Area Affected</h3>
-                    <div class="count" style="color: white; padding-top: -10px">
-                        <span>{{getJDAPPDetails[2][0].TotalAffectedArea == null ? 0 : getJDAPPDetails[2][0].TotalAffectedArea}} ha</span>
+                    <h3 style="color: white; font-size: 19px">Total Area Affected (AAO)</h3>
+                    <div class="count" style="color: white; padding-top: 10px">
+                        <span style="font-size: 30px">{{getJDAPPDetails[2][0].TotalAffectedArea == null ? 0 : getJDAPPDetails[2][0].TotalAffectedArea}} ha</span>
                     </div>
                 </div>
             </div>
             <div class="animated flipInY col-md-2 col-sm-2 col-xs-12">
                 <div class="tile-stats" style="background-color: #db4437; height: 125px; padding: 10px">
-                    <h3 style="color: white">Total Area Treated</h3>
-                    <div class="count" style="color: white; padding-top: -10px">
-                        <span>{{getJDAPPDetails[2][0].TotalTreatedArea == null ? 0 : getJDAPPDetails[2][0].TotalTreatedArea}} ha</span>
+                    <h3 style="color: white; font-size: 19px">Total Area Treated (AAO)</h3>
+                    <div class="count" style="color: white; padding-top: 10px">
+                        <span style="font-size: 30px">{{getJDAPPDetails[2][0].TotalTreatedArea == null ? 0 : getJDAPPDetails[2][0].TotalTreatedArea}} ha</span style="font-size: 30px">
                     </div>
                 </div>
             </div>
             <div class="animated flipInY col-md-2 col-sm-2 col-xs-12">
                 <div class="tile-stats" style="background-color: #f4b400; height: 125px; padding: 10px">
                     <h3 style="color: white; font-size: 19px">Area inspected by VAW</h3>
-                    <div class="count" style="color: white; padding-top: 13px">
-                        <span>{{getJDAPPDetails[3][0].TotalAreaAffected == null ? 0 : getJDAPPDetails[3][0].TotalAreaAffected}} ha</span>
+                    <div class="count" style="color: white; padding-top: 10px">
+                        <span style="font-size: 30px">{{getJDAPPDetails[3][0].TotalAreaAffected == null ? 0 : getJDAPPDetails[3][0].TotalAreaAffected}} ha</span style="font-size: 30px">
                     </div>
                 </div>
             </div>
             <div class="animated flipInY col-md-2 col-sm-2 col-xs-12">
                 <div class="tile-stats" style="background-color: #179928; height: 125px; padding: 10px">
-                    <h3 style="color: white">Light trap catch</h3>
+                    <h3 style="color: white">Light Trap Catch</h3>
                     <div class="count" style="color: white; padding-top: -10px">
-                        <span>{{getJDAPPDetails[4][0].TotalLightTrap == null ? 0 : getJDAPPDetails[4][0].TotalLightTrap}} no.</span>
+                        <span>{{getJDAPPDetails[4][0].TotalLightTrap == null ? 0 : getJDAPPDetails[4][0].TotalLightTrap}}</span>
                     </div>
                 </div>
             </div>
         </div>
         <script type="text/javascript" src="../../public/javascripts/chart.min.js"></script>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h3>Select Season and Financial Year</h3>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="col-md-4 col-sm-4 col-sm-12">
+                                    <label style="text-align: left; padding-top: 8px" class="control-label col-md-5 col-sm-5 col-xs-12">Season :</label>
+                                    <div class="col-md-7 col-sm-7 col-xs-12">
+                                        <div style="padding-top: 8px" class="col-md-6 col-sm-6 col-xs-12">
+                                            <input id="kcb" type="checkbox" ng-checked="cbSeason == 'Kharif'" ng-true-value="'Kharif'" ng-model="cbSeason" ng-change="getMonth()"> <span>Kharif</span>
+                                        </div>
+                                        <div style="padding-top: 8px" class="col-md-6 col-sm-6 col-xs-12">
+                                            <input id="rcb" type="checkbox" ng-checked="cbSeason == 'Rabi'" ng-true-value="'Rabi'" ng-model="cbSeason" ng-change="getMonth()"> <span>Rabi</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-5 col-sm-5 col-sm-12">
+                                    <label style="text-align: left; padding-top: 8px" class="control-label col-md-5 col-sm-5 col-xs-12">Financial Year :</label>
+                                    <div class="col-md-7 col-sm-7 col-xs-12">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                            <select id="fyid" class="form-control" ng-model="ddlFY" ng-change="destroyGraph()">
+                                                <option value="">Select Financial Year</option>
+                                                <option value="2019-20">2019-20</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-3 col-sm-12">
+                                    <input type="button" class="btn btn-success" value="Generate Graphs" ng-disabled="ddlFY == null || ddlFY == undefined" ng-click="generateGraphs()" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="x_panel">
@@ -146,7 +188,7 @@
                 <div class="x_content">
                     <div class="row">
                         <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="col-md-4 col-sm-4 col-xs-12">
                                 <div class="form-group">
                                     <label style="text-align: left; padding-top: 7px" class="control-label col-md-5 col-sm-5 col-xs-12">Crop Category <span style="color: red">*</span></label>
                                     <div class="col-md-7 col-sm-7 col-xs-12">
@@ -159,7 +201,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="col-md-4 col-sm-4 col-xs-12">
                                 <div class="form-group">
                                     <label style="text-align: left; padding-top: 7px" class="control-label col-md-5 col-sm-5 col-xs-12">Crop <span style="color: red">*</span></label>
                                     <div class="col-md-7 col-sm-7 col-xs-12">
@@ -172,39 +214,13 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-12 col-sm-12 col-sm-12" style="padding-top: 10px">
-                            <div class="col-md-6 col-sm-6 col-sm-12">
+                            <div class="col-md-4 col-sm-4 col-sm-12">
                                 <label style="text-align: left; padding-top: 8px" class="control-label col-md-5 col-sm-5 col-xs-12">Month : </label>
                                 <div class="col-md-7 col-sm-7 col-xs-12">
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-                                        <select class="form-control" ng-model="ddlMonth" ng-change="destroyGraph()">
+                                        <select class="form-control" ng-model="ddlMonth" ng-options="i.MonthCode as i.MonthName for i in months" ng-change="destroyGraph()">
                                             <option value="">Select Month</option>
-                                            <option value="01">January</option>
-                                            <option value="02">February</option>
-                                            <option value="03">March</option>
-                                            <option value="04">April</option>
-                                            <option value="05">May</option>
-                                            <option value="06">June</option>
-                                            <option value="07">July</option>
-                                            <option value="08">August</option>
-                                            <option value="09">September</option>
-                                            <option value="10">October</option>
-                                            <option value="11">November</option>
-                                            <option value="12">December</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-sm-6 col-sm-12">
-                                <label style="text-align: left; padding-top: 8px" class="control-label col-md-5 col-sm-5 col-xs-12">Financial Year :</label>
-                                <div class="col-md-7 col-sm-7 col-xs-12">
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-                                        <select class="form-control" ng-model="ddlFY" ng-change="destroyGraph()">
-                                            <option value="">Select Financial Year</option>
-                                            <option value="2019-20">2019-20</option>
                                         </select>
                                     </div>
                                 </div>
@@ -221,7 +237,7 @@
                             <div class="clearfix"></div>
                             <div class="ln_solid"></div>
                             <div class="col-md-12 col-sm-12 col-xs-12 text-center">
-                                <input type="button" class="btn btn-success" value="Get Pest Details" ng-disabled="pests.length == 0 || ddlCropCategory == null || ddlCropCategory == undefined" ng-click="getPestGraphData()" />
+                                <input type="button" class="btn btn-success" value="Generate Pest Graph" ng-disabled="pests.length == 0 || ddlCropCategory == null || ddlCropCategory == undefined" ng-click="getPestGraphData()" />
                             </div>
                         </div>
                         <div class="col-md-12 col-sm-12 col-xs-12">

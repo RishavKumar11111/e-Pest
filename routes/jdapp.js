@@ -71,6 +71,30 @@ var getFinancialYear = function() {
   return fiscalYear;
 };
 
+var getSeasonShort = function() {
+  var seasonName;
+  var month = new Date().getMonth();
+  if (month >= 6 && month <= 10) {
+    seasonName = 'K';
+  }
+  else {
+    seasonName = 'R';
+  }
+  return seasonName;
+};
+
+var getSeason = function() {
+  var seasonName;
+  var month = new Date().getMonth();
+  if (month >= 6 && month <= 10) {
+    seasonName = 'Kharif';
+  }
+  else {
+    seasonName = 'Rabi';
+  }
+  return seasonName;
+};
+
 var getURL = function(req) {
   var fullURL = req.protocol + '://' + req.get('host') + req.originalUrl;
   return fullURL;
@@ -740,7 +764,11 @@ router.get('/getAAODetails', function(req, res, next) {
 
 router.get('/getDashboardDetails', function (req, res, next) {
   res.get('X-Frame-Options');
-  balModule.getDashboardDetails(function success(response) {
+  var sq = null; if (req.query.hasOwnProperty('season')) sq = req.query.season.charAt(0);
+  var season = getSeasonShort() == sq ? getSeasonShort() : sq;
+  var fnq = null; if (req.query.hasOwnProperty('financialYear')) fnq = req.query.financialYear;
+  var financialYear = getFinancialYear() == fnq ? getFinancialYear() : fnq;
+  balModule.getDashboardDetails(season, financialYear, function success(response) {
     res.send(response);
   }, function error(response) {
     console.log(response.status);
@@ -1187,8 +1215,12 @@ router.post('/getPestGraphData', parseForm, csrfProtection, permit.permission('J
     console.log(response.status);
   });
   var arr = req.body.data.pestData;
-  var obj = req.body.data.monthData;
-  balModule.getPestGraphData(arr, obj, function success(response1) {
+  var month = req.body.data.month;
+  var sq = null; if (req.body.data.hasOwnProperty('season')) sq = req.body.data.season.charAt(0);
+  var season = getSeasonShort() == sq ? getSeasonShort() : sq;
+  var fnq = null; if (req.body.data.hasOwnProperty('financialYear')) fnq = req.body.data.financialYear;
+  var financialYear = getFinancialYear() == fnq ? getFinancialYear() : fnq;
+  balModule.getPestGraphData(arr, month, season, financialYear, function success(response1) {
     res.send(response1);
   }, function error(response1) {
     console.log(response1.status);
@@ -1197,7 +1229,11 @@ router.post('/getPestGraphData', parseForm, csrfProtection, permit.permission('J
 
 router.get('/getGraphforCrop', function (req, res, next) {
   res.get('X-Frame-Options');
-  balModule.getGraphforCrop().then(function success(response) {
+  var sq = null; if (req.query.hasOwnProperty('season')) sq = req.query.season.charAt(0);
+  var season = getSeasonShort() == sq ? getSeasonShort() : sq;
+  var fnq = null; if (req.query.hasOwnProperty('financialYear')) fnq = req.query.financialYear;
+  var financialYear = getFinancialYear() == fnq ? getFinancialYear() : fnq;
+  balModule.getGraphforCrop(season, financialYear).then(function success(response) {
     res.send(response);
   }, function error(response) {
     console.log(response.status);
@@ -1208,8 +1244,12 @@ router.get('/getGraphforCrop', function (req, res, next) {
 
 router.get('/getCropDetailsCategory', function (req, res, next) {
   res.get('X-Frame-Options');
+  var sq = null; if (req.query.hasOwnProperty('season')) sq = req.query.season.charAt(0);
+  var season = getSeasonShort() == sq ? getSeasonShort() : sq;
+  var fnq = null; if (req.query.hasOwnProperty('financialYear')) fnq = req.query.financialYear;
+  var financialYear = getFinancialYear() == fnq ? getFinancialYear() : fnq;
   var cropCategoryCode = req.query.cropCode;
-  balModule.getCropDetailsCategory(cropCategoryCode).then(function success(response) {
+  balModule.getCropDetailsCategory(season, financialYear, cropCategoryCode).then(function success(response) {
     res.send(response);
   }, function error(response) {
     console.log(response.status);

@@ -33,11 +33,12 @@ if (window.location.href.indexOf("aao") > -1) {
 }
 
 if (window.location.href.indexOf("jdapp") > -1) {
-    httpGetAsync('http://localhost:3000/jdapp/getDashboardDetails', function (res) {
+    var cbs = document.getElementById('kcb').checked ? 'Kharif' : 'Rabi';
+    httpGetAsync('http://localhost:3000/jdapp/getDashboardDetails?season=' + cbs + '&financialYear=' + document.getElementById('fyid').options[1].value, function (res) {
         var barChartData1 = JSON.parse(res);
         if (barChartData1.length > 0 && barChartData1[2].length > 0) {
-            var totalAreaAffected = barChartData1[2][0].TotalAffectedArea;
-            var totalAreaTreated = barChartData1[2][0].TotalTreatedArea;
+            var vawTAA = barChartData1[3][0].TotalAreaAffected;
+            var vawTTA = barChartData1[3][0].TotalAreaTreated;
             var adc = barChartData1[5];
             var months = [];
             for (var i = 0; i < adc.length; i++) {
@@ -92,7 +93,7 @@ if (window.location.href.indexOf("jdapp") > -1) {
                         "#a52a2a",
                         "#2aa52a"
                     ],
-                    data: [totalAreaAffected, totalAreaTreated]
+                    data: [vawTAA, vawTTA]
                 }]
             }
         });
