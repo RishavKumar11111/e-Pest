@@ -51,36 +51,51 @@ httpGetAsync('http://localhost:3000/graph/getGraph', function (res) {
         var totalAreaAffected2 = [];
         var totalAreaTreated2 = [];
         for (var i = 0; i < barChartData.length; i++) {
-            if (districts.indexOf(barChartData[i].dist_name) === -1) {
-                districts.push(barChartData[i].dist_name);
+            // if (districts.indexOf(barChartData[i].dist_name) === -1) {
+            //     districts.push(barChartData[i].dist_name);
+            // }
+            if (districts.indexOf(barChartData[i].DistrictName) === -1) {
+                districts.push(barChartData[i].DistrictName);
             }
-            if (barChartData[i].crop_code == '01') {
+            // if (barChartData[i].crop_code == '01') {
+            if (barChartData[i].CategoryCode == '1') {
                 var cerealCrop = {
-                    disObj: barChartData[i].dist_name,
-                    totalAtreated: barChartData[i].area_Treated,
-                    totalAaffected: barChartData[i].area_Affected,
+                    // disObj: barChartData[i].dist_name,
+                    // totalAtreated: barChartData[i].area_Treated,
+                    // totalAaffected: barChartData[i].area_Affected,
+                    disObj: barChartData[i].DistrictName,
+                    totalAtreated: barChartData[i].AreaTreated,
+                    totalAaffected: barChartData[i].AreaAffected,
                     cropName: 'Cereal Crops'
                 };
                 cerealCropData.push(cerealCrop);
                 totalAreaAffected.push(cerealCrop.totalAaffected);
                 totalAreaTreated.push(cerealCrop.totalAtreated);
             }
-            else if (barChartData[i].crop_code == '02') {
+            // else if (barChartData[i].crop_code == '02') {
+            else if (barChartData[i].CategoryCode == '2') {
                 var oilseedData = {
-                    disObj: barChartData[i].dist_name,
-                    totalAtreated: barChartData[i].area_Treated,
-                    totalAaffected: barChartData[i].area_Affected,
+                    // disObj: barChartData[i].dist_name,
+                    // totalAtreated: barChartData[i].area_Treated,
+                    // totalAaffected: barChartData[i].area_Affected,
+                    disObj: barChartData[i].DistrictName,
+                    totalAtreated: barChartData[i].AreaTreated,
+                    totalAaffected: barChartData[i].AreaAffected,
                     cropName: 'Oil Seeds'
                 };
                 oilseedCrop.push(oilseedData);
                 totalAreaAffected1.push(oilseedData.totalAaffected);
                 totalAreaTreated1.push(oilseedData.totalAtreated);
             }
-            else if (barChartData[i].crop_code == '03') {
+            // else if (barChartData[i].crop_code == '03') {
+            else if (barChartData[i].CategoryCode == '3') {
                 var pulsesData = {
-                    disObj: barChartData[i].dist_name,
-                    totalAtreated: barChartData[i].area_Treated,
-                    totalAaffected: barChartData[i].area_Affected,
+                    // disObj: barChartData[i].dist_name,
+                    // totalAtreated: barChartData[i].area_Treated,
+                    // totalAaffected: barChartData[i].area_Affected,
+                    disObj: barChartData[i].DistrictName,
+                    totalAtreated: barChartData[i].AreaTreated,
+                    totalAaffected: barChartData[i].AreaAffected,
                     cropName: 'Pulses'
                 };
                 pulsesCropData.push(pulsesData);
@@ -100,37 +115,37 @@ httpGetAsync('http://localhost:3000/graph/getGraph', function (res) {
         datasets: [
             {
                 label: "Total Area Affected (in ha) (Cereal Crops)",
-                backgroundColor: "#00b300",
+                backgroundColor: "orange",
                 data: totalAreaAffected,
                 stack: 1
             },
             {
                 label: "Total Area Treated (in ha) (Cereal Crops)",
-                backgroundColor: "#f8981f",
+                backgroundColor: "green",
                 data: totalAreaTreated,
                 stack: 1
             },
             {
                 label: "Total Area Affected (in ha) (Oil Seeds)",
-                backgroundColor: "#414443",
+                backgroundColor: "red",
                 data: totalAreaAffected1,
                 stack: 2
             },
             {
                 label: "Total Area Treated (in ha) (Oil Seeds)",
-                backgroundColor: "#3e95cd",
+                backgroundColor: "blue",
                 data: totalAreaTreated1,
                 stack: 2
             },
             {
                 label: "Total Area Affected (in ha) (Pulses)",
-                backgroundColor: "#c54f4f",
+                backgroundColor: "brown",
                 data: totalAreaAffected2,
                 stack: 3
             },
             {
                 label: "Total Area Treated (in ha) (Pulses)",
-                backgroundColor: "#91bf5e",
+                backgroundColor: "pink",
                 data: totalAreaTreated2,
                 stack: 3
             },
@@ -153,7 +168,7 @@ httpGetAsync('http://localhost:3000/graph/getGraph', function (res) {
             scales: {
                 yAxes: [{
                     ticks: {
-                        max: 20000,
+                        max: 100000,
                     },
                     scaleLabel: {
                         display: true,

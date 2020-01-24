@@ -3,9 +3,9 @@ var sequelize = dbConfig.sequelize;
 var sql = dbConfig.sql;
 var locConfig = dbConfig.locConfig;
 
-exports.addActivityLog = function(ipAddress, userID, url, deviceType, os, browser, action, attack, mode) {
+exports.addActivityLog = function (ipAddress, userID, url, deviceType, os, browser, action, attack, mode) {
     sequelize.query('insert into ActivityLog (IPAddress, UserID, URL, DeviceType, OS, Browser, DateTime, Action, Attack, Mode) values (:ip_address, :user_id, :url, :device_type, :os, :browser, getdate(), :action, :attack, :mode)', {
-    replacements: { ip_address: ipAddress, user_id: userID, url: url, device_type: deviceType, os: os, browser: browser, action: action, attack: attack, mode: mode}, type: sequelize.QueryTypes.SELECT
+        replacements: { ip_address: ipAddress, user_id: userID, url: url, device_type: deviceType, os: os, browser: browser, action: action, attack: attack, mode: mode }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
         return data;
     }).catch(function error(err) {
@@ -13,7 +13,7 @@ exports.addActivityLog = function(ipAddress, userID, url, deviceType, os, browse
     });
 };
 
-exports.getUserDetails = function(userName) {
+exports.getUserDetails = function (userName) {
     return sequelize.query('select ul.UserID, ul.ContactNo, ul.PasswordHash, ul.RoleID, ul.AccessFailedCount, ul.IsLoggedIn, ul.Status, ur.RoleName from UserLogin ul inner join UserRole ur on ul.RoleID = ur.RoleID where UserID = :user_name', {
         replacements: { user_name: userName }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
@@ -23,7 +23,7 @@ exports.getUserDetails = function(userName) {
     });
 };
 
-exports.checkCPStatus = function(userName) {
+exports.checkCPStatus = function (userName) {
     return sequelize.query('select UserID from ChangePasswordStatus where UserID = :user_name', {
         replacements: { user_name: userName }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
@@ -33,9 +33,9 @@ exports.checkCPStatus = function(userName) {
     });
 };
 
-exports.updateFailedCount = function(failedCount, userID) {
+exports.updateFailedCount = function (failedCount, userID) {
     sequelize.query('update UserLogin set AccessFailedCount = :failed_count where UserID = :user_id', {
-    replacements: { failed_count: failedCount, user_id: userID }, type: sequelize.QueryTypes.SELECT
+        replacements: { failed_count: failedCount, user_id: userID }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
         return data;
     }).catch(function error(err) {
@@ -43,9 +43,9 @@ exports.updateFailedCount = function(failedCount, userID) {
     });
 };
 
-exports.updateIsLoggedIn = function(isLoggedIn, userID) {
+exports.updateIsLoggedIn = function (isLoggedIn, userID) {
     sequelize.query('update UserLogin set IsLoggedIn = :is_logged_in where UserID = :user_id', {
-    replacements: { is_logged_in: isLoggedIn, user_id: userID }, type: sequelize.QueryTypes.SELECT
+        replacements: { is_logged_in: isLoggedIn, user_id: userID }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
         return data;
     }).catch(function error(err) {
@@ -53,7 +53,7 @@ exports.updateIsLoggedIn = function(isLoggedIn, userID) {
     });
 };
 
-exports.getLastLoginStatus = function(userName) {
+exports.getLastLoginStatus = function (userName) {
     return sequelize.query("select top 1 convert(varchar(10), DateTime, 105) + ' ' + convert(varchar(8), DateTime, 108) as LastLoginDateTime from ActivityLog where UserID = :user_name order by DateTime desc", {
         replacements: { user_name: userName }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
@@ -73,7 +73,7 @@ exports.getPasswordHistory = function (userName) {
     });
 };
 
-exports.changePasssword = function(obj, callback) {
+exports.changePasssword = function (obj, callback) {
     var con = new sql.ConnectionPool(locConfig);
     con.connect().then(function success() {
         const request = new sql.Request(con);
@@ -82,15 +82,25 @@ exports.changePasssword = function(obj, callback) {
         request.input('Status', obj.Status);
         request.input('IPAddress', obj.IPAddress);
         request.input('FinancialYear', obj.FinancialYear);
-        request.execute('spChangePassword', function(err, result) {
+        request.execute('spChangePassword', function (err, result) {
             if (err) {
                 console.log('An error occurred...', err);
             }
-            else{
+            else {
                 callback(result.returnValue);
             }
             con.close();
         });
+    }).catch(function error(err) {
+        console.log('An error occurred...', err);
+    });
+};
+
+exports.getGraphData = function () {
+    return sequelize.query("select a.DistrictCode, DistrictName, d.CategoryCode, CategoryName, sum(MediumAffectedArea + HighAffectedArea) as AreaAffected, sum(MediumTreatedArea + HighTreatedArea) as AreaTreated from LGDDistrict a left join LGDBlock b on a.DistrictCode = b.DistrictCode inner join AAOPestDetailsEntry c on c.BlockCode = b.BlockCode inner join CropCategory d on c.CropCategoryCode = d.CategoryCode where c.CropCategoryCode in (1,2,3) and c.FinancialYear = '2019-20' and c.Season = 'K' group by d.CategoryCode, CategoryName, a.DistrictCode, DistrictName order by DistrictName, CategoryName", {
+        type: sequelize.QueryTypes.SELECT
+    }).then(function success(data) {
+        return data;
     }).catch(function error(err) {
         console.log('An error occurred...', err);
     });
