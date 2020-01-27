@@ -289,10 +289,12 @@ exports.updateIsLoggedIn = function(isLoggedIn, userID) {
     });
 };
 
-exports.getDashboardDetails = function(callback) {
+exports.getDashboardDetails = function(season, financialYear, callback) {
     var con = new sql.ConnectionPool(locConfig);
     con.connect().then(function success() {
         const request = new sql.Request(con);
+        request.input('Season', season);
+        request.input('FinancialYear', financialYear);
         request.execute('spGetJDAPPDashboardDetails', function(err, result) {
             if (err) {
                 console.log('An error occurred...', err);

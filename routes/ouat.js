@@ -399,7 +399,11 @@ router.post('/submitDetails', parseForm, csrfProtection, permit.permission('OUAT
 
 router.get('/getDashboardDetails', function (req, res, next) {
   res.get('X-Frame-Options');
-  balModule.getDashboardDetails(function success(response) {
+  var sq = null; if (req.query.hasOwnProperty('season')) sq = req.query.season.charAt(0);
+  var season = getSeasonShort() == sq ? getSeasonShort() : sq;
+  var fnq = null; if (req.query.hasOwnProperty('financialYear')) fnq = req.query.financialYear;
+  var financialYear = getFinancialYear() == fnq ? getFinancialYear() : fnq;
+  balModule.getDashboardDetails(season, financialYear, function success(response) {
     res.send(response);
   }, function error(response) {
     console.log(response.status);
