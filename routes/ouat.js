@@ -399,10 +399,8 @@ router.post('/submitDetails', parseForm, csrfProtection, permit.permission('OUAT
 
 router.get('/getDashboardDetails', function (req, res, next) {
   res.get('X-Frame-Options');
-  var sq = null; if (req.query.hasOwnProperty('season')) sq = req.query.season.charAt(0);
-  var season = getSeasonShort() == sq ? getSeasonShort() : sq;
-  var fnq = null; if (req.query.hasOwnProperty('financialYear')) fnq = req.query.financialYear;
-  var financialYear = getFinancialYear() == fnq ? getFinancialYear() : fnq;
+  var season = req.query.season;
+  var financialYear = req.query.financialYear;
   balModule.getDashboardDetails(season, financialYear, function success(response) {
     res.send(response);
   }, function error(response) {
@@ -632,6 +630,68 @@ router.get('/getEMRReferenceNoDetails', function(req, res, next) {
     console.log(response.status);
   }).catch(function err(error) {
     console.log('An error occurred...', error);
+  });
+});
+
+router.get('/getGraphforCrop', function (req, res, next) {
+  res.get('X-Frame-Options');
+  var sq = null; if (req.query.hasOwnProperty('season')) sq = req.query.season.charAt(0);
+  var season = getSeasonShort() == sq ? getSeasonShort() : sq;
+  var fnq = null; if (req.query.hasOwnProperty('financialYear')) fnq = req.query.financialYear;
+  var financialYear = getFinancialYear() == fnq ? getFinancialYear() : fnq;
+  balModule.getGraphforCrop(season, financialYear).then(function success(response) {
+    res.send(response);
+  }, function error(response) {
+    console.log(response.status);
+  }).catch(function err(error) {
+    console.log('An error occurred...', error);
+  });
+});
+
+router.get('/getCropDetailsCategory', function (req, res, next) {
+  res.get('X-Frame-Options');
+  var sq = null; if (req.query.hasOwnProperty('season')) sq = req.query.season.charAt(0);
+  var season = getSeasonShort() == sq ? getSeasonShort() : sq;
+  var fnq = null; if (req.query.hasOwnProperty('financialYear')) fnq = req.query.financialYear;
+  var financialYear = getFinancialYear() == fnq ? getFinancialYear() : fnq;
+  var cropCategoryCode = req.query.cropCode;
+  balModule.getCropDetailsCategory(season, financialYear, cropCategoryCode).then(function success(response) {
+    res.send(response);
+  }, function error(response) {
+    console.log(response.status);
+  }).catch(function err(error) {
+    console.log('An error occurred...', error);
+  });
+});
+
+var getSeasonShort = function() {
+  var seasonName;
+  var month = new Date().getMonth();
+  if (month >= 6 && month <= 10) {
+    seasonName = 'K';
+  }
+  else {
+    seasonName = 'R';
+  }
+  return seasonName;
+};
+
+router.post('/getPestGraphData', parseForm, csrfProtection, permit.permission('OUAT'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+  res.get('X-Frame-Options');
+  balModule.addActivityLog(req.connection.remoteAddress, req.session.username, getURL(req), req.device.type.toUpperCase(), os.platform(), req.headers['user-agent'], '/getPestGraphData', 'INSERT', 'POST', function success(response) {
+  }, function error(response) {
+    console.log(response.status);
+  });
+  var arr = req.body.data.pestData;
+  var month = req.body.data.month;
+  var sq = null; if (req.body.data.hasOwnProperty('season')) sq = req.body.data.season.charAt(0);
+  var season = getSeasonShort() == sq ? getSeasonShort() : sq;
+  var fnq = null; if (req.body.data.hasOwnProperty('financialYear')) fnq = req.body.data.financialYear;
+  var financialYear = getFinancialYear() == fnq ? getFinancialYear() : fnq;
+  balModule.getPestGraphData(arr, month, season, financialYear, function success(response1) {
+    res.send(response1);
+  }, function error(response1) {
+    console.log(response1.status);
   });
 });
 

@@ -183,7 +183,7 @@ httpGetAsync('http://localhost:3000/graph/getGraph', function (res) {
                         display: true,
                         fontColor: 'red',
                         fontStyle: "bold",
-                        labelString: 'Total affected area & total treated area of Cereal Crops, Oil Seeds & Pulses (District-wise)'
+                        labelString: 'Total affected area & total treated area of Cereal Crops, Oil Seeds & Pulses (District-wise) (Kharif-season)'
                     },
                     ticks: {
                         autoSkip: false,
