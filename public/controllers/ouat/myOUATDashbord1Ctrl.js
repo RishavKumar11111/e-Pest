@@ -277,4 +277,13 @@ app.controller('myOUATDashbord1Ctrl', function ($scope, $http, $filter) {
         }
     };
 
+    $scope.generateGraphs = function () {
+        if ($scope.cbSeason != undefined && $scope.cbSeason != null && $scope.ddlFY != undefined && $scope.ddlFY != null) {
+            if (myChart9) myChart9.destroy();
+            if (myChart10) myChart10.destroy();
+            $scope.getGD();
+            $scope.getDashboardDetails();
+        }
+    };
+
 });
