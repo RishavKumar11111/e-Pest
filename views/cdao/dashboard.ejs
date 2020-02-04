@@ -1,4 +1,4 @@
-<div class="right_col" role="main" ng-controller="myCDAODashboardCtrl" ng-init="getDashboardDetails();" style="min-height: 100vh">
+<div class="right_col" role="main" ng-controller="myCDAODashboardCtrl" ng-init="getDashboardDetails(); getCropCategories(); getGD()" style="min-height: 100vh">
     <div class="">
         <div class="row top_tiles">
             <a href="#!aaoDetails">
@@ -23,25 +23,25 @@
             </a>
             <div class="animated flipInY col-md-2 col-sm-2 col-xs-12">
                 <div class="tile-stats" style="background-color: #4285f4; height: 125px; padding: 10px">
-                    <h3 style="color: white">Total Area Affected</h3>
+                    <h3 style="color: white; font-size: 19px">Total Area Affected (AAO)</h3>
                     <div class="count" style="color: white; padding-top: -10px">
-                        <span>{{getCDAODetails[2][0].TotalAffectedArea == null ? 0 : getCDAODetails[2][0].TotalAffectedArea}} ha</span>
+                        <span style="font-size: 27px">{{getCDAODetails[2][0].TotalAffectedArea == null ? 0 : getCDAODetails[2][0].TotalAffectedArea}} ha</span style="font-size: 27px">
                     </div>
                 </div>
             </div>
             <div class="animated flipInY col-md-2 col-sm-2 col-xs-12">
                 <div class="tile-stats" style="background-color: #db4437; height: 125px; padding: 10px">
-                    <h3 style="color: white">Total Area Treated</h3>
+                    <h3 style="color: white; font-size: 19px">Total Area Treated (AAO)</h3>
                     <div class="count" style="color: white; padding-top: -10px">
-                        <span>{{getCDAODetails[2][0].TotalTreatedArea == null ? 0 : getCDAODetails[2][0].TotalTreatedArea}} ha</span>
+                        <span style="font-size: 27px">{{getCDAODetails[2][0].TotalTreatedArea == null ? 0 : getCDAODetails[2][0].TotalTreatedArea}} ha</span style="font-size: 27px">
                     </div>
                 </div>
             </div>
             <div class="animated flipInY col-md-2 col-sm-2 col-xs-12">
                 <div class="tile-stats" style="background-color: #f4b400; height: 125px; padding: 10px">
                     <h3 style="color: white; font-size: 19px">Area inspected by VAW</h3>
-                    <div class="count" style="color: white; padding-top: 13px">
-                        <span>{{getCDAODetails[3][0].TotalAreaAffected == null ? 0 : getCDAODetails[3][0].TotalAreaAffected}} ha</span>
+                    <div class="count" style="color: white; padding-top: 10px">
+                        <span style="font-size: 30px">{{getCDAODetails[3][0].TotalAreaAffected == null ? 0 : getCDAODetails[3][0].TotalAreaAffected}} ha</span style="font-size: 30px">
                     </div>
                 </div>
             </div>
@@ -54,22 +54,181 @@
                 </div>
             </div>
         </div>
+        <script type="text/javascript" src="../../public/javascripts/chart.min.js"></script>
         <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                     <div class="x_title">
-                        <h3>Area affected & Area treated (in ha)</h3>
+                        <h3>Select Season and Financial Year</h3>
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
                         <div class="row">
                             <div class="col-md-12 col-sm-12 col-xs-12">
-                                <div class="col-md-3 col-sm-3 col-xs-12"></div>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <script type="text/javascript" src="../../public/javascripts/chart.min.js"></script>
-                                    <canvas id="myChart2"></canvas>
+                                <div class="col-md-4 col-sm-4 col-sm-12">
+                                    <label style="text-align: left; padding-top: 8px" class="control-label col-md-5 col-sm-5 col-xs-12">Season :</label>
+                                    <div class="col-md-7 col-sm-7 col-xs-12">
+                                        <div style="padding-top: 8px" class="col-md-6 col-sm-6 col-xs-12">
+                                            <input id="kcb" type="checkbox" ng-checked="cbSeason == 'Kharif'" ng-true-value="'Kharif'" ng-model="cbSeason" ng-change="getMonth()"> <span>Kharif</span>
+                                        </div>
+                                        <div style="padding-top: 8px" class="col-md-6 col-sm-6 col-xs-12">
+                                            <input id="rcb" type="checkbox" ng-checked="cbSeason == 'Rabi'" ng-true-value="'Rabi'" ng-model="cbSeason" ng-change="getMonth()"> <span>Rabi</span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-md-3 col-sm-3 col-xs-12"></div>
+                                <div class="col-md-5 col-sm-5 col-sm-12">
+                                    <label style="text-align: left; padding-top: 8px" class="control-label col-md-5 col-sm-5 col-xs-12">Financial Year :</label>
+                                    <div class="col-md-7 col-sm-7 col-xs-12">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                            <select id="fyid" class="form-control" ng-model="ddlFY" ng-change="destroyGraph()">
+                                                <option value="">Select Financial Year</option>
+                                                <option value="2019-20">2019-20</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-3 col-sm-12">
+                                    <input type="button" class="btn btn-success" value="Generate Graphs" ng-disabled="ddlFY == null || ddlFY == undefined" ng-click="generateGraphs(); destroyGraph()" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h3 style="display: inline">Total Area Affected (in ha)</h3><small> Crop Category-wise</small>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <canvas id="myChart9" onclick="onclickGetData()"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12" id="acHide" style="display: none">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h3 style="display: inline">Total Area Affected Crop (in ha)</h3><small> Crop-wise</small>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <canvas id="myChart10"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h3 style="display: inline">Total Area Affected & Treated (in ha)</h3 style="display: inline"><small> (Weekly)</small>
+                        <h4>Date : ({{getCDAODetails[2][0].StartDate}} - {{getCDAODetails[2][0].EndDate}}) | Week Number - {{getCDAODetails[2][0].WeekNo}}</h4>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <canvas id="myChart1"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h3>Total Area Affected & Treated (in ha)</h3>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <canvas id="myChart6"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h3 style="display: inline">Total Area Affected (in ha)</h3 style="display: inline"><small> (Crop Category-wise and Crop-wise)</small>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group">
+                                    <label style="text-align: left; padding-top: 7px" class="control-label col-md-5 col-sm-5 col-xs-12">Crop Category <span style="color: red">*</span></label>
+                                    <div class="col-md-7 col-sm-7 col-xs-12">
+                                        <div class="input-group" style="margin-bottom: 0px">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-edit"></i></span>
+                                            <select class="form-control" ng-model="ddlCropCategory" ng-options="i.CategoryCode as i.CategoryName for i in cropCategories" ng-change="getCropsByCategory()" required>
+                                                <option value="" disabled>Select Crop Category</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group">
+                                    <label style="text-align: left; padding-top: 7px" class="control-label col-md-5 col-sm-5 col-xs-12">Crop <span style="color: red">*</span></label>
+                                    <div class="col-md-7 col-sm-7 col-xs-12">
+                                        <div class="input-group" style="margin-bottom: 0px">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-edit"></i></span>
+                                            <select class="form-control" ng-model="ddlCrop" ng-options="i.CropCode as i.CropName for i in crops" ng-change="getPestDiseases()" required>
+                                                <option value="" disabled>Select Crop</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-sm-12">
+                                <label style="text-align: left; padding-top: 8px" class="control-label col-md-5 col-sm-5 col-xs-12">Month : </label>
+                                <div class="col-md-7 col-sm-7 col-xs-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                        <select class="form-control" ng-model="ddlMonth" ng-options="i.MonthCode as i.MonthName for i in months" ng-change="destroyGraph()">
+                                            <option value="">Select Month</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12" ng-show="pestDiseases.length > 0" style="padding: 30px">
+                            <div class="form-group">
+                                <div class="col-md-4 col-sm-4 col-xs-12" ng-repeat="i in pestDiseases">
+                                    <input style="margin: 5px" type="checkbox" ng-model="i.selected" ng-change="getValue();" ng-true-value="true" ng-false-value="false" />
+                                    <label style="padding: 0 25px 0 0; font-weight: normal" class="control-label">{{i.PestDiseaseName | capitalize}}</label>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="clearfix"></div>
+                            <div class="ln_solid"></div>
+                            <div class="col-md-12 col-sm-12 col-xs-12 text-center">
+                                <input type="button" class="btn btn-success" value="Generate Pest Graph" ng-disabled="pests.length == 0 || ddlCropCategory == null || ddlCropCategory == undefined" ng-click="getPestGraphData()" />
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <canvas id="myChart7"></canvas>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <canvas id="myChart8"></canvas>
                             </div>
                         </div>
                     </div>

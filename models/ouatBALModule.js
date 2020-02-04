@@ -530,3 +530,32 @@ exports.getPestGraphData = function (arr, month, season, financialYear, callback
         });
     }
 };
+
+exports.getGeneralPestDetails = function (dateOfEntry, callback) {
+    var con = new sql.ConnectionPool(locConfig);
+    con.connect().then(function success() {
+        const request = new sql.Request(con);
+        request.input('DateOfEntry', dateOfEntry);
+        request.execute('spStateWiseDetails', function (err, result) {
+            if (err) {
+                console.log('An error occurred...', err);
+            }
+            else {
+                callback(result.recordsets);
+            }
+            con.close();
+        });
+    }).catch(function error(err) {
+        console.log('An error occurred...', err);
+    });
+};
+
+exports.submitGeneralAdvisory = function (obj, callback) {
+    sequelize.query('insert into OUATGeneralAdvisory (CategoryCode, CropCode, PestDiseaseCode, Season, FinancialYear, OdiaAdvisory, EnglishAdvisory, DateTime, IPAddress) values (:category_code, :crop_code, :pest_disease_code, :season, :financial_year, :odia_advisory, :english_adviaory, getdate(), :ip_address)', {
+        replacements: { category_code: obj.CategoryCode, crop_code: obj.CropCode, pest_disease_code: obj.PestDiseaseCode, season: obj.Season, financial_year: obj.FinancialYear, odia_advisory: obj.OdiaAdvisory, english_adviaory: obj.EnglishAdvisory, ip_address: obj.IPAddress }, type: sequelize.QueryTypes.SELECT
+    }).then(function success(data) {
+        callback(true);
+    }).catch(function error(err) {
+        console.log('An error occurred...', err);
+    });
+};

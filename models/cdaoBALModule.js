@@ -3,9 +3,9 @@ var sequelize = dbConfig.sequelize;
 var sql = dbConfig.sql;
 var locConfig = dbConfig.locConfig;
 
-exports.addActivityLog = function(ipAddress, userID, url, deviceType, os, browser, action, attack, mode) {
+exports.addActivityLog = function (ipAddress, userID, url, deviceType, os, browser, action, attack, mode) {
     sequelize.query('insert into ActivityLog (IPAddress, UserID, URL, DeviceType, OS, Browser, DateTime, Action, Attack, Mode) values (:ip_address, :user_id, :url, :device_type, :os, :browser, getdate(), :action, :attack, :mode)', {
-    replacements: { ip_address: ipAddress, user_id: userID, url: url, device_type: deviceType, os: os, browser: browser, action: action, attack: attack, mode: mode}, type: sequelize.QueryTypes.SELECT
+        replacements: { ip_address: ipAddress, user_id: userID, url: url, device_type: deviceType, os: os, browser: browser, action: action, attack: attack, mode: mode }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
         return data;
     }).catch(function error(err) {
@@ -13,7 +13,7 @@ exports.addActivityLog = function(ipAddress, userID, url, deviceType, os, browse
     });
 };
 
-exports.getDistrict = function(username) {
+exports.getDistrict = function (username) {
     return sequelize.query('select a.DistrictCode, DistrictName from CDAODistrictMapping a inner join LGDDistrict b on a.DistrictCode = b.DistrictCode where a.CDAOUserID = :user_name', {
         replacements: { user_name: username }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
@@ -23,7 +23,7 @@ exports.getDistrict = function(username) {
     });
 };
 
-exports.getBlocks = function(username) {
+exports.getBlocks = function (username) {
     return sequelize.query('select BlockCode, BlockName from LGDBlock a inner join CDAODistrictMapping b on a.DistrictCode = b.DistrictCode where BlockCode not in (select BlockCode from AAOBlockMapping) and b.CDAOUserID = :user_name', {
         replacements: { user_name: username }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
@@ -33,7 +33,7 @@ exports.getBlocks = function(username) {
     });
 };
 
-exports.checkMobileNo = function(mobileNo) {
+exports.checkMobileNo = function (mobileNo) {
     return sequelize.query('select distinct(AAOMobileNo) from AAOBlockMapping where AAOMobileNo = :mobile_no', {
         replacements: { mobile_no: mobileNo }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
@@ -43,48 +43,48 @@ exports.checkMobileNo = function(mobileNo) {
     });
 };
 
-exports.registerAAO = function(aaoData, userData, callback) {
+exports.registerAAO = function (aaoData, userData, callback) {
     var con = new sql.ConnectionPool(locConfig);
     con.connect().then(function success() {
         const tableAAOBlock = new sql.Table();
         tableAAOBlock.create = true;
-        tableAAOBlock.columns.add('AAOCode', sql.VarChar(10), {nullable: false, primary: true});
-        tableAAOBlock.columns.add('BlockCode', sql.Int, {nullable: false, primary: true});
-        tableAAOBlock.columns.add('AAOName', sql.VarChar(50), {nullable: false});
-        tableAAOBlock.columns.add('AAOMobileNo', sql.VarChar(10), {nullable: false});
-        tableAAOBlock.columns.add('AAOEmailID', sql.VarChar(30), {nullable: true});
-        tableAAOBlock.columns.add('AAOSignature', sql.VarBinary(8000), {nullable: true});
-        tableAAOBlock.columns.add('AAOAadhaarNo', sql.VarChar(100), {nullable: true});
-        tableAAOBlock.columns.add('CDAOUserID', sql.VarChar(30), {nullable: false});
-        tableAAOBlock.columns.add('Status', sql.Bit, {nullable: false});
-        tableAAOBlock.columns.add('IPAddress', sql.VarChar(50), {nullable: false});
-        tableAAOBlock.columns.add('FinancialYear', sql.VarChar(10), {nullable: false});
+        tableAAOBlock.columns.add('AAOCode', sql.VarChar(10), { nullable: false, primary: true });
+        tableAAOBlock.columns.add('BlockCode', sql.Int, { nullable: false, primary: true });
+        tableAAOBlock.columns.add('AAOName', sql.VarChar(50), { nullable: false });
+        tableAAOBlock.columns.add('AAOMobileNo', sql.VarChar(10), { nullable: false });
+        tableAAOBlock.columns.add('AAOEmailID', sql.VarChar(30), { nullable: true });
+        tableAAOBlock.columns.add('AAOSignature', sql.VarBinary(8000), { nullable: true });
+        tableAAOBlock.columns.add('AAOAadhaarNo', sql.VarChar(100), { nullable: true });
+        tableAAOBlock.columns.add('CDAOUserID', sql.VarChar(30), { nullable: false });
+        tableAAOBlock.columns.add('Status', sql.Bit, { nullable: false });
+        tableAAOBlock.columns.add('IPAddress', sql.VarChar(50), { nullable: false });
+        tableAAOBlock.columns.add('FinancialYear', sql.VarChar(10), { nullable: false });
         for (var i = 0; i < aaoData.length; i++) {
             tableAAOBlock.rows.add(aaoData[i].AAOCode, aaoData[i].BlockCode, aaoData[i].AAOName, aaoData[i].AAOMobileNo, aaoData[i].AAOEmailID, aaoData[i].AAOSignature, aaoData[i].AAOAadhaarNo, aaoData[i].CDAOUserID, aaoData[i].Status, aaoData[i].IPAddress, aaoData[i].FinancialYear);
         }
         const tableUserLogin = new sql.Table();
         tableUserLogin.create = true;
-        tableUserLogin.columns.add('UserID', sql.VarChar(50), {nullable: false, primary: true});
-        tableUserLogin.columns.add('PasswordHash', sql.NVarChar(100), {nullable: false});
-        tableUserLogin.columns.add('RoleID', sql.VarChar(10), {nullable: false});
-        tableUserLogin.columns.add('ContactNo', sql.VarChar(10), {nullable: false});
-        tableUserLogin.columns.add('EmailID', sql.VarChar(50), {nullable: true});
-        tableUserLogin.columns.add('LockOutEnabled', sql.Bit, {nullable: false});
-        tableUserLogin.columns.add('AccessFailedCount', sql.Int, {nullable: false});
-        tableUserLogin.columns.add('Status', sql.Bit, {nullable: false});
-        tableUserLogin.columns.add('IPAddress', sql.VarChar(50), {nullable: false});
-        tableUserLogin.columns.add('FinancialYear', sql.VarChar(10), {nullable: false});
+        tableUserLogin.columns.add('UserID', sql.VarChar(50), { nullable: false, primary: true });
+        tableUserLogin.columns.add('PasswordHash', sql.NVarChar(100), { nullable: false });
+        tableUserLogin.columns.add('RoleID', sql.VarChar(10), { nullable: false });
+        tableUserLogin.columns.add('ContactNo', sql.VarChar(10), { nullable: false });
+        tableUserLogin.columns.add('EmailID', sql.VarChar(50), { nullable: true });
+        tableUserLogin.columns.add('LockOutEnabled', sql.Bit, { nullable: false });
+        tableUserLogin.columns.add('AccessFailedCount', sql.Int, { nullable: false });
+        tableUserLogin.columns.add('Status', sql.Bit, { nullable: false });
+        tableUserLogin.columns.add('IPAddress', sql.VarChar(50), { nullable: false });
+        tableUserLogin.columns.add('FinancialYear', sql.VarChar(10), { nullable: false });
         for (var i = 0; i < userData.length; i++) {
             tableUserLogin.rows.add(userData[i].UserID, userData[i].PasswordHash, userData[i].RoleID, userData[i].ContactNo, userData[i].EmailID, userData[i].LockOutEnabled, userData[i].AccessFailedCount, userData[i].Status, userData[i].IPAddress, userData[i].FinancialYear);
         }
         const request = new sql.Request(con);
         request.input('tableAAOBlock', tableAAOBlock);
         request.input('tableUserLogin', tableUserLogin);
-        request.execute('spRegisterAAO', function(err, result) {
+        request.execute('spRegisterAAO', function (err, result) {
             if (err) {
                 console.log('An error occurred...', err);
             }
-            else{
+            else {
                 callback(result.returnValue);
             }
             con.close();
@@ -94,7 +94,7 @@ exports.registerAAO = function(aaoData, userData, callback) {
     });
 };
 
-exports.getRegisteredAAOs = function(cdaoUserID) {
+exports.getRegisteredAAOs = function (cdaoUserID) {
     return sequelize.query('select AAOCode, AAOName, AAOMobileNo, abm.BlockCode, BlockName from AAOBlockMapping abm inner join LGDBlock lb on abm.BlockCode = lb.BlockCode where CDAOUserID = :cdao_user_id', {
         replacements: { cdao_user_id: cdaoUserID }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
@@ -104,7 +104,7 @@ exports.getRegisteredAAOs = function(cdaoUserID) {
     });
 };
 
-exports.removeAAO = function(aaoCode, blockCode, callback) {
+exports.removeAAO = function (aaoCode, blockCode, callback) {
     return sequelize.query('select AAOMobileNo, BlockName from AAOBlockMapping a inner join LGDBlock b on a.BlockCode = b.BlockCode where AAOCode = :aao_code and a.BlockCode = :block_code delete from AAOBlockMapping where AAOCode = :aao_code and BlockCode = :block_code', {
         replacements: { aao_code: aaoCode, block_code: blockCode }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
@@ -114,7 +114,7 @@ exports.removeAAO = function(aaoCode, blockCode, callback) {
     });
 };
 
-exports.getUserDetails = function(userName) {
+exports.getUserDetails = function (userName) {
     return sequelize.query('select ul.UserID, ul.PasswordHash, ul.RoleID, ul.ContactNo, ul.AccessFailedCount, ul.Status, ur.RoleName from UserLogin ul inner join UserRole ur on ul.RoleID = ur.RoleID where UserID = :user_name', {
         replacements: { user_name: userName }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
@@ -134,7 +134,7 @@ exports.getPasswordHistory = function (userName) {
     });
 };
 
-exports.changePasssword = function(obj, callback) {
+exports.changePasssword = function (obj, callback) {
     var con = new sql.ConnectionPool(locConfig);
     con.connect().then(function success() {
         const request = new sql.Request(con);
@@ -143,11 +143,11 @@ exports.changePasssword = function(obj, callback) {
         request.input('Status', obj.Status);
         request.input('IPAddress', obj.IPAddress);
         request.input('FinancialYear', obj.FinancialYear);
-        request.execute('spChangePassword', function(err, result) {
+        request.execute('spChangePassword', function (err, result) {
             if (err) {
                 console.log('An error occurred...', err);
             }
-            else{
+            else {
                 callback(result.returnValue);
             }
             con.close();
@@ -157,9 +157,9 @@ exports.changePasssword = function(obj, callback) {
     });
 };
 
-exports.updateIsLoggedIn = function(isLoggedIn, userID) {
+exports.updateIsLoggedIn = function (isLoggedIn, userID) {
     sequelize.query('update UserLogin set IsLoggedIn = :is_logged_in where UserID = :user_id', {
-    replacements: { is_logged_in: isLoggedIn, user_id: userID }, type: sequelize.QueryTypes.SELECT
+        replacements: { is_logged_in: isLoggedIn, user_id: userID }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
         return data;
     }).catch(function error(err) {
@@ -167,9 +167,9 @@ exports.updateIsLoggedIn = function(isLoggedIn, userID) {
     });
 };
 
-exports.getAAODetailsReport = function(cdaoUserID) {
+exports.getAAODetailsReport = function (cdaoUserID) {
     return sequelize.query('select a.AAOCode, b.BlockName, a.AAOMobileNo, a.AAOName from AAOBlockMapping a inner join LGDBlock b on a.BlockCode = b.BlockCode where CDAOUserID = :cdao_userid', {
-        replacements: { cdao_userid : cdaoUserID }, type: sequelize.QueryTypes.SELECT
+        replacements: { cdao_userid: cdaoUserID }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
         return data;
     }).catch(function error(err) {
@@ -177,7 +177,7 @@ exports.getAAODetailsReport = function(cdaoUserID) {
     });
 };
 
-exports.getBlocksByDistrict = function(username) {
+exports.getBlocksByDistrict = function (username) {
     return sequelize.query('select BlockCode, BlockName from LGDBlock a inner join CDAODistrictMapping b on a.DistrictCode = b.DistrictCode where b.CDAOUserID = :user_name', {
         replacements: { user_name: username }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
@@ -187,9 +187,9 @@ exports.getBlocksByDistrict = function(username) {
     });
 };
 
-exports.getVAWDetailsReport = function(blockCode) {
+exports.getVAWDetailsReport = function (blockCode) {
     return sequelize.query('select VAWCode, VAWName, VAWMobileNo, GPName, Status from VAWGPMapping a inner join LGDGP b on a.GPCode = b.GPCode where a.BlockCode = :block_code', {
-        replacements: { block_code : blockCode }, type: sequelize.QueryTypes.SELECT
+        replacements: { block_code: blockCode }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
         return data;
     }).catch(function error(err) {
@@ -197,9 +197,9 @@ exports.getVAWDetailsReport = function(blockCode) {
     });
 };
 
-exports.getVAWDPTargets = function(blockCode) {
+exports.getVAWDPTargets = function (blockCode) {
     return sequelize.query('select b.VAWCode, a.VAWMobileNo, a.VAWName, c.GPName from VAWGPMapping a inner join VAWGPTargets b on a.GPCode = b.GPCode inner join LGDGP c on c.GPCode = b.GPCode where a.BlockCode = :block_code and a.Status = 1', {
-        replacements: { block_code : blockCode }, type: sequelize.QueryTypes.SELECT
+        replacements: { block_code: blockCode }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
         return data;
     }).catch(function error(err) {
@@ -207,16 +207,18 @@ exports.getVAWDPTargets = function(blockCode) {
     });
 };
 
-exports.getDashboardDetails = function(cdaoUserID, callback) {
+exports.getDashboardDetails = function (season, financialYear, cdaoUserID, callback) {
     var con = new sql.ConnectionPool(locConfig);
     con.connect().then(function success() {
         const request = new sql.Request(con);
+        request.input('Season', season);
+        request.input('FinancialYear', financialYear);
         request.input('CDAOUserID', cdaoUserID);
-        request.execute('spGetCDAODashboardDetails', function(err, result) {
+        request.execute('spGetCDAODashboardDetails', function (err, result) {
             if (err) {
                 console.log('An error occurred...', err);
             }
-            else{
+            else {
                 callback(result.recordsets);
             }
             con.close();
@@ -226,7 +228,7 @@ exports.getDashboardDetails = function(cdaoUserID, callback) {
     });
 };
 
-exports.getCropCategories = function() {
+exports.getCropCategories = function () {
     return sequelize.query('select * from CropCategory where IsActive = 1', {
         type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
@@ -236,7 +238,7 @@ exports.getCropCategories = function() {
     });
 };
 
-exports.getCropsByCategory = function(cropCategoryCode) {
+exports.getCropsByCategory = function (cropCategoryCode) {
     return sequelize.query('select CropCode, CropName from Crop where CropCategoryCode = :crop_category_code and IsActive = 1', {
         replacements: { crop_category_code: cropCategoryCode }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
@@ -246,16 +248,16 @@ exports.getCropsByCategory = function(cropCategoryCode) {
     });
 };
 
-exports.getAllPestDiseases = function(cropCode, callback) {
+exports.getAllPestDiseases = function (cropCode, callback) {
     var con = new sql.ConnectionPool(locConfig);
     con.connect().then(function success() {
         const request = new sql.Request(con);
         request.input('CropCode', cropCode);
-        request.execute('spGetPestDisease', function(err, result) {
+        request.execute('spGetPestDisease', function (err, result) {
             if (err) {
                 console.log('An error occurred...', err);
             }
-            else{
+            else {
                 callback(result.recordset);
             }
             con.close();
@@ -265,7 +267,7 @@ exports.getAllPestDiseases = function(cropCode, callback) {
     });
 };
 
-exports.getPestDetails = function(dateOfEntry, season, financialYear, blockCode, cropCategoryCode, cropCode, pestDiseaseCode, username, role, callback) {
+exports.getPestDetails = function (dateOfEntry, season, financialYear, blockCode, cropCategoryCode, cropCode, pestDiseaseCode, username, role, callback) {
     var con = new sql.ConnectionPool(locConfig);
     con.connect().then(function success() {
         const request = new sql.Request(con);
@@ -278,11 +280,11 @@ exports.getPestDetails = function(dateOfEntry, season, financialYear, blockCode,
         request.input('PestDiseaseCode', pestDiseaseCode);
         request.input('Username', username);
         request.input('Role', role);
-        request.execute('spGetPestDetails', function(err, result) {
+        request.execute('spGetPestDetails', function (err, result) {
             if (err) {
                 console.log('An error occurred...', err);
             }
-            else{
+            else {
                 callback(result.recordset);
             }
             con.close();
@@ -298,12 +300,12 @@ exports.updatePDE = function (objData, arrData, callback) {
         const tableCDAOPestDetailsEntry = new sql.Table();
         tableCDAOPestDetailsEntry.create = true;
         tableCDAOPestDetailsEntry.columns.add('GPCode', sql.Int, { nullable: false });
-        tableCDAOPestDetailsEntry.columns.add('LowAffectedArea', sql.Decimal(18, 3), {nullable: false});
-        tableCDAOPestDetailsEntry.columns.add('MediumAffectedArea', sql.Decimal(18, 3), {nullable: false});
-        tableCDAOPestDetailsEntry.columns.add('HighAffectedArea', sql.Decimal(18, 3), {nullable: false});
-        tableCDAOPestDetailsEntry.columns.add('LowTreatedArea', sql.Decimal(18, 3), {nullable: false});
-        tableCDAOPestDetailsEntry.columns.add('MediumTreatedArea', sql.Decimal(18, 3), {nullable: false});
-        tableCDAOPestDetailsEntry.columns.add('HighTreatedArea', sql.Decimal(18, 3), {nullable: false});
+        tableCDAOPestDetailsEntry.columns.add('LowAffectedArea', sql.Decimal(18, 3), { nullable: false });
+        tableCDAOPestDetailsEntry.columns.add('MediumAffectedArea', sql.Decimal(18, 3), { nullable: false });
+        tableCDAOPestDetailsEntry.columns.add('HighAffectedArea', sql.Decimal(18, 3), { nullable: false });
+        tableCDAOPestDetailsEntry.columns.add('LowTreatedArea', sql.Decimal(18, 3), { nullable: false });
+        tableCDAOPestDetailsEntry.columns.add('MediumTreatedArea', sql.Decimal(18, 3), { nullable: false });
+        tableCDAOPestDetailsEntry.columns.add('HighTreatedArea', sql.Decimal(18, 3), { nullable: false });
         for (var i = 0; i < arrData.length; i++) {
             tableCDAOPestDetailsEntry.rows.add(arrData[i].GPCode, arrData[i].LowAffectedArea, arrData[i].MediumAffectedArea, arrData[i].HighAffectedArea, arrData[i].LowTreatedArea, arrData[i].MediumTreatedArea, arrData[i].HighTreatedArea);
         }
@@ -333,9 +335,9 @@ exports.updatePDE = function (objData, arrData, callback) {
     });
 };
 
-exports.getBlocksByCDAO = function(username) {
+exports.getBlocksByCDAO = function (username) {
     return sequelize.query('select b.BlockCode, BlockName from CDAODistrictMapping a inner join LGDBlock b on a.DistrictCode = b.DistrictCode where CDAOUserID = :user_name', {
-        replacements: { user_name : username }, type: sequelize.QueryTypes.SELECT
+        replacements: { user_name: username }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
         return data;
     }).catch(function error(err) {
@@ -343,7 +345,7 @@ exports.getBlocksByCDAO = function(username) {
     });
 };
 
-exports.getCDAOPestDetails = function(dateOfEntry, season, financialYear, blockCode, cropCategoryCode, cropCode, pestDiseaseCode, userType, username, role, callback) {
+exports.getCDAOPestDetails = function (dateOfEntry, season, financialYear, blockCode, cropCategoryCode, cropCode, pestDiseaseCode, userType, username, role, callback) {
     var con = new sql.ConnectionPool(locConfig);
     con.connect().then(function success() {
         const request = new sql.Request(con);
@@ -357,11 +359,11 @@ exports.getCDAOPestDetails = function(dateOfEntry, season, financialYear, blockC
         request.input('UserType', userType);
         request.input('Username', username);
         request.input('Role', role);
-        request.execute('spGetCDAOPestDetails', function(err, result) {
+        request.execute('spGetCDAOPestDetails', function (err, result) {
             if (err) {
                 console.log('An error occurred...', err);
             }
-            else{
+            else {
                 callback(result.recordset);
             }
             con.close();
@@ -371,7 +373,7 @@ exports.getCDAOPestDetails = function(dateOfEntry, season, financialYear, blockC
     });
 };
 
-exports.getLTCCrops = function() {
+exports.getLTCCrops = function () {
     return sequelize.query("select CropCode, CropName, CategoryCode, CategoryName from crop a inner join CropCategory b on a.CropCategoryCode = b.CategoryCode where Status = 'LTC'", {
         type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
@@ -381,7 +383,7 @@ exports.getLTCCrops = function() {
     });
 };
 
-exports.getLTCPestDiseases = function(cropCode) {
+exports.getLTCPestDiseases = function (cropCode) {
     return sequelize.query("select PestDiseaseCode, PestDiseaseName from PestDisease a inner join Crop b on a.CropCode = b.CropCode where ((a.CropCode = :crop_code and a.Status = 'LTC') or (CropCategoryCode = :crop_code and a.Status = 'LTC' and b.Status = 'LTC'))", {
         replacements: { crop_code: cropCode }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
@@ -391,7 +393,7 @@ exports.getLTCPestDiseases = function(cropCode) {
     });
 };
 
-exports.getLTCDetails = function(dateOfEntry, season, financialYear, blockCode, cropCode, pestDiseaseCode, username, callback) {
+exports.getLTCDetails = function (dateOfEntry, season, financialYear, blockCode, cropCode, pestDiseaseCode, username, callback) {
     var con = new sql.ConnectionPool(locConfig);
     con.connect().then(function success() {
         const request = new sql.Request(con);
@@ -402,11 +404,11 @@ exports.getLTCDetails = function(dateOfEntry, season, financialYear, blockCode, 
         request.input('CropCode', cropCode);
         request.input('PestDiseaseCode', pestDiseaseCode);
         request.input('Username', username);
-        request.execute('spGetCDAOLTCReport', function(err, result) {
+        request.execute('spGetCDAOLTCReport', function (err, result) {
             if (err) {
                 console.log('An error occurred...', err);
             }
-            else{
+            else {
                 callback(result.recordset);
             }
             con.close();
@@ -416,7 +418,7 @@ exports.getLTCDetails = function(dateOfEntry, season, financialYear, blockCode, 
     });
 };
 
-exports.getVAWInspectionDetails = function(dateOfEntry, season, financialYear, username, blockCode, callback) {
+exports.getVAWInspectionDetails = function (dateOfEntry, season, financialYear, username, blockCode, callback) {
     var con = new sql.ConnectionPool(locConfig);
     con.connect().then(function success() {
         const request = new sql.Request(con);
@@ -425,7 +427,7 @@ exports.getVAWInspectionDetails = function(dateOfEntry, season, financialYear, u
         request.input('FinancialYear', financialYear);
         request.input('Username', username);
         request.input('BlockCode', blockCode);
-        request.execute('spGetCDAOVAWInspectionReport', function(err, result) {
+        request.execute('spGetCDAOVAWInspectionReport', function (err, result) {
             if (err) {
                 console.log('An error occurred...', err);
             }
@@ -469,7 +471,7 @@ exports.getPD = function (referenceNo) {
     });
 };
 
-exports.getEMRNosForCDAO = function(dateOfEntry, cropCategory, crop, financialYear, username, blockCode, callback) {
+exports.getEMRNosForCDAO = function (dateOfEntry, cropCategory, crop, financialYear, username, blockCode, callback) {
     var con = new sql.ConnectionPool(locConfig);
     con.connect().then(function success() {
         const request = new sql.Request(con);
@@ -479,7 +481,7 @@ exports.getEMRNosForCDAO = function(dateOfEntry, cropCategory, crop, financialYe
         request.input('FinancialYear', financialYear);
         request.input('Username', username);
         request.input('BlockCode', blockCode);
-        request.execute('spGetEMRNosForCDAODetails', function(err, result) {
+        request.execute('spGetEMRNosForCDAODetails', function (err, result) {
             if (err) {
                 console.log('An error occurred...', err);
             }
@@ -549,6 +551,66 @@ exports.getSurveyGP = function (dateOfEntry, blockCode, season, callback) {
             }
             else {
                 callback(result.recordsets);
+            }
+            con.close();
+        });
+    }).catch(function error(err) {
+        console.log('An error occurred...', err);
+    });
+};
+
+exports.getGraphforCrop = function (season, financialYear, cdaoCode) {
+    return sequelize.query('select sum(TotalAffectedArea) as TotalAffectedArea, CategoryName, CropCategoryCode from (select case when CDAOUserID = :cdao_code then sum(MediumAffectedArea + HighAffectedArea) else 0 end as TotalAffectedArea, a.CategoryName, CropCategoryCode from CropCategory a left join AAOPestDetailsEntry b on a.CategoryCode = b.CropCategoryCode left join AAOBlockMapping c on b.BlockCode = c.BlockCode where IsActive = 1 and Season = :season and b.FinancialYear = :financial_year group by a.CategoryName, CropCategoryCode, CDAOUserID) as b group by CategoryName, CropCategoryCode', {
+        replacements: { season: season, financial_year: financialYear, cdao_code: cdaoCode }, type: sequelize.QueryTypes.SELECT
+    }).then(function success(data) {
+        return data;
+    }).catch(function error(err) {
+        console.log('An error occurred...', err);
+    });
+};
+
+exports.getCropDetailsCategory = function (season, financialYear, cropCategoryCode, cdaoCode) {
+    return sequelize.query('select sum(TotalAffectedArea) as TotalAffectedArea, b.CropCode, b.CropName from (select case when CDAOUserID = :cdao_code then sum(MediumAffectedArea + HighAffectedArea) else 0 end as TotalAffectedArea, b.CropCode, b.CropName from crop b left join AAOPestDetailsEntry a on a.CropCode = b.CropCode left join AAOBlockMapping c on c.BlockCode = a.BlockCode where b.CropCategoryCode = :crop_category_code and b.IsActive = 1 and Season = :season and a.FinancialYear = :financial_year group by b.CropCode, b.CropName, CDAOUserID) as b group by b.CropCode, b.CropName', {
+        replacements: { season: season, financial_year: financialYear, crop_category_code: cropCategoryCode, cdao_code: cdaoCode }, type: sequelize.QueryTypes.SELECT
+    }).then(function success(data) {
+        return data;
+    }).catch(function error(err) {
+        console.log('An error occurred...', err);
+    });
+};
+
+exports.getPestGraphData = function (arr, month, season, financialYear, cdaoCode, callback) {
+    if (month == 0) {
+        return sequelize.query('select PestDiseaseCode, PestDiseaseName, sum(TotalAffectedArea) as TotalAffectedArea from (select case when CDAOUserID = :cdao_code then sum(MediumAffectedArea + HighAffectedArea) else 0 end as TotalAffectedArea, a.PestDiseaseCode, PestDiseaseName from PestDisease a left join AAOPestDetailsEntry b on a.PestDiseaseCode = b.PestDiseaseCode left join AAOBlockMapping c on c.BlockCode = b.BlockCode and b.FinancialYear = :financial_year and Season = :season where a.PestDiseaseCode in (:pests) group by a.PestDiseaseCode, PestDiseaseName, CDAOUserID) as abc group by PestDiseaseCode, PestDiseaseName', {
+            replacements: { pests: arr, season: season, financial_year: financialYear, cdao_code: cdaoCode }, type: sequelize.QueryTypes.SELECT
+        }).then(function success(data) {
+            callback(data);
+        }).catch(function error(err) {
+            console.log('An error occurred...', err);
+        });
+    }
+    else {
+        return sequelize.query("select PestDiseaseCode, PestDiseaseName, sum(TotalAffectedArea) as TotalAffectedArea from (select case when CDAOUserID = :cdao_code then sum(MediumAffectedArea + HighAffectedArea) else 0 end as TotalAffectedArea, a.PestDiseaseCode, PestDiseaseName from PestDisease a left join AAOPestDetailsEntry b on a.PestDiseaseCode = b.PestDiseaseCode left join AAOBlockMapping c on c.BlockCode = b.BlockCode and b.FinancialYear = :financial_year and Season = :season and right('0' + ltrim(rtrim(datepart(MM, b.DateTime))), 2) = 10 where a.PestDiseaseCode in (:pests) group by a.PestDiseaseCode, PestDiseaseName, CDAOUserID) as abc group by PestDiseaseCode, PestDiseaseName", {
+            replacements: { pests: arr, month: month, season: season, financial_year: financialYear, cdao_code: cdaoCode }, type: sequelize.QueryTypes.SELECT
+        }).then(function success(data) {
+            callback(data);
+        }).catch(function error(err) {
+            console.log('An error occurred...', err);
+        });
+    }
+};
+
+exports.getPestDiseases = function (cropCode, callback) {
+    var con = new sql.ConnectionPool(locConfig);
+    con.connect().then(function success() {
+        const request = new sql.Request(con);
+        request.input('CropCode', cropCode);
+        request.execute('spGetPestDisease', function (err, result) {
+            if (err) {
+                console.log('An error occurred...', err);
+            }
+            else {
+                callback(result.recordset);
             }
             con.close();
         });

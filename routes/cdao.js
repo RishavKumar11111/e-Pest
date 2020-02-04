@@ -23,7 +23,7 @@ function randomNumber() {
   return buf.toString('hex');
 };
 
-var getCurrentDateTime = function() {
+var getCurrentDateTime = function () {
   var today = new Date();
   var dd = today.getDate();
   var MM = today.getMonth() + 1;
@@ -32,10 +32,10 @@ var getCurrentDateTime = function() {
   var mm = today.getMinutes();
   var ss = today.getSeconds();
   if (dd < 10) {
-      dd = '0' + dd;
+    dd = '0' + dd;
   }
   if (MM < 10) {
-      MM = '0' + MM;
+    MM = '0' + MM;
   }
   if (HH < 10) {
     HH = '0' + HH;
@@ -51,7 +51,7 @@ var getCurrentDateTime = function() {
   return currentDate;
 };
 
-var getDateTime = function() {
+var getDateTime = function () {
   var dateTime = require('node-datetime');
   var dt = dateTime.create().format('Y-m-d H:M:S.N');
   var date = new Date(dt);
@@ -60,7 +60,7 @@ var getDateTime = function() {
   return currentDate;
 };
 
-var getFinancialYear = function() {
+var getFinancialYear = function () {
   var fiscalYear = "";
   var today = new Date();
   if ((today.getMonth() + 1) <= 3) {
@@ -72,84 +72,84 @@ var getFinancialYear = function() {
   return fiscalYear;
 };
 
-var getURL = function(req) {
+var getURL = function (req) {
   var fullURL = req.protocol + '://' + req.get('host') + req.originalUrl;
   return fullURL;
 };
 
 /* GET home page. */
-router.get('/', csrfProtection, permit.permission('CDAO'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/', csrfProtection, permit.permission('CDAO'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('cdao/layout', { title: 'CDAO Layout', csrfToken: req.csrfToken() });
 });
 
-router.get('/home', csrfProtection, permit.permission('CDAO'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/home', csrfProtection, permit.permission('CDAO'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('cdao/home', { title: 'CDAO Home', csrfToken: req.csrfToken() });
 });
 
-router.get('/dashboard', csrfProtection, permit.permission('CDAO'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/dashboard', csrfProtection, permit.permission('CDAO'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('cdao/dashboard', { title: 'CDAO Dashboard', csrfToken: req.csrfToken() });
 });
 
-router.get('/aaoDetailEntry', csrfProtection, permit.permission('CDAO'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/aaoDetailEntry', csrfProtection, permit.permission('CDAO'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('cdao/aaodetailentry', { title: 'CDAO Detail Entry', csrfToken: req.csrfToken() });
 });
 
-router.get('/aaoDetails', csrfProtection, permit.permission('CDAO'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/aaoDetails', csrfProtection, permit.permission('CDAO'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('cdao/aaodetails', { title: 'CDAO AAO Details', csrfToken: req.csrfToken() });
 });
 
-router.get('/vawDetails', csrfProtection, permit.permission('CDAO'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/vawDetails', csrfProtection, permit.permission('CDAO'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('cdao/vawdetails', { title: 'CDAO VAW Details', csrfToken: req.csrfToken() });
 });
 
-router.get('/vawGPTargetDetails', csrfProtection, permit.permission('CDAO'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/vawGPTargetDetails', csrfProtection, permit.permission('CDAO'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('cdao/vawgptargetdetails', { title: 'CDAO VAW GP Target Details', csrfToken: req.csrfToken() });
 });
 
-router.get('/viewModifyPestDetails', csrfProtection, permit.permission('CDAO'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/viewModifyPestDetails', csrfProtection, permit.permission('CDAO'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('cdao/viewmodifypestdetails', { title: 'CDAO View Modify Pest Details', csrfToken: req.csrfToken() });
 });
 
-router.get('/viewPestDetails', csrfProtection, permit.permission('CDAO'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/viewPestDetails', csrfProtection, permit.permission('CDAO'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('cdao/viewpestdetails', { title: 'CDAO View Pest Details', csrfToken: req.csrfToken() });
 });
 
-router.get('/lighTtrapCatchReport', csrfProtection, permit.permission('CDAO'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/lighTtrapCatchReport', csrfProtection, permit.permission('CDAO'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('cdao/lighttrapcatchreport', { title: 'CDAO Light Trap Catch Report', csrfToken: req.csrfToken() });
 });
 
-router.get('/vawInspectionReport', csrfProtection, permit.permission('CDAO'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/vawInspectionReport', csrfProtection, permit.permission('CDAO'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('cdao/vawinspectionreport', { title: 'CDAO VAW Inspection Report', csrfToken: req.csrfToken() });
 });
 
-router.get('/emergencyCaseReport', csrfProtection, permit.permission('CDAO'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/emergencyCaseReport', csrfProtection, permit.permission('CDAO'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('cdao/emergencycasereport', { title: 'CDAO Emergency Case Report', csrfToken: req.csrfToken() });
 });
 
-router.get('/complianceReport', csrfProtection, permit.permission('CDAO'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/complianceReport', csrfProtection, permit.permission('CDAO'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('cdao/compliancereport', { title: 'CDAO Compliance Report', csrfToken: req.csrfToken() });
 });
 
-router.get('/changePassword', csrfProtection, permit.permission('CDAO'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/changePassword', csrfProtection, permit.permission('CDAO'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   req.session.RandomNo = randomNumber();
   res.get('X-Frame-Options');
   res.render('cdao/changepassword', { title: 'CDAO Change Password', csrfToken: req.csrfToken(), randomNo: req.session.RandomNo });
 });
 
-router.post('/changePassword', parseForm, csrfProtection, permit.permission('CDAO'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.post('/changePassword', parseForm, csrfProtection, permit.permission('CDAO'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   balModule.getUserDetails(req.session.username).then(function success(response) {
     if (response.length === 0) {
@@ -164,7 +164,7 @@ router.post('/changePassword', parseForm, csrfProtection, permit.permission('CDA
       balModule.getPasswordHistory(req.session.username).then(function success(response1) {
         var objP = req.body.data;
         if (response1.length > 0) {
-          var found = response1.some(function(i) {
+          var found = response1.some(function (i) {
             return i.OldPassword === objP.NewPassword;
           });
         }
@@ -221,7 +221,7 @@ router.get('/logout', function (req, res, next) {
   res.redirect('../login');
 });
 
-router.get('/getDistrict', function(req, res, next) {
+router.get('/getDistrict', function (req, res, next) {
   res.get('X-Frame-Options');
   var username = req.session.username;
   balModule.getDistrict(username).then(function success(response) {
@@ -233,7 +233,7 @@ router.get('/getDistrict', function(req, res, next) {
   });
 });
 
-router.get('/getBlocks', function(req, res, next) {
+router.get('/getBlocks', function (req, res, next) {
   res.get('X-Frame-Options');
   var username = req.session.username;
   balModule.getBlocks(username).then(function success(response) {
@@ -245,7 +245,7 @@ router.get('/getBlocks', function(req, res, next) {
   });
 });
 
-router.post('/registerAAOs', parseForm, csrfProtection, permit.permission('CDAO'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.post('/registerAAOs', parseForm, csrfProtection, permit.permission('CDAO'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   balModule.addActivityLog(req.connection.remoteAddress, req.session.username, getURL(req), req.device.type.toUpperCase(), os.platform(), req.headers['user-agent'], '/registerAAOs', 'INSERT / UPDATE', 'POST', function success(response) {
   }, function error(response) {
@@ -274,16 +274,16 @@ router.post('/registerAAOs', parseForm, csrfProtection, permit.permission('CDAO'
   var userData = req.body.data.userData;
   for (var j = 0; j < userData.length; j++) {
     userData[j].PasswordHash = sha256('Test@1234'),
-    userData[j].EmailID = null,
-    userData[j].LockOutEnabled = 1,
-    userData[j].AccessFailedCount = 0,
-    userData[j].Status = 1,
-    userData[j].IPAddress = req.connection.remoteAddress,
-    userData[j].FinancialYear = getFinancialYear()
+      userData[j].EmailID = null,
+      userData[j].LockOutEnabled = 1,
+      userData[j].AccessFailedCount = 0,
+      userData[j].Status = 1,
+      userData[j].IPAddress = req.connection.remoteAddress,
+      userData[j].FinancialYear = getFinancialYear()
   }
   balModule.checkMobileNo(arrData[0].AAOMobileNo).then(function success(response) {
     if (response.length == 0) {
-      balModule.registerAAO(arrData, userData, function(response1) {
+      balModule.registerAAO(arrData, userData, function (response1) {
         var bn = []; var un = [];
         for (var i = 0; i < userData.length; i++) {
           un.push(userData[i].UserID);
@@ -293,7 +293,7 @@ router.post('/registerAAOs', parseForm, csrfProtection, permit.permission('CDAO'
         var username = un.join(', ');
         var mobileNo = userData[0].ContactNo;
         var sms = 'e-Pest - You have been registered under the block(s) ' + blockName + ' with User ID(s) ' + username + ' respectively.';
-        SendSMS(mobileNo, sms, function() {
+        SendSMS(mobileNo, sms, function () {
           res.sendStatus(response1 > 1 ? 200 : 500);
         });
       }, function error(response1) {
@@ -310,7 +310,7 @@ router.post('/registerAAOs', parseForm, csrfProtection, permit.permission('CDAO'
   });
 });
 
-router.get('/getRegisteredAAOs', function(req, res, next) {
+router.get('/getRegisteredAAOs', function (req, res, next) {
   res.get('X-Frame-Options');
   var cdaoUserID = req.session.username;
   balModule.getRegisteredAAOs(cdaoUserID).then(function success(response) {
@@ -322,7 +322,7 @@ router.get('/getRegisteredAAOs', function(req, res, next) {
   });
 });
 
-router.post('/removeAAO', parseForm, csrfProtection, permit.permission('CDAO'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.post('/removeAAO', parseForm, csrfProtection, permit.permission('CDAO'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   balModule.addActivityLog(req.connection.remoteAddress, req.session.username, getURL(req), req.device.type.toUpperCase(), os.platform(), req.headers['user-agent'], '/removeAAO', 'DELETE / INSERT / UPDATE', 'POST', function success(response) {
   }, function error(response) {
@@ -332,7 +332,7 @@ router.post('/removeAAO', parseForm, csrfProtection, permit.permission('CDAO'), 
   var blockCode = req.body.data.BlockCode;
   balModule.removeAAO(aaoCode, blockCode, function success(response1) {
     var sms = 'e-Pest - You have been unregistered from the block ' + response1[0].BlockName + '.';
-    SendSMS(response1[0].AAOMobileNo, sms, function() {
+    SendSMS(response1[0].AAOMobileNo, sms, function () {
       res.send(response1);
     });
   }, function error(response1) {
@@ -343,7 +343,7 @@ router.post('/removeAAO', parseForm, csrfProtection, permit.permission('CDAO'), 
 function SendSMS(mobileNo, sms, callback) {
   var encodeSMS = encodeURI(sms);
   request('http://www.apicol.nic.in/Registration/EPestSMS?mobileNo=' + mobileNo + '&sms=' + encodeSMS, { json: true }, (err, res, body) => {
-    if (err) { 
+    if (err) {
       console.log(err);
     }
     else {
@@ -352,7 +352,7 @@ function SendSMS(mobileNo, sms, callback) {
   });
 };
 
-router.get('/getAAODetailsReport', function(req, res, next) {
+router.get('/getAAODetailsReport', function (req, res, next) {
   res.get('X-Frame-Options');
   var cdaoUserID = req.session.username;
   balModule.getAAODetailsReport(cdaoUserID).then(function success(response) {
@@ -364,7 +364,7 @@ router.get('/getAAODetailsReport', function(req, res, next) {
   });
 });
 
-router.get('/getBlocksByDistrict', function(req, res, next) {
+router.get('/getBlocksByDistrict', function (req, res, next) {
   res.get('X-Frame-Options');
   var username = req.session.username;
   balModule.getBlocksByDistrict(username).then(function success(response) {
@@ -376,7 +376,7 @@ router.get('/getBlocksByDistrict', function(req, res, next) {
   });
 });
 
-router.get('/getVAWDetailsReport', function(req, res, next) {
+router.get('/getVAWDetailsReport', function (req, res, next) {
   res.get('X-Frame-Options');
   var cdaoUserID = req.session.username;
   var blockCode = req.query.blockCode;
@@ -389,7 +389,7 @@ router.get('/getVAWDetailsReport', function(req, res, next) {
   });
 });
 
-router.get('/getVAWDPTargets', function(req, res, next) {
+router.get('/getVAWDPTargets', function (req, res, next) {
   res.get('X-Frame-Options');
   var blockCode = req.query.blockCode;
   balModule.getVAWDPTargets(blockCode).then(function success(response) {
@@ -401,10 +401,14 @@ router.get('/getVAWDPTargets', function(req, res, next) {
   });
 });
 
-router.get('/getDashboardDetails', function(req, res, next) {
+router.get('/getDashboardDetails', function (req, res, next) {
   res.get('X-Frame-Options');
+  var sq = null; if (req.query.hasOwnProperty('season')) sq = req.query.season.charAt(0);
+  var season = getSeasonShort() == sq ? getSeasonShort() : sq;
+  var fnq = null; if (req.query.hasOwnProperty('financialYear')) fnq = req.query.financialYear;
+  var financialYear = getFinancialYear() == fnq ? getFinancialYear() : fnq;
   var cdaoUserID = req.session.username;
-  balModule.getDashboardDetails(cdaoUserID, function success(response) {
+  balModule.getDashboardDetails(season, financialYear, cdaoUserID, function success(response) {
     res.send(response);
   }, function error(response) {
     console.log(response.status);
@@ -422,7 +426,7 @@ router.get('/getCropCategories', function (req, res, next) {
   });
 });
 
-router.get('/getCropsByCategory', function(req, res, next) {
+router.get('/getCropsByCategory', function (req, res, next) {
   res.get('X-Frame-Options');
   var cropCategoryCode = req.query.cropCategoryCode;
   balModule.getCropsByCategory(cropCategoryCode).then(function success(response) {
@@ -434,7 +438,7 @@ router.get('/getCropsByCategory', function(req, res, next) {
   });
 });
 
-router.get('/getAllPestDiseases', function(req, res, next) {
+router.get('/getAllPestDiseases', function (req, res, next) {
   res.get('X-Frame-Options');
   var cropCode = req.query.cropCode;
   balModule.getAllPestDiseases(cropCode, function success(response) {
@@ -462,7 +466,7 @@ router.get('/getPestDetails', function (req, res, next) {
   });
 });
 
-router.post('/updatePDE', function(req, res, next) {
+router.post('/updatePDE', function (req, res, next) {
   res.get('X-Frame-Options');
   balModule.addActivityLog(req.connection.remoteAddress, req.session.username, getURL(req), req.device.type.toUpperCase(), os.platform(), req.headers['user-agent'], '/updatePDE', 'UPDATE', 'POST', function success(response) {
   }, function error(response) {
@@ -485,7 +489,7 @@ router.post('/updatePDE', function(req, res, next) {
       arrData[i].IPAddress = req.connection.remoteAddress;
       arrData[i].FinancialYear = getFinancialYear();
     }
-    balModule.updatePDE(objData, arrData, function(response1) {
+    balModule.updatePDE(objData, arrData, function (response1) {
       res.sendStatus(response1 > 0 ? 200 : 500);
     }, function error(response1) {
       console.log(response1.status);
@@ -493,7 +497,7 @@ router.post('/updatePDE', function(req, res, next) {
   }
 });
 
-router.get('/getBlocksByCDAO', function(req, res, next) {
+router.get('/getBlocksByCDAO', function (req, res, next) {
   res.get('X-Frame-Options');
   var username = req.session.username;
   balModule.getBlocksByCDAO(username).then(function success(response) {
@@ -524,7 +528,7 @@ router.get('/getCDAOPestDetails', function (req, res, next) {
   });
 });
 
-router.get('/getLTCCrops', function(req, res, next) {
+router.get('/getLTCCrops', function (req, res, next) {
   res.get('X-Frame-Options');
   balModule.getLTCCrops().then(function success(response) {
     res.send(response);
@@ -535,7 +539,7 @@ router.get('/getLTCCrops', function(req, res, next) {
   });
 });
 
-router.get('/getLTCPestDiseases', function(req, res, next) {
+router.get('/getLTCPestDiseases', function (req, res, next) {
   res.get('X-Frame-Options');
   var cropCode = req.query.cropCode;
   balModule.getLTCPestDiseases(cropCode).then(function success(response) {
@@ -643,7 +647,7 @@ router.get('/getEMRNosForCDAO', function (req, res, next) {
   });
 });
 
-router.get('/getEMRReferenceNoDetailsCDAO', function(req, res, next) {
+router.get('/getEMRReferenceNoDetailsCDAO', function (req, res, next) {
   res.get('X-Frame-Options');
   var emrRefNo = req.query.emrRefNo;
   balModule.getEMRReferenceNoDetailsCDAO(emrRefNo).then(function success(response) {
@@ -677,7 +681,7 @@ router.get('/getComplianceReport', function (req, res, next) {
   var userType = req.session.role;
   var userName = req.session.username;
   var financialYear = req.query.financialYear;
-  balModule.getComplianceReport(dateOfEntry, season,userType, userName, financialYear, function success(response) {
+  balModule.getComplianceReport(dateOfEntry, season, userType, userName, financialYear, function success(response) {
     res.send(response);
   }, function error(response) {
     console.log(response.status);
@@ -703,6 +707,81 @@ router.get('/getSurveyGP', function (req, res, next) {
   var blockCode = req.query.blockCode;
   var season = req.query.season;
   balModule.getSurveyGP(dateOfEntry, blockCode, season, function success(response) {
+    res.send(response);
+  }, function error(response) {
+    console.log(response.status);
+  });
+});
+
+router.get('/getGraphforCrop', function (req, res, next) {
+  res.get('X-Frame-Options');
+  var sq = null; if (req.query.hasOwnProperty('season')) sq = req.query.season.charAt(0);
+  var season = getSeasonShort() == sq ? getSeasonShort() : sq;
+  var fnq = null; if (req.query.hasOwnProperty('financialYear')) fnq = req.query.financialYear;
+  var financialYear = getFinancialYear() == fnq ? getFinancialYear() : fnq;
+  var cdaoCode = req.session.username;
+  balModule.getGraphforCrop(season, financialYear, cdaoCode).then(function success(response) {
+    res.send(response);
+  }, function error(response) {
+    console.log(response.status);
+  }).catch(function err(error) {
+    console.log('An error occurred...', error);
+  });
+});
+
+router.get('/getCropDetailsCategory', function (req, res, next) {
+  res.get('X-Frame-Options');
+  var sq = null; if (req.query.hasOwnProperty('season')) sq = req.query.season.charAt(0);
+  var season = getSeasonShort() == sq ? getSeasonShort() : sq;
+  var fnq = null; if (req.query.hasOwnProperty('financialYear')) fnq = req.query.financialYear;
+  var financialYear = getFinancialYear() == fnq ? getFinancialYear() : fnq;
+  var cropCategoryCode = req.query.cropCode;
+  var cdaoCode = req.session.username;
+  balModule.getCropDetailsCategory(season, financialYear, cropCategoryCode, cdaoCode).then(function success(response) {
+    res.send(response);
+  }, function error(response) {
+    console.log(response.status);
+  }).catch(function err(error) {
+    console.log('An error occurred...', error);
+  });
+});
+
+var getSeasonShort = function () {
+  var seasonName;
+  var month = new Date().getMonth();
+  if (month >= 6 && month <= 10) {
+    seasonName = 'K';
+  }
+  else {
+    seasonName = 'R';
+  }
+  return seasonName;
+};
+
+router.post('/getPestGraphData', parseForm, csrfProtection, permit.permission('CDAO'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
+  res.get('X-Frame-Options');
+  balModule.addActivityLog(req.connection.remoteAddress, req.session.username, getURL(req), req.device.type.toUpperCase(), os.platform(), req.headers['user-agent'], '/getPestGraphData', 'INSERT', 'POST', function success(response) {
+  }, function error(response) {
+    console.log(response.status);
+  });
+  var arr = req.body.data.pestData;
+  var month = req.body.data.month;
+  var sq = null; if (req.body.data.hasOwnProperty('season')) sq = req.body.data.season.charAt(0);
+  var season = getSeasonShort() == sq ? getSeasonShort() : sq;
+  var fnq = null; if (req.body.data.hasOwnProperty('financialYear')) fnq = req.body.data.financialYear;
+  var financialYear = getFinancialYear() == fnq ? getFinancialYear() : fnq;
+  var cdaoCode = req.session.username;
+  balModule.getPestGraphData(arr, month, season, financialYear, cdaoCode, function success(response1) {
+    res.send(response1);
+  }, function error(response1) {
+    console.log(response1.status);
+  });
+});
+
+router.get('/getPestDiseases', function (req, res, next) {
+  res.get('X-Frame-Options');
+  var cropCode = req.query.cropCode;
+  balModule.getPestDiseases(cropCode, function success(response) {
     res.send(response);
   }, function error(response) {
     console.log(response.status);

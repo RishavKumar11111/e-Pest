@@ -74,6 +74,9 @@
                                     <a href="#!emergencyCase"><i class="fa fa-exclamation-circle"></i> Emergency Case</span></a>
                                 </li>
                                 <li>
+                                    <a href="#!generalAdvisoryEntry"><i class="fa fa-edit"></i> General Advisory Entry</span></a>
+                                </li>
+                                <li>
                                     <a href="#!changePassword"><i class="fa fa-edit"></i> Change Password</span></a>
                                 </li>
                                 <li>
@@ -235,7 +238,10 @@
                 controller: 'myOUATLTCRCtrl'
             }).when("/emergencyCaseReport", {
                 templateUrl: "ouat/emergencyCaseReport",
-                controller: 'myOUATEMRCRCtrl'   
+                controller: 'myOUATEMRCRCtrl'
+            }).when("/generalAdvisoryEntry", {
+                templateUrl: "ouat/generalAdvisoryEntry",
+                controller: 'myOUATGADCtrl'
             }).otherwise({
                   redirectTo: "/"
             });
@@ -275,6 +281,7 @@
     <script src="../../public/controllers/ouat/myOUATVAWIRCtrl.js"></script>
     <script src="../../public/controllers/ouat/myOUATLTCRCtrl.js"></script>
     <script src = "../../public/controllers/ouat/myOUATEMRCRCtrl.js"></script>
+    <script src = "../../public/controllers/ouat/myOUATGADCtrl.js"></script>
     <!-- jQuery -->
     <script src="../../gentelella/vendors/jquery/dist/jquery.min.js"></script>
     <script src="../../public/javascripts/jquery.table2excel.min.js"></script>

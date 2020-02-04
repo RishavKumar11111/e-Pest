@@ -1,0 +1,258 @@
+<div class="right_col" role="main" ng-controller="myOUATGADCtrl" ng-init="getCropCategories()" style="min-height: 100vh">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>General Advisory Entry</h3>
+            </div>
+            <div class="title_right">
+                <!-- <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search for...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">Go!</button>
+                        </span>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <ul class="nav navbar-right panel_toolbox">
+                            <!-- <li>
+                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li> -->
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <br />
+                        <form class="form-horizontal" role="form" name="ouatGADForm" ng-submit="submitGeneralAdvisory(ouatGADForm.$valid)" autocomplete="off" novalidate>
+                            <div class="col-md-12 col-sm-12 col-xs-12" style="padding-bottom: 17px">
+                                <div class="col-md-2 col-sm-2 col-xs-12"></div>
+                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <div class="form-group">
+                                        <label style="text-align: left; padding-top: 10px" class="control-label col-md-6 col-sm-6 col-xs-12">Select Date :</label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input type="date" class="form-control" name="datePDE" ng-model="dateOfPDE" id="pdeDate" ng-change="checkCDay()" required />
+                                        </div>
+                                    </div>
+                                    <div class="has-error text-right" ng-show="ouatGADForm.$submitted || ouatGADForm.datePDE.$touched" style="color:red">
+                                        <span ng-show="ouatGADForm.datePDE.$error.required">This is a required field</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-12"></div>
+                            </div>
+                            <div ng-show="stateDetails.length > 0">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <label style="text-align: left; padding-top: 8px; white-space: nowrap" class="control-label col-md-4 col-sm-4 col-xs-12">Crop Category : <span style="color: red">*</span></label>
+                                        <div class="col-md-8 col-sm-8 col-xs-12">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                                <select class="form-control" name="ccc" ng-model="ddlCC" ng-options="i.CategoryCode as i.CategoryName for i in cropCategories" ng-change="getCropsByCategory(ddlCC)" required>
+                                                    <option value="" disabled>Select Crop Category</option>
+                                                </select>
+                                            </div>
+                                            <div class="has-error text-right" ng-show="ouatGADForm.$submitted || ouatGADForm.ccc.$touched" style="color:red">
+                                                <span ng-show="ouatGADForm.ccc.$error.required">This is a required field</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <label style="text-align: left; padding-top: 8px" class="control-label col-md-4 col-sm-4 col-xs-12">Crop : <span style="color: red">*</span></label>
+                                        <div class="col-md-8 col-sm-8 col-xs-12">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                                <select class="form-control" name="cc" ng-model="ddlC" ng-options="i.CropCode as i.CropName for i in crops" ng-change="getAllPestDiseases(ddlC)" required>
+                                                    <option value="" disabled>Select Crop</option>
+                                                </select>
+                                            </div>
+                                            <div class="has-error text-right" ng-show="ouatGADForm.$submitted || ouatGADForm.cc.$touched" style="color:red">
+                                                <span ng-show="ouatGADForm.cc.$error.required">This is a required field</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <label style="text-align: left; padding-top: 8px" class="control-label col-md-4 col-sm-4 col-xs-12">Pest :<span style="color: red">*</span></label>
+                                        <div class="col-md-8 col-sm-8 col-xs-12">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                                <select class="form-control" name="pest" ng-model="ddlPD" ng-options="i.PestDiseaseCode as i.PestDiseaseName for i in pestDiseases" required>
+                                                    <option value="">Select Pest</option>
+                                                </select>
+                                            </div>
+                                            <div class="has-error text-right" ng-show="ouatGADForm.$submitted || ouatGADForm.pest.$touched" style="color:red">
+                                                <span ng-show="ouatGADForm.pest.$error.required">This is a required field</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <label style="text-align: left; padding-top: 8px" class="control-label col-md-4 col-sm-4 col-xs-12">Season : <span style="color: red">*</span></label>
+                                        <div class="col-md-8 col-sm-8 col-xs-12">
+                                            <div class="col-md-6 col-sm-6 col-xs-12" style="padding-top: 7px">
+                                                <input type="radio" name="season" ng-model="rbs" value="K" required />
+                                                <label>Kharif</label>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 col-xs-12" style="padding-top: 7px">
+                                                <input type="radio" name="season" ng-model="rbs" value="R" required />
+                                                <label>Rabi</label>
+                                            </div>
+                                        </div>
+                                        <div class="has-error text-center" ng-show="ouatGADForm.$submitted || ouatGADForm.season.$touched" style="color:red">
+                                            <span ng-show="ouatGADForm.season.$error.required">This is a required field</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <label style="text-align: left; padding-top: 10px; white-space: nowrap" class="control-label col-md-4 col-sm-4 col-xs-12">Financial Year : <span style="color: red">*</span></label>
+                                        <div class="col-md-8 col-sm-8 col-xs-12">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                                <select class="form-control" name="fy" ng-model="ddlFY" required>
+                                                    <option value="" disabled>Select Financial Year</option>
+                                                    <option value="2019-20">2019-20</option>
+                                                </select>
+                                            </div>
+                                            <div class="has-error text-right" ng-show="ouatGADForm.$submitted || ouatGADForm.fy.$touched" style="color:red">
+                                                <span ng-show="ouatGADForm.fy.$error.required">This is a required field</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <div class="col-md-6 col-sm-6 col-xs-6">
+                                            <div class="input-group">
+                                                <span class="input-group-addon" style="padding: 6px 3px"><i class="glyphicon glyphicon-pencil"></i></span>
+                                                <textarea rows="5" name="tea" ng-model="txtEnglishAdvisory" placeholder="Enter English Advisory" ng-trim="false" maxlength="300" style="width: 100%" required></textarea>
+                                            </div>
+                                            <p style="text-align: right">{{1000 - txtEnglishAdvisory.length + ' characters remaining'}}</p>
+                                            <div class="has-error" ng-show="ouatGADForm.$submitted || ouatGADForm.tea.$touched" style="color:red">
+                                                <span ng-show="ouatGADForm.tea.$error.required">This is a required field</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-sm-6 col-xs-6">
+                                            <div class="input-group">
+                                                <span class="input-group-addon" style="padding: 6px 3px"><i class="glyphicon glyphicon-pencil"></i></span>
+                                                <input list="odia-pno-texts" type="text" class="form-control" ng-model="txtOdiaAdvisory" id="pno" ng-keyup="convertE2O(txtOdiaAdvisory, $event)" placeholder="Enter Odia Advisory" maxlength="1000">
+                                                <datalist id="odia-pno-texts"></datalist>
+                                                <textarea rows="3" name="toa" ng-model="txtOdiaAdvisory" ng-trim="false" maxlength="300" style="width: 100%" required></textarea>
+                                            </div>
+                                            <p style="text-align: right">{{1000 - txtOdiaAdvisory.length + ' characters remaining'}}</p>
+                                            <div class="has-error" ng-show="ouatGADForm.$submitted || ouatGADForm.toa.$touched" style="color:red">
+                                                <span ng-show="ouatGADForm.toa.$error.required">This is a required field</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div style="text-align: center">
+                                        <input type="submit" class="btn btn-success" style="background: #2a5d1f; color: #ffffff" value="Submit" />
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <!-- <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li> -->
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <br />
+                    <div class="table table-responsive" ng-show="stateDetails.length > 0">
+                        <input type="button" class="btn btn-primary" value="Export to Excel" onclick="ExportToExcel(this, 'State-wise Pest Report')" style="margin-bottom: 10px; float: right" />
+                        <table style="display: none" id="sdData" class="table table-hover table-striped jambo_table bulk_action">
+                            <thead>
+                                <tr class="headings">
+                                    <td style="vertical-align: middle"><b>Serial No.</b></td>
+                                    <td style="vertical-align: middle"><b>Crop</b></td>
+                                    <td style="vertical-align: middle"><b>Pest</b></td>
+                                    <td style="vertical-align: middle"><b>Area affected (Low intensity) in Ha (Reported by AAOs)</b></td>
+                                    <td style="vertical-align: middle"><b>Area Affected (Medium intensity) in Ha (Reported by AAOs)</b></td>
+                                    <td style="vertical-align: middle"><b>Area affected (High intensity) in Ha (Reported by AAOs)</b></td>
+                                    <td style="vertical-align: middle"><b>Area treated (Low intensity) in Ha (Reported by AAOs)</b></td>
+                                    <td style="vertical-align: middle"><b>Area treated (Medium Intensity) in Ha (Reported by AAOs)</b></td>
+                                    <td style="vertical-align: middle"><b>Area treated (High Intensity) in Ha (Reported by AAOs)</b></td>
+                                </tr>
+                            </thead>
+                            <tr ng-repeat="i in stateDetails | orderBy: 'CropName'">
+                                <td style="vertical-align: middle">{{$index + 1}}</td>
+                                <td style="vertical-align: middle">{{i.CropName | capitalize}}</td>
+                                <td style="vertical-align: middle">{{i.PestDiseaseName}}</td>
+                                <td style="vertical-align: middle">{{(i.LowAffectedArea == null ? 0 : i.LowAffectedArea).toFixed(1)}}</td>
+                                <td style="vertical-align: middle">{{(i.MediumAffectedArea == null ? 0 : i.MediumAffectedArea).toFixed(1)}}</td>
+                                <td style="vertical-align: middle">{{(i.HighAffectedArea == null ? 0 : i.HighAffectedArea).toFixed(1)}}</td>
+                                <td style="vertical-align: middle">{{(i.LowTreatedArea == null ? 0 : i.LowTreatedArea).toFixed(1)}}</td>
+                                <td style="vertical-align: middle">{{(i.MediumTreatedArea == null ? 0 : i.MediumTreatedArea).toFixed(1)}}</td>
+                                <td style="vertical-align: middle">{{(i.HighTreatedArea == null ? 0 : i.HighTreatedArea).toFixed(1)}}</td>
+                            </tr>
+                        </table>
+                        <input type="button" class="btn btn-info" value="Print" ng-click="print($event, 'State-wise Pest Report')" style="margin-bottom: 10px; float: right" />
+                        <table id="sdPrint" class="table table-hover table-striped jambo_table bulk_action">
+                            <thead>
+                                <tr class="headings">
+                                    <th class="column-title text-center" style="white-space: nowrap; vertical-align: middle">Serial No.</th>
+                                    <th class="column-title text-center" style="white-space: nowrap; vertical-align: middle">Crop</th>
+                                    <th class="column-title text-center" style="white-space: nowrap; vertical-align: middle">Pest Details</th>
+                                </tr>
+                            </thead>
+                            <tr ng-repeat="(key, value) in stateDetails | orderBy: 'CropName' | groupBy: 'CropName'">
+                                <td style="text-align: center; vertical-align: middle">{{$index + 1}}</td>
+                                <td style="text-align: center; vertical-align: middle"><b>{{key | capitalize}}</b></td>
+                                <td>
+                                    <table class="table table-hover table-striped jambo_table bulk_action text-center">
+                                        <thead>
+                                            <tr class="headings">
+                                                <td style="vertical-align: middle"><b>Serial No.</b></td>
+                                                <td style="vertical-align: middle"><b>Pest</b></td>
+                                                <td style="vertical-align: middle"><b>Area affected (Low intensity) in Ha (Reported by AAOs)</b></td>
+                                                <td style="vertical-align: middle"><b>Area Affected (Medium intensity) in Ha (Reported by AAOs)</b></td>
+                                                <td style="vertical-align: middle"><b>Area affected (High intensity) in Ha (Reported by AAOs)</b></td>
+                                                <td style="vertical-align: middle"><b>Area treated (Low intensity) in Ha (Reported by AAOs)</b></td>
+                                                <td style="vertical-align: middle"><b>Area treated (Medium Intensity) in Ha (Reported by AAOs)</b></td>
+                                                <td style="vertical-align: middle"><b>Area treated (High Intensity) in Ha (Reported by AAOs)</b></td>
+                                            </tr>
+                                        </thead>
+                                        <tr ng-repeat="i in value | orderBy: 'PestDiseaseName'">
+                                            <td style="vertical-align: middle">{{$index + 1}}</td>
+                                            <td style="vertical-align: middle">{{i.PestDiseaseName}}</td>
+                                            <td style="vertical-align: middle">{{(i.LowAffectedArea == null ? 0 : i.LowAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle">{{(i.MediumAffectedArea == null ? 0 : i.MediumAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle">{{(i.HighAffectedArea == null ? 0 : i.HighAffectedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle">{{(i.LowTreatedArea == null ? 0 : i.LowTreatedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle">{{(i.MediumTreatedArea == null ? 0 : i.MediumTreatedArea).toFixed(1)}}</td>
+                                            <td style="vertical-align: middle">{{(i.HighTreatedArea == null ? 0 : i.HighTreatedArea).toFixed(1)}}</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div ng-show="stateDetails.length == 0" style="text-align: center">
+                        <span colspan="5" style="color: red"><b>No records are found.</b></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function ExportToExcel(tableID, excelName) {
+        $("#" + tableID.nextElementSibling.id).table2excel({
+            filename: excelName + ".xls",
+        });
+    }
+</script>

@@ -123,31 +123,49 @@ if (window.location.href.indexOf("jdapp") > -1) {
 }
 
 if (window.location.href.indexOf("cdao") > -1) {
-    httpGetAsync('http://localhost:3000/cdao/getDashboardDetails', function (res) {
-        var barChartData2 = JSON.parse(res);
-        if (barChartData2.length > 0 && barChartData2[2].length > 0) {
-            var totalAreaAffected = barChartData2[2][0].TotalAffectedArea;
-            var totalAreaTreated = barChartData2[2][0].TotalTreatedArea;
+    var cbs = document.getElementById('kcb').checked ? 'Kharif' : 'Rabi';
+    httpGetAsync('http://localhost:3000/cdao/getDashboardDetails?season=' + cbs + '&financialYear=' + document.getElementById('fyid').options[1].value, function (res) {
+        var barChartData1 = JSON.parse(res);
+        if (barChartData1.length > 0 && barChartData1[2].length > 0) {
+            var vawTAA = barChartData1[2][0].TotalAreaAffected;
+            var vawTTA = barChartData1[2][0].TotalAreaTreated;
+            var taa = barChartData1[5][0].TotalAffectedArea;
+            var tat = barChartData1[5][0].TotalTreatedArea;
         }
-        var ctx = document.getElementById('myChart2').getContext('2d');
-        var myChart2 = new Chart(ctx, {
+        var ctx = document.getElementById('myChart1').getContext('2d');
+        var myChart1 = new Chart(ctx, {
             type: 'doughnut',
             data: {
                 labels: ['Total Area Affected (in HA)', 'Total Area Treated (in HA)'],
                 datasets: [{
                     backgroundColor: [
-                        "#4285f4",
-                        "#db4437"
+                        "#a52a2a",
+                        "#2aa52a"
                     ],
-                    data: [totalAreaAffected, totalAreaTreated]
+                    data: [vawTAA, vawTTA]
+                }]
+            }
+        });
+        var ctx = document.getElementById('myChart6').getContext('2d');
+        var myChart6 = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Total Area Affected (in HA)', 'Total Area Treated (in HA)'],
+                datasets: [{
+                    backgroundColor: [
+                        "#a52a2a",
+                        "#2aa52a"
+                    ],
+                    data: [taa, tat]
                 }]
             }
         });
     });
 }
 
-if (window.location.href.indexOf("ouat") > -1) {var cbs = document.getElementById('kcb').checked ? 'Kharif' : 'Rabi';
-    httpGetAsync('http://localhost:3000/jdapp/getDashboardDetails?season=' + cbs + '&financialYear=' + document.getElementById('fyid').options[1].value, function (res) {
+if (window.location.href.indexOf("ouat") > -1) {
+    var cbs = document.getElementById('kcb').checked ? 'Kharif' : 'Rabi';
+    httpGetAsync('http://localhost:3000/ouat/getDashboardDetails?season=' + cbs + '&financialYear=' + document.getElementById('fyid').options[1].value, function (res) {
         var barChartData1 = JSON.parse(res);
         if (barChartData1.length > 0 && barChartData1[2].length > 0) {
             var vawTAA = barChartData1[3][0].TotalAreaAffected;
@@ -236,23 +254,40 @@ if (window.location.href.indexOf("ouat") > -1) {var cbs = document.getElementByI
 }
 
 if (window.location.href.indexOf("ado") > -1) {
-    httpGetAsync('http://localhost:3000/ado/getDashboardDetails', function (res) {
-        var barChartData3 = JSON.parse(res);
-        if (barChartData3.length > 0 && barChartData3[2].length > 0) {
-            var totalAreaAffected = barChartData3[2][0].TotalAffectedArea;
-            var totalAreaTreated = barChartData3[2][0].TotalTreatedArea;
+    var cbs = document.getElementById('kcb').checked ? 'Kharif' : 'Rabi';
+    httpGetAsync('http://localhost:3000/ado/getDashboardDetails?season=' + cbs + '&financialYear=' + document.getElementById('fyid').options[1].value, function (res) {
+        var barChartData1 = JSON.parse(res);
+        if (barChartData1.length > 0 && barChartData1[2].length > 0) {
+            var vawTAA = barChartData1[2][0].TotalAreaAffected;
+            var vawTTA = barChartData1[2][0].TotalAreaTreated;
+            var taa = barChartData1[5][0].TotalAffectedArea;
+            var tat = barChartData1[5][0].TotalTreatedArea;
         }
-        var ctx = document.getElementById('myChart4').getContext('2d');
-        var myChart4 = new Chart(ctx, {
+        var ctx = document.getElementById('myChart1').getContext('2d');
+        var myChart1 = new Chart(ctx, {
             type: 'doughnut',
             data: {
                 labels: ['Total Area Affected (in HA)', 'Total Area Treated (in HA)'],
                 datasets: [{
                     backgroundColor: [
-                        "#4285f4",
-                        "#db4437"
+                        "#a52a2a",
+                        "#2aa52a"
                     ],
-                    data: [totalAreaAffected, totalAreaTreated]
+                    data: [vawTAA, vawTTA]
+                }]
+            }
+        });
+        var ctx = document.getElementById('myChart6').getContext('2d');
+        var myChart6 = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Total Area Affected (in HA)', 'Total Area Treated (in HA)'],
+                datasets: [{
+                    backgroundColor: [
+                        "#a52a2a",
+                        "#2aa52a"
+                    ],
+                    data: [taa, tat]
                 }]
             }
         });

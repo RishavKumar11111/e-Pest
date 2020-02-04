@@ -22,7 +22,7 @@ function randomNumber() {
   return buf.toString('hex');
 };
 
-var getCurrentDateTime = function() {
+var getCurrentDateTime = function () {
   var today = new Date();
   var dd = today.getDate();
   var MM = today.getMonth() + 1;
@@ -31,10 +31,10 @@ var getCurrentDateTime = function() {
   var mm = today.getMinutes();
   var ss = today.getSeconds();
   if (dd < 10) {
-      dd = '0' + dd;
+    dd = '0' + dd;
   }
   if (MM < 10) {
-      MM = '0' + MM;
+    MM = '0' + MM;
   }
   if (HH < 10) {
     HH = '0' + HH;
@@ -50,7 +50,7 @@ var getCurrentDateTime = function() {
   return currentDate;
 };
 
-var getDateTime = function() {
+var getDateTime = function () {
   var dateTime = require('node-datetime');
   var dt = dateTime.create().format('Y-m-d H:M:S.N');
   var date = new Date(dt);
@@ -59,7 +59,7 @@ var getDateTime = function() {
   return currentDate;
 };
 
-var getFinancialYear = function() {
+var getFinancialYear = function () {
   var fiscalYear = "";
   var today = new Date();
   if ((today.getMonth() + 1) <= 3) {
@@ -71,84 +71,84 @@ var getFinancialYear = function() {
   return fiscalYear;
 };
 
-var getURL = function(req) {
+var getURL = function (req) {
   var fullURL = req.protocol + '://' + req.get('host') + req.originalUrl;
   return fullURL;
 };
 
 /* GET home page. */
-router.get('/', csrfProtection, permit.permission('ADO'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/', csrfProtection, permit.permission('ADO'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('ado/layout', { title: 'ADO Layout', csrfToken: req.csrfToken() });
 });
 
-router.get('/home', csrfProtection, permit.permission('ADO'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/home', csrfProtection, permit.permission('ADO'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('ado/home', { title: 'ADO Home', csrfToken: req.csrfToken() });
 });
 
-router.get('/dashboard', csrfProtection, permit.permission('ADO'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/dashboard', csrfProtection, permit.permission('ADO'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('ado/dashboard', { title: 'ADO Dashboard', csrfToken: req.csrfToken() });
 });
 
-router.get('/viewPestDetails', csrfProtection, permit.permission('ADO'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/viewPestDetails', csrfProtection, permit.permission('ADO'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('ado/viewpestdetails', { title: 'ADO View Pest Details', csrfToken: req.csrfToken() });
 });
 
-router.get('/emergencyCase', csrfProtection, permit.permission('ADO'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/emergencyCase', csrfProtection, permit.permission('ADO'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('ado/emergencycase', { title: 'ADO Emergency Case', csrfToken: req.csrfToken() });
 });
 
-router.get('/messageForJDAPP', csrfProtection, permit.permission('ADO'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/messageForJDAPP', csrfProtection, permit.permission('ADO'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('ado/messageforjdapp', { title: 'ADO Message for JDA(PP)', csrfToken: req.csrfToken() });
 });
 
-router.get('/aaoDetails', csrfProtection, permit.permission('ADO'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/aaoDetails', csrfProtection, permit.permission('ADO'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('ado/aaodetails', { title: 'ADO AAO Details', csrfToken: req.csrfToken() });
 });
 
-router.get('/vawDetails', csrfProtection, permit.permission('ADO'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/vawDetails', csrfProtection, permit.permission('ADO'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('ado/vawdetails', { title: 'ADO VAW Details', csrfToken: req.csrfToken() });
 });
 
-router.get('/vawGPTargetDetails', csrfProtection, permit.permission('ADO'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/vawGPTargetDetails', csrfProtection, permit.permission('ADO'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('ado/vawgptargetdetails', { title: 'ADO VAW GP Target Details', csrfToken: req.csrfToken() });
 });
 
-router.get('/lighttTrapcatchReport', csrfProtection, permit.permission('ADO'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/lighttTrapcatchReport', csrfProtection, permit.permission('ADO'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('ado/lighttrapcatchreport', { title: 'ADO Light Trap Report', csrfToken: req.csrfToken() });
 });
 
-router.get('/vawInspectionReport', csrfProtection, permit.permission('ADO'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/vawInspectionReport', csrfProtection, permit.permission('ADO'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('ado/vawinspectionreport', { title: 'ADO VAW Inspection Report', csrfToken: req.csrfToken() });
 });
 
-router.get('/emergencyCaseReport', csrfProtection, permit.permission('ADO'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/emergencyCaseReport', csrfProtection, permit.permission('ADO'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('ado/emergencycasereport', { title: 'ADO Emergency Case Report', csrfToken: req.csrfToken() });
 });
 
-router.get('/complianceReport', csrfProtection, permit.permission('ADO'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/complianceReport', csrfProtection, permit.permission('ADO'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('ado/compliancereport', { title: 'ADO Compliance Report', csrfToken: req.csrfToken() });
 });
 
-router.get('/changePassword', csrfProtection, permit.permission('ADO'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/changePassword', csrfProtection, permit.permission('ADO'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   req.session.RandomNo = randomNumber();
   res.get('X-Frame-Options');
   res.render('ado/changepassword', { title: 'ADO Change Password', csrfToken: req.csrfToken(), randomNo: req.session.RandomNo });
 });
 
-router.post('/changePassword', parseForm, csrfProtection, permit.permission('ADO'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.post('/changePassword', parseForm, csrfProtection, permit.permission('ADO'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   balModule.getUserDetails(req.session.username).then(function success(response) {
     if (response.length === 0) {
@@ -163,7 +163,7 @@ router.post('/changePassword', parseForm, csrfProtection, permit.permission('ADO
       balModule.getPasswordHistory(req.session.username).then(function success(response1) {
         var objP = req.body.data;
         if (response1.length > 0) {
-          var found = response1.some(function(i) {
+          var found = response1.some(function (i) {
             return i.OldPassword === objP.NewPassword;
           });
         }
@@ -220,7 +220,7 @@ router.get('/logout', function (req, res, next) {
   res.redirect('../login');
 });
 
-router.get('/getPesticide', function(req, res, next) {
+router.get('/getPesticide', function (req, res, next) {
   res.get('X-Frame-Options');
   var pestCode = req.query.pestCode;
   balModule.getPesticide(pestCode).then(function success(response) {
@@ -232,7 +232,7 @@ router.get('/getPesticide', function(req, res, next) {
   });
 });
 
-router.post('/submitADOEMR', function(req, res, next) {
+router.post('/submitADOEMR', function (req, res, next) {
   res.get('X-Frame-Options');
   var adoCode = req.session.username;
   balModule.addActivityLog(req.connection.remoteAddress, req.session.username, getURL(req), req.device.type.toUpperCase(), os.platform(), req.headers['user-agent'], '/submitADOEMR', 'INSERT', 'POST', function success(response) {
@@ -245,10 +245,10 @@ router.post('/submitADOEMR', function(req, res, next) {
   obj.Status = 1;
   obj.IPAddress = req.connection.remoteAddress;
   obj.FinancialYear = getFinancialYear();
-  balModule.submitADOEMR(obj, function(response1) {
+  balModule.submitADOEMR(obj, function (response1) {
     if (response1 == true) {
       if (obj.InfectionIdentified == 'Yes') {
-        SendSMS(obj, function() {
+        SendSMS(obj, function () {
           res.status(200).send((obj.EMRReferenceNo).toString());
         });
       }
@@ -271,7 +271,7 @@ function SendSMS(obj, callback) {
   var sms = 'e-Pest - ADO Emergency Advisory : (Moderate - ' + moderateAdvisory + ', High - ' + highAdvisory + ')';
   var encodeSMS = encodeURI(sms);
   request('http://www.apicol.nic.in/Registration/EPestSMS?mobileNo=' + mobileNo + '&sms=' + encodeSMS, { json: true }, (err, res, body) => {
-    if (err) { 
+    if (err) {
       console.log(err);
     }
     else {
@@ -280,7 +280,7 @@ function SendSMS(obj, callback) {
   });
 };
 
-router.get('/getMessages', function(req, res, next) {
+router.get('/getMessages', function (req, res, next) {
   res.get('X-Frame-Options');
   var username = req.session.username;
   balModule.getMessages(username).then(function success(response) {
@@ -292,7 +292,7 @@ router.get('/getMessages', function(req, res, next) {
   });
 });
 
-router.post('/submitADOMFJ', function(req, res, next) {
+router.post('/submitADOMFJ', function (req, res, next) {
   res.get('X-Frame-Options');
   var adoCode = req.session.username;
   balModule.addActivityLog(req.connection.remoteAddress, req.session.username, getURL(req), req.device.type.toUpperCase(), os.platform(), req.headers['user-agent'], '/submitADOMFJ', 'INSERT', 'POST', function success(response) {
@@ -307,11 +307,11 @@ router.post('/submitADOMFJ', function(req, res, next) {
     obj.Status = 1;
     obj.IPAddress = req.connection.remoteAddress;
     obj.FinancialYear = getFinancialYear();
-    balModule.submitADOMFJ(obj, function(response1) {
+    balModule.submitADOMFJ(obj, function (response1) {
       var sms = 'e-Pest - ADO Emergency Message : ' + obj.Message;
       var encodeSMS = encodeURI(sms);
       request('http://www.apicol.nic.in/Registration/EPestSMS?mobileNo=' + 9438082076 + '&sms=' + encodeSMS, { json: true }, (err, res1, body) => {
-        if (err) { 
+        if (err) {
           console.log(err);
         }
         else {
@@ -328,7 +328,7 @@ router.post('/submitADOMFJ', function(req, res, next) {
   });
 });
 
-router.get('/getBlocks', function(req, res, next) {
+router.get('/getBlocks', function (req, res, next) {
   res.get('X-Frame-Options');
   var username = req.session.username;
   balModule.getBlocks(username).then(function success(response) {
@@ -351,7 +351,7 @@ router.get('/getCropCategories', function (req, res, next) {
   });
 });
 
-router.get('/getCropsByCategory', function(req, res, next) {
+router.get('/getCropsByCategory', function (req, res, next) {
   res.get('X-Frame-Options');
   var cropCategoryCode = req.query.cropCategoryCode;
   balModule.getCropsByCategory(cropCategoryCode).then(function success(response) {
@@ -363,7 +363,7 @@ router.get('/getCropsByCategory', function(req, res, next) {
   });
 });
 
-router.get('/getAllPestDiseases', function(req, res, next) {
+router.get('/getAllPestDiseases', function (req, res, next) {
   res.get('X-Frame-Options');
   var cropCode = req.query.cropCode;
   balModule.getAllPestDiseases(cropCode, function success(response) {
@@ -391,7 +391,7 @@ router.get('/getPestDetails', function (req, res, next) {
   });
 });
 
-router.get('/getAAODetails', function(req, res, next) {
+router.get('/getAAODetails', function (req, res, next) {
   res.get('X-Frame-Options');
   var adoCode = req.session.username;
   balModule.getAAODetails(adoCode).then(function success(response) {
@@ -403,7 +403,7 @@ router.get('/getAAODetails', function(req, res, next) {
   });
 });
 
-router.get('/getVAWDetails', function(req, res, next) {
+router.get('/getVAWDetails', function (req, res, next) {
   res.get('X-Frame-Options');
   var blockCode = req.query.blockCode;
   balModule.getVAWDetails(blockCode).then(function success(response) {
@@ -415,7 +415,7 @@ router.get('/getVAWDetails', function(req, res, next) {
   });
 });
 
-router.get('/getVAWGPDetails', function(req, res, next) {
+router.get('/getVAWGPDetails', function (req, res, next) {
   res.get('X-Frame-Options');
   var blockCode = req.query.blockCode;
   balModule.getVAWGPDetails(blockCode).then(function success(response) {
@@ -427,10 +427,14 @@ router.get('/getVAWGPDetails', function(req, res, next) {
   });
 });
 
-router.get('/getDashboardDetails', function(req, res, next) {
+router.get('/getDashboardDetails', function (req, res, next) {
   res.get('X-Frame-Options');
+  var sq = null; if (req.query.hasOwnProperty('season')) sq = req.query.season.charAt(0);
+  var season = getSeasonShort() == sq ? getSeasonShort() : sq;
+  var fnq = null; if (req.query.hasOwnProperty('financialYear')) fnq = req.query.financialYear;
+  var financialYear = getFinancialYear() == fnq ? getFinancialYear() : fnq;
   var adoCode = req.session.username;
-  balModule.getDashboardDetails(adoCode, function success(response) {
+  balModule.getDashboardDetails(season, financialYear, adoCode, function success(response) {
     res.send(response);
   }, function error(response) {
     console.log(response.status);
@@ -446,7 +450,7 @@ router.get('/getLTCDetails', function (req, res, next) {
   var blockCode = req.query.blockCode;
   var cropCode = req.query.cropCode;
   var pestDiseaseCode = req.query.pestDiseaseCode;
-  balModule.getLTCDetails(dateOfEntry, season, financialYear, blockCode, cropCode, pestDiseaseCode,username, function success(response) {
+  balModule.getLTCDetails(dateOfEntry, season, financialYear, blockCode, cropCode, pestDiseaseCode, username, function success(response) {
     res.send(response);
   }, function error(response) {
     console.log(response.status);
@@ -518,7 +522,7 @@ router.get('/getPD', function (req, res, next) {
   });
 });
 
-router.get('/getBlocksByADO', function(req, res, next) {
+router.get('/getBlocksByADO', function (req, res, next) {
   res.get('X-Frame-Options');
   var username = req.session.username;
   balModule.getBlocksByADO(username).then(function success(response) {
@@ -549,12 +553,12 @@ router.get('/getADOPestDetails', function (req, res, next) {
   });
 });
 
-router.get('/getRefNos', function(req, res, next) {
+router.get('/getRefNos', function (req, res, next) {
   res.get('X-Frame-Options');
   var username = req.session.username;
   var cropCategoryCode = req.query.cropCategoryCode;
   var cropCode = req.query.cropCode;
-  balModule.getRefNos(username,cropCategoryCode,cropCode).then(function success(response) {
+  balModule.getRefNos(username, cropCategoryCode, cropCode).then(function success(response) {
     res.send(response);
   }, function error(response) {
     console.log(response.status);
@@ -563,7 +567,7 @@ router.get('/getRefNos', function(req, res, next) {
   });
 });
 
-router.get('/getRefNoDetails', function(req, res, next) {
+router.get('/getRefNoDetails', function (req, res, next) {
   res.get('X-Frame-Options');
   var refNo = req.query.refNo;
   balModule.getRefNoDetails(refNo).then(function success(response) {
@@ -590,7 +594,7 @@ router.get('/getRefNoDetails', function(req, res, next) {
   });
 });
 
-router.get('/getPestPopulation', function(req, res, next) {
+router.get('/getPestPopulation', function (req, res, next) {
   res.get('X-Frame-Options');
   var pestCode = req.query.pestCode;
   balModule.getPestPopulation(pestCode).then(function success(response) {
@@ -617,7 +621,7 @@ router.get('/getEMRNosForADO', function (req, res, next) {
   });
 });
 
-router.get('/getEMRReferenceNoDetailsADO', function(req, res, next) {
+router.get('/getEMRReferenceNoDetailsADO', function (req, res, next) {
   res.get('X-Frame-Options');
   var emrRefNo = req.query.emrRefNo;
   balModule.getEMRReferenceNoDetailsADO(emrRefNo).then(function success(response) {
@@ -651,7 +655,7 @@ router.get('/getComplianceReport', function (req, res, next) {
   var userType = req.session.role;
   var userName = req.session.username;
   var financialYear = req.query.financialYear;
-  balModule.getComplianceReport(dateOfEntry, season,userType, userName, financialYear, function success(response) {
+  balModule.getComplianceReport(dateOfEntry, season, userType, userName, financialYear, function success(response) {
     res.send(response);
   }, function error(response) {
     console.log(response.status);
@@ -677,6 +681,81 @@ router.get('/getSurveyGP', function (req, res, next) {
   var blockCode = req.query.blockCode;
   var season = req.query.season;
   balModule.getSurveyGP(dateOfEntry, blockCode, season, function success(response) {
+    res.send(response);
+  }, function error(response) {
+    console.log(response.status);
+  });
+});
+
+router.get('/getGraphforCrop', function (req, res, next) {
+  res.get('X-Frame-Options');
+  var sq = null; if (req.query.hasOwnProperty('season')) sq = req.query.season.charAt(0);
+  var season = getSeasonShort() == sq ? getSeasonShort() : sq;
+  var fnq = null; if (req.query.hasOwnProperty('financialYear')) fnq = req.query.financialYear;
+  var financialYear = getFinancialYear() == fnq ? getFinancialYear() : fnq;
+  var adoCode = req.session.username;
+  balModule.getGraphforCrop(season, financialYear, adoCode).then(function success(response) {
+    res.send(response);
+  }, function error(response) {
+    console.log(response.status);
+  }).catch(function err(error) {
+    console.log('An error occurred...', error);
+  });
+});
+
+router.get('/getCropDetailsCategory', function (req, res, next) {
+  res.get('X-Frame-Options');
+  var sq = null; if (req.query.hasOwnProperty('season')) sq = req.query.season.charAt(0);
+  var season = getSeasonShort() == sq ? getSeasonShort() : sq;
+  var fnq = null; if (req.query.hasOwnProperty('financialYear')) fnq = req.query.financialYear;
+  var financialYear = getFinancialYear() == fnq ? getFinancialYear() : fnq;
+  var cropCategoryCode = req.query.cropCode;
+  var adoCode = req.session.username;
+  balModule.getCropDetailsCategory(season, financialYear, cropCategoryCode, adoCode).then(function success(response) {
+    res.send(response);
+  }, function error(response) {
+    console.log(response.status);
+  }).catch(function err(error) {
+    console.log('An error occurred...', error);
+  });
+});
+
+var getSeasonShort = function() {
+  var seasonName;
+  var month = new Date().getMonth();
+  if (month >= 6 && month <= 10) {
+    seasonName = 'K';
+  }
+  else {
+    seasonName = 'R';
+  }
+  return seasonName;
+};
+
+router.post('/getPestGraphData', parseForm, csrfProtection, permit.permission('ADO'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+  res.get('X-Frame-Options');
+  balModule.addActivityLog(req.connection.remoteAddress, req.session.username, getURL(req), req.device.type.toUpperCase(), os.platform(), req.headers['user-agent'], '/getPestGraphData', 'INSERT', 'POST', function success(response) {
+  }, function error(response) {
+    console.log(response.status);
+  });
+  var arr = req.body.data.pestData;
+  var month = req.body.data.month;
+  var sq = null; if (req.body.data.hasOwnProperty('season')) sq = req.body.data.season.charAt(0);
+  var season = getSeasonShort() == sq ? getSeasonShort() : sq;
+  var fnq = null; if (req.body.data.hasOwnProperty('financialYear')) fnq = req.body.data.financialYear;
+  var financialYear = getFinancialYear() == fnq ? getFinancialYear() : fnq;
+  var adoCode = req.session.username;
+  balModule.getPestGraphData(arr, month, season, financialYear, adoCode, function success(response1) {
+    res.send(response1);
+  }, function error(response1) {
+    console.log(response1.status);
+  });
+});
+
+router.get('/getPestDiseases', function(req, res, next) {
+  res.get('X-Frame-Options');
+  var cropCode = req.query.cropCode;
+  balModule.getPestDiseases(cropCode, function success(response) {
     res.send(response);
   }, function error(response) {
     console.log(response.status);

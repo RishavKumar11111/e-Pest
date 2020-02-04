@@ -9,7 +9,7 @@ app.controller('myJDAPPDashbord1Ctrl', function ($scope, $http, $filter) {
             $scope.getGD();
             $scope.getDashboardDetails();
         }
-    }
+    };
 
     $scope.months = [];
     $scope.getMonth = function () {
