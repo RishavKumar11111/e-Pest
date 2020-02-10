@@ -1,8 +1,8 @@
-app.controller('myJDAPPGMCtrl', function($scope, $http) {
+app.controller('myJDAPPGMCtrl', function ($scope, $http) {
 
     var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-    $scope.checkCDay = function() {
+    $scope.checkCDay = function () {
         var day = new Date(document.getElementById('pdeDate').value).getDay();
         // if (day != 1 && day != 2 && day != 3 && day != 4) {
         //     alert('Pest details entry are only done on Monday, Tuesday, Wednesday and Thursday by VAW.');
@@ -26,7 +26,7 @@ app.controller('myJDAPPGMCtrl', function($scope, $http) {
     };
 
     $scope.gisMapDetails = [];
-    $scope.getGISMapDetails = function() {
+    $scope.getGISMapDetails = function () {
         if ($scope.ddlFY != null && $scope.ddlFY != undefined && $scope.rbs != null && $scope.rbs != undefined && $scope.dateOfPDE != null && $scope.dateOfPDE != undefined) {
             $scope.showMap = true;
             var distcd = 0;

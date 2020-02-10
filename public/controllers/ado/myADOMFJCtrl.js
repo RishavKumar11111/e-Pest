@@ -1,7 +1,7 @@
-app.controller('myADOMFJCtrl', function($scope, $http) {
+app.controller('myADOMFJCtrl', function ($scope, $http) {
 
     var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    
+
     $scope.getMessages = function () {
         $http.get('http://localhost:3000/ado/getMessages').then(function success(response) {
             $scope.messages = response.data;
@@ -11,7 +11,7 @@ app.controller('myADOMFJCtrl', function($scope, $http) {
             console.log('An error occurred...', error);
         });
     };
-    
+
     $scope.submitADOMFJ = function (isValid) {
         if (isValid) {
             var message = confirm('Do you really want to submit the message?');

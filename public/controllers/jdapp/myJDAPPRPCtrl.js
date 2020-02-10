@@ -1,15 +1,15 @@
-app.controller('myJDAPPRPCtrl', function($scope, $http) {
+app.controller('myJDAPPRPCtrl', function ($scope, $http) {
 
     var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
     $scope.userIDArray = [];
-    $scope.addUserID = function() {
+    $scope.addUserID = function () {
         if ($scope.txtUserID != '' && $scope.txtUserID != null && $scope.txtUserID != undefined) {
             var r = true;
             if ($scope.userIDArray.length > 0) {
-                angular.forEach($scope.userIDArray, function(i) {
+                angular.forEach($scope.userIDArray, function (i) {
                     if (i.UserID == $scope.txtUserID) {
-                        alert('The User ID "' + $scope.txtUserID + '" is already entered.'); 
+                        alert('The User ID "' + $scope.txtUserID + '" is already entered.');
                         r = false;
                     }
                 });
@@ -29,7 +29,7 @@ app.controller('myJDAPPRPCtrl', function($scope, $http) {
         $scope.userIDArray.splice(index, 1);
     };
 
-    $scope.resetPasswords = function(isValid) {
+    $scope.resetPasswords = function (isValid) {
         if (isValid && $scope.userIDArray.length > 0) {
             $http.post('http://localhost:3000/jdapp/resetPasswords', { data: $scope.userIDArray }, { credentials: 'same-origin', headers: { 'CSRF-Token': token } }).then(function success(response) {
                 if (response.data == 'OK') {

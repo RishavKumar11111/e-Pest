@@ -1,7 +1,7 @@
-app.controller('myAAOVAWDetailsCtrl', function($scope, $http, $filter, $timeout) {
+app.controller('myAAOVAWDetailsCtrl', function ($scope, $http, $filter, $timeout) {
 
     var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    
+
     $scope.getVAWDetails1 = function () {
         $http.get('http://localhost:3000/aao/getVAWDetails1').then(function success(response) {
             $scope.vawDetails = response.data;

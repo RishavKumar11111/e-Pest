@@ -1,3 +1,3 @@
-app.controller('myADAPTHomeCtrl', function() {
-    
+app.controller('myADAPTHomeCtrl', function () {
+
 });

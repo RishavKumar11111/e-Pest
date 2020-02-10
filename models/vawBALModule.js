@@ -3,9 +3,9 @@ var sequelize = dbConfig.sequelize;
 var sql = dbConfig.sql;
 var locConfig = dbConfig.locConfig;
 
-exports.addActivityLog = function(ipAddress, userID, url, deviceType, os, browser, action, attack, mode) {
+exports.addActivityLog = function (ipAddress, userID, url, deviceType, os, browser, action, attack, mode) {
     sequelize.query('insert into ActivityLog (IPAddress, UserID, URL, DeviceType, OS, Browser, DateTime, Action, Attack, Mode) values (:ip_address, :user_id, :url, :device_type, :os, :browser, getdate(), :action, :attack, :mode)', {
-    replacements: { ip_address: ipAddress, user_id: userID, url: url, device_type: deviceType, os: os, browser: browser, action: action, attack: attack, mode: mode}, type: sequelize.QueryTypes.SELECT
+        replacements: { ip_address: ipAddress, user_id: userID, url: url, device_type: deviceType, os: os, browser: browser, action: action, attack: attack, mode: mode }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
         return data;
     }).catch(function error(err) {
@@ -13,7 +13,7 @@ exports.addActivityLog = function(ipAddress, userID, url, deviceType, os, browse
     });
 };
 
-exports.getUserDetails = function(userName) {
+exports.getUserDetails = function (userName) {
     return sequelize.query('select ul.UserID, ul.PasswordHash, ul.RoleID, ul.ContactNo, ul.AccessFailedCount, ul.Status, ur.RoleName from UserLogin ul inner join UserRole ur on ul.RoleID = ur.RoleID where UserID = :user_name', {
         replacements: { user_name: userName }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
@@ -33,7 +33,7 @@ exports.getPasswordHistory = function (userName) {
     });
 };
 
-exports.changePasssword = function(obj, callback) {
+exports.changePasssword = function (obj, callback) {
     var con = new sql.ConnectionPool(locConfig);
     con.connect().then(function success() {
         const request = new sql.Request(con);
@@ -42,11 +42,11 @@ exports.changePasssword = function(obj, callback) {
         request.input('Status', obj.Status);
         request.input('IPAddress', obj.IPAddress);
         request.input('FinancialYear', obj.FinancialYear);
-        request.execute('spChangePassword', function(err, result) {
+        request.execute('spChangePassword', function (err, result) {
             if (err) {
                 console.log('An error occurred...', err);
             }
-            else{
+            else {
                 callback(result.returnValue);
             }
             con.close();
@@ -56,9 +56,9 @@ exports.changePasssword = function(obj, callback) {
     });
 };
 
-exports.updateIsLoggedIn = function(isLoggedIn, userID) {
+exports.updateIsLoggedIn = function (isLoggedIn, userID) {
     sequelize.query('update UserLogin set IsLoggedIn = :is_logged_in where UserID = :user_id', {
-    replacements: { is_logged_in: isLoggedIn, user_id: userID }, type: sequelize.QueryTypes.SELECT
+        replacements: { is_logged_in: isLoggedIn, user_id: userID }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
         return data;
     }).catch(function error(err) {

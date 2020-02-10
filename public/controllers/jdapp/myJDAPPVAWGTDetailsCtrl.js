@@ -1,7 +1,7 @@
-app.controller('myJDAPPVAWGTDetailsCtrl', function($scope, $http, $filter, $timeout) {
+app.controller('myJDAPPVAWGTDetailsCtrl', function ($scope, $http, $filter, $timeout) {
 
     var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    
+
     $scope.getDistricts = function () {
         $http.get('http://localhost:3000/jdapp/getDistricts').then(function success(response) {
             $scope.districts = response.data;

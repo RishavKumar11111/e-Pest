@@ -1,7 +1,7 @@
-app.controller('myADOVAWDetailsCtrl', function($scope, $http) {
+app.controller('myADOVAWDetailsCtrl', function ($scope, $http) {
 
     var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    
+
     $scope.getBlocks = function () {
         $http.get('http://localhost:3000/ado/getBlocks').then(function success(response) {
             $scope.blocks = response.data;
@@ -24,7 +24,7 @@ app.controller('myADOVAWDetailsCtrl', function($scope, $http) {
             });
         }
     };
-    
+
     $scope.getVAWGPDetails = function () {
         if ($scope.ddlBlock != undefined && $scope.ddlBlock != null) {
             $http.get('http://localhost:3000/jdapp/getVAWGPDetails?blockCode=' + $scope.ddlBlock).then(function success(response) {
@@ -46,5 +46,5 @@ app.controller('myADOVAWDetailsCtrl', function($scope, $http) {
         popupWinindow.print();
         // popupWinindow.close();
     };
-    
+
 });

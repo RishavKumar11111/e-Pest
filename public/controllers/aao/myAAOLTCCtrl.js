@@ -40,7 +40,7 @@ app.controller('myAAOLTCCtrl', function ($scope, $http, $filter) {
             var k = ($filter('filter')(response.data, { CategoryCode: 3 }, true));
             var l = { CC: k[0].CategoryCode, CN: k[0].CategoryName };
             var m = response.data.filter(function (i) { return !k.includes(i); });
-            $scope.crops = m.map(function(i) { return { CC: i.CropCode, CN: i.CropName }; });
+            $scope.crops = m.map(function (i) { return { CC: i.CropCode, CN: i.CropName }; });
             $scope.crops.push(l);
         }, function error(response) {
             console.log(response.status);
@@ -59,7 +59,7 @@ app.controller('myAAOLTCCtrl', function ($scope, $http, $filter) {
         });
     };
 
-    $scope.submitAAOLTC = function(isValid) {
+    $scope.submitAAOLTC = function (isValid) {
         if (isValid) {
             var message = confirm('Do you really want to submit the form?');
             if (message) {
@@ -87,11 +87,11 @@ app.controller('myAAOLTCCtrl', function ($scope, $http, $filter) {
     };
 
     $scope.ltcDetails = [];
-    $scope.getLTCDetails = function() {
+    $scope.getLTCDetails = function () {
         if ($scope.dateOfPDE != null && $scope.dateOfPDE != undefined && $scope.rbs != null && $scope.rbs != undefined && $scope.ddlFY != null && $scope.ddlFY != undefined) {
             $http.get('http://localhost:3000/aao/getLTCDetails?dateOfEntry=' + document.getElementById('pdeDate').value + '&season=' + $scope.rbs + '&financialYear=' + $scope.ddlFY).then(function success(response) {
                 $scope.ltcDetails = response.data;
-                angular.forEach($scope.ltcDetails, function(i) {
+                angular.forEach($scope.ltcDetails, function (i) {
                     if (i.CropCategoryCode == null) {
                         i.CC = i.CropCode;
                         i.CN = i.CropName;
@@ -102,7 +102,7 @@ app.controller('myAAOLTCCtrl', function ($scope, $http, $filter) {
                     }
                     delete i.CropCode; delete i.CropName; delete i.CropCategoryCode; delete i.CategoryName;
                 });
-                
+
             }, function error(response) {
                 console.log(response.status);
             }).catch(function err(error) {

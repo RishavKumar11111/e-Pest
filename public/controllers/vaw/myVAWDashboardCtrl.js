@@ -1,3 +1,3 @@
-app.controller('myVAWDashboardCtrl', function() {
-    
+app.controller('myVAWDashboardCtrl', function () {
+
 });

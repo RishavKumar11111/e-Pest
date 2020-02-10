@@ -1,3 +1,3 @@
-app.controller('myOUATHomeCtrl', function() {
-    
+app.controller('myOUATHomeCtrl', function () {
+
 });

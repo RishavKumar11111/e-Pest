@@ -1,3 +1,3 @@
-app.controller('myJDAPPHomeCtrl', function() {
-    
+app.controller('myJDAPPHomeCtrl', function () {
+
 });

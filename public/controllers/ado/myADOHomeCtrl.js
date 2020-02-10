@@ -1,3 +1,3 @@
-app.controller('myADOHomeCtrl', function() {
-    
+app.controller('myADOHomeCtrl', function () {
+
 });

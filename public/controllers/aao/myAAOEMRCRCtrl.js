@@ -1,4 +1,4 @@
-app.controller('myAAOEMRCRCtrl', function($scope, $http, $filter, $timeout) {
+app.controller('myAAOEMRCRCtrl', function ($scope, $http, $filter, $timeout) {
 
     var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
@@ -24,7 +24,7 @@ app.controller('myAAOEMRCRCtrl', function($scope, $http, $filter, $timeout) {
         });
     };
 
-    var getImage = function(a, b, c) {
+    var getImage = function (a, b, c) {
         var flp = "data:image/jpeg;base64," + a;
         document.getElementById('flp').setAttribute("src", flp);
         var rlp1 = "data:image/jpeg;base64," + b;
@@ -34,9 +34,9 @@ app.controller('myAAOEMRCRCtrl', function($scope, $http, $filter, $timeout) {
     };
 
     $scope.emrDetails = [];
-    $scope.getEMRNosForAAO = function() {
-        if ($scope.dateOfPDE != null && $scope.dateOfPDE != undefined && $scope.ddlFY != null && $scope.ddlFY != undefined && $scope.ddlCrop != null && $scope.ddlCrop != undefined && $scope.ddlCropCategory != null && $scope.ddlCropCategory != undefined ) {
-            $http.get('http://localhost:3000/aao/getEMRNosForAAO?dateOfEntry=' + document.getElementById('pdeDate').value + '&cropCategory=' + $scope.ddlCropCategory + '&crop=' + $scope.ddlCrop + '&financialYear=' + $scope.ddlFY ).then(function success(response) {
+    $scope.getEMRNosForAAO = function () {
+        if ($scope.dateOfPDE != null && $scope.dateOfPDE != undefined && $scope.ddlFY != null && $scope.ddlFY != undefined && $scope.ddlCrop != null && $scope.ddlCrop != undefined && $scope.ddlCropCategory != null && $scope.ddlCropCategory != undefined) {
+            $http.get('http://localhost:3000/aao/getEMRNosForAAO?dateOfEntry=' + document.getElementById('pdeDate').value + '&cropCategory=' + $scope.ddlCropCategory + '&crop=' + $scope.ddlCrop + '&financialYear=' + $scope.ddlFY).then(function success(response) {
                 if (response.data.length > 0) {
                     $scope.emrDetails = response.data;
                 }

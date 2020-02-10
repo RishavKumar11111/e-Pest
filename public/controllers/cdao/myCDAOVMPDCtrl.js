@@ -1,8 +1,8 @@
-app.controller('myCDAOVMPDCtrl', function($scope, $http) {
+app.controller('myCDAOVMPDCtrl', function ($scope, $http) {
 
     var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-    $scope.checkCDay = function() {
+    $scope.checkCDay = function () {
         var day = new Date(document.getElementById('pdeDate').value).getDay();
         if (day != 4 && day != 5) {
             alert('Pest details entry are only done on Thursday and Friday.');
@@ -55,7 +55,7 @@ app.controller('myCDAOVMPDCtrl', function($scope, $http) {
     };
 
     $scope.pestDetails = [];
-    $scope.getPestDetails = function() {
+    $scope.getPestDetails = function () {
         if ($scope.dateOfPDE != null && $scope.dateOfPDE != undefined && $scope.rbs != null && $scope.rbs != undefined && $scope.ddlFY != null && $scope.ddlFY != undefined && $scope.ddlCC != null && $scope.ddlCC != undefined && $scope.ddlC != null && $scope.ddlC != undefined) {
             var blkcd = 0;
             var pdcd = 0;
@@ -108,7 +108,7 @@ app.controller('myCDAOVMPDCtrl', function($scope, $http) {
                         $scope.sthl = false;
                     }
                     $scope.laa = 0.0; $scope.maa = 0.0; $scope.haa = 0.0; $scope.lta = 0.0; $scope.mta = 0.0; $scope.hta = 0.0; $scope.taa = 0.0; $scope.tta = 0.0;
-                    angular.forEach($scope.pestDetails, function(i) {
+                    angular.forEach($scope.pestDetails, function (i) {
                         $scope.laa += i.LowAffectedArea;
                         $scope.maa += i.MediumAffectedArea;
                         $scope.haa += i.HighAffectedArea;
@@ -134,30 +134,30 @@ app.controller('myCDAOVMPDCtrl', function($scope, $http) {
         }
     };
 
-    $scope.showTextHideLabel = function() {
+    $scope.showTextHideLabel = function () {
         $scope.sthl = true;
         $scope.slht = false;
     };
 
-    $scope.showLabelHideText = function() {
+    $scope.showLabelHideText = function () {
         $scope.slht = true;
         $scope.sthl = false;
         $scope.getPestDetails();
     };
 
     var laa = null; var maa = null; var haa = null; var lta = null; var mta = null; var hta = null;
-    var convertValid = function(i) {
+    var convertValid = function (i) {
         laa = i.LowAffectedArea == null ? '0' : i.LowAffectedArea == undefined ? '0' : i.LowAffectedArea == '' ? '0' : i.LowAffectedArea,
-        maa = i.MediumAffectedArea == null ? '0' : i.MediumAffectedArea == undefined ? '0' : i.MediumAffectedArea == '' ? '0' : i.MediumAffectedArea,
-        haa = i.HighAffectedArea == null ? '0' : i.HighAffectedArea == undefined ? '0' : i.HighAffectedArea == '' ? '0' : i.HighAffectedArea,
-        lta = i.LowTreatedArea == null ? '0' : i.LowTreatedArea == undefined ? '0' : i.LowTreatedArea == '' ? '0' : i.LowTreatedArea,
-        mta = i.MediumTreatedArea == null ? '0' : i.MediumTreatedArea == undefined ? '0' : i.MediumTreatedArea == '' ? '0' : i.MediumTreatedArea,
-        hta = i.HighTreatedArea == null ? '0' : i.HighTreatedArea == undefined ? '0' : i.HighTreatedArea == '' ? '0' : i.HighTreatedArea
+            maa = i.MediumAffectedArea == null ? '0' : i.MediumAffectedArea == undefined ? '0' : i.MediumAffectedArea == '' ? '0' : i.MediumAffectedArea,
+            haa = i.HighAffectedArea == null ? '0' : i.HighAffectedArea == undefined ? '0' : i.HighAffectedArea == '' ? '0' : i.HighAffectedArea,
+            lta = i.LowTreatedArea == null ? '0' : i.LowTreatedArea == undefined ? '0' : i.LowTreatedArea == '' ? '0' : i.LowTreatedArea,
+            mta = i.MediumTreatedArea == null ? '0' : i.MediumTreatedArea == undefined ? '0' : i.MediumTreatedArea == '' ? '0' : i.MediumTreatedArea,
+            hta = i.HighTreatedArea == null ? '0' : i.HighTreatedArea == undefined ? '0' : i.HighTreatedArea == '' ? '0' : i.HighTreatedArea
         var obj = { laa: parseFloat(laa), maa: parseFloat(maa), haa: parseFloat(haa), lta: parseFloat(lta), mta: parseFloat(mta), hta: parseFloat(hta) };
         return obj;
     };
 
-    $scope.checkMArea = function(i) {
+    $scope.checkMArea = function (i) {
         var k = convertValid(i);
         if (!(k.mta <= k.maa && ((k.lta + k.mta + k.hta) <= (k.laa + k.maa + k.haa)))) {
             alert('Medium Treated Area cannot be more than Medium Affected Area. Total Treated Area must be less than Total Affected Area.');
@@ -165,7 +165,7 @@ app.controller('myCDAOVMPDCtrl', function($scope, $http) {
         }
     };
 
-    $scope.checkHArea = function(i) {
+    $scope.checkHArea = function (i) {
         var k = convertValid(i);
         if (!(k.hta <= k.haa && ((k.lta + k.mta + k.hta) <= (k.laa + k.maa + k.haa)))) {
             alert('High Treated Area cannot be more than High Affected Area. Total Treated Area must be less than Total Affected Area.');
@@ -173,7 +173,7 @@ app.controller('myCDAOVMPDCtrl', function($scope, $http) {
         }
     };
 
-    $scope.updatePDE = function(isValid) {
+    $scope.updatePDE = function (isValid) {
         if (isValid) {
             if ($scope.ddlBlock != null && $scope.ddlBlock != undefined) {
                 var message = confirm('Do you really want to update the pest details?');
@@ -188,7 +188,7 @@ app.controller('myCDAOVMPDCtrl', function($scope, $http) {
                         PestDiseaseCode: $scope.ddlPD,
                     };
                     var myArray = [];
-                    angular.forEach($scope.pestDetails, function(i) {
+                    angular.forEach($scope.pestDetails, function (i) {
                         var k = {
                             GPCode: i.GPCode,
                             LowAffectedArea: i.LowAffectedArea == null ? '0' : i.LowAffectedArea == undefined ? '0' : i.LowAffectedArea == '' ? '0' : i.LowAffectedArea,
@@ -200,7 +200,7 @@ app.controller('myCDAOVMPDCtrl', function($scope, $http) {
                         }
                         myArray.push(k);
                     });
-                    $http.post('http://localhost:3000/cdao/updatePDE', { data: {obj: myObj, arr: myArray } }, { credentials: 'same-origin', headers: { 'CSRF-Token': token } }).then(function success(response) {
+                    $http.post('http://localhost:3000/cdao/updatePDE', { data: { obj: myObj, arr: myArray } }, { credentials: 'same-origin', headers: { 'CSRF-Token': token } }).then(function success(response) {
                         var result = response.statusText;
                         if (result == 'OK') {
                             alert('The Pest details are successfully updated.');

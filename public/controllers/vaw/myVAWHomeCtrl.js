@@ -1,3 +1,3 @@
-app.controller('myVAWHomeCtrl', function() {
-    
+app.controller('myVAWHomeCtrl', function () {
+
 });

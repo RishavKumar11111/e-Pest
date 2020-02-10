@@ -1,8 +1,8 @@
-app.controller('myJDAPPComplianceCtrl', function($scope, $http) {
-    
+app.controller('myJDAPPComplianceCtrl', function ($scope, $http) {
+
     var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-    $scope.checkCDay = function() {
+    $scope.checkCDay = function () {
         var day = new Date(document.getElementById('pdeDate').value).getDay();
         // if (day == 0 || day == 5 || day == 6) {
         //     alert('Pest Surveillance is done from Monday to Thursday.');
@@ -42,7 +42,7 @@ app.controller('myJDAPPComplianceCtrl', function($scope, $http) {
     };
 
     $scope.getTargetedGP = function (blockCode) {
-            $http.get('http://localhost:3000/jdapp/getTargetedGP?blockCode=' + blockCode + '&season=' + $scope.rbs).then(function success(response) {
+        $http.get('http://localhost:3000/jdapp/getTargetedGP?blockCode=' + blockCode + '&season=' + $scope.rbs).then(function success(response) {
             $scope.targetedGPData = response.data;
         }, function error(response) {
             console.log(response.status);
@@ -50,7 +50,7 @@ app.controller('myJDAPPComplianceCtrl', function($scope, $http) {
             console.log('An error occurred...', error);
         });
     };
-    
+
     $scope.getSurveyGP = function (blockCode) {
         $http.get('http://localhost:3000/jdapp/getSurveyGP?dateOfEntry=' + document.getElementById('pdeDate').value + '&blockCode=' + blockCode + '&season=' + $scope.rbs).then(function success(response) {
             $scope.surveyGP = response.data[0];

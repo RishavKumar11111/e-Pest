@@ -1,8 +1,8 @@
-app.controller('myVAWEGTCtrl', function($scope, $http, $filter) {
-    
+app.controller('myVAWEGTCtrl', function ($scope, $http, $filter) {
+
     var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-    $scope.month = function() {
+    $scope.month = function () {
         var m = new Date().getMonth();
         if (m >= 6 && m <= 10) {
             $scope.rbSeason = 'Kharif';
@@ -13,7 +13,7 @@ app.controller('myVAWEGTCtrl', function($scope, $http, $filter) {
         return $scope.rbSeason;
     };
 
-    $scope.getFinancialYear = function() {
+    $scope.getFinancialYear = function () {
         $scope.fiscalYear = "";
         var today = new Date();
         if ((today.getMonth() + 1) <= 3) {
@@ -25,7 +25,7 @@ app.controller('myVAWEGTCtrl', function($scope, $http, $filter) {
         return $scope.fiscalYear;
     };
 
-    $scope.getRegisteredVAWs = function() {
+    $scope.getRegisteredVAWs = function () {
         $http.get('http://localhost:3000/aao/getRegisteredVAWs').then(function success(response) {
             $scope.registeredVAWs = response.data;
         }, function error(response) {
@@ -35,21 +35,21 @@ app.controller('myVAWEGTCtrl', function($scope, $http, $filter) {
         });
     };
 
-    $scope.getRegisteredVAWDetails = function(vawCode) {
+    $scope.getRegisteredVAWDetails = function (vawCode) {
         $scope.registeredVAWDetails = ($filter('filter')($scope.registeredVAWs, { VAWCode: vawCode }, true));
     };
-    
+
     $scope.ePestVAWGPs = [];
     $scope.getValue = function () {
         $scope.ePestVAWGPs = [];
         angular.forEach($scope.registeredVAWDetails, function (i) {
             if (i.selected) {
-                $scope.ePestVAWGPs.push({VAWCode: i.VAWCode, GPCode: i.GPCode, GPName: i.GPName});
+                $scope.ePestVAWGPs.push({ VAWCode: i.VAWCode, GPCode: i.GPCode, GPName: i.GPName });
             }
         });
     };
 
-    $scope.getAllocatedGPsVAWs = function() {
+    $scope.getAllocatedGPsVAWs = function () {
         $http.get('http://localhost:3000/aao/getAllocatedGPsVAWs').then(function success(response) {
             $scope.allocatedGPsVAWs = response.data;
         }, function error(response) {
@@ -59,7 +59,7 @@ app.controller('myVAWEGTCtrl', function($scope, $http, $filter) {
         });
     };
 
-    $scope.submitEPestVAWGPs = function(isValid) {
+    $scope.submitEPestVAWGPs = function (isValid) {
         if (isValid) {
             if ($scope.ePestVAWGPs.length > 0) {
                 $http.post('http://localhost:3000/aao/allocateGPsVAWs', { data: $scope.ePestVAWGPs }, { credentials: 'same-origin', headers: { 'CSRF-Token': token } }).then(function success(response) {
@@ -87,7 +87,7 @@ app.controller('myVAWEGTCtrl', function($scope, $http, $filter) {
         }
     };
 
-    var clearData = function() {
+    var clearData = function () {
         $scope.getRegisteredVAWs();
         $scope.getAllocatedGPsVAWs();
         $scope.registeredVAWs = [];

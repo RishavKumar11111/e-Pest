@@ -1,8 +1,8 @@
-app.controller('myJDAPPETLCtrl', function($scope, $http, $filter) {
+app.controller('myJDAPPETLCtrl', function ($scope, $http, $filter) {
 
     var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-    $scope.getCrops = function() {
+    $scope.getCrops = function () {
         $http.get('http://localhost:3000/jdapp/getCrops').then(function success(response) {
             $scope.crops = response.data;
         }, function error(response) {
@@ -24,20 +24,20 @@ app.controller('myJDAPPETLCtrl', function($scope, $http, $filter) {
     };
 
     $scope.intensityArray = [];
-    $scope.addPestIntensity = function() {
+    $scope.addPestIntensity = function () {
         if ($scope.ddlPest != '' && $scope.ddlPest != null && $scope.ddlPest != undefined && $scope.txtModerateIntensityPopulation != '' && $scope.txtModerateIntensityPopulation != null && $scope.txtModerateIntensityPopulation != undefined && $scope.txtHighIntensityPopulation != '' && $scope.txtHighIntensityPopulation != null && $scope.txtHighIntensityPopulation != undefined) {
             var pestName = ($filter('filter')($scope.pests, { PestDiseaseCode: $scope.ddlPest }, true));
             var r = true;
             if ($scope.intensityArray.length > 0) {
-                angular.forEach($scope.intensityArray, function(i) {
+                angular.forEach($scope.intensityArray, function (i) {
                     if (i.PestDiseaseDetails.PestDiseaseName == pestName[0].PestDiseaseName) {
-                        alert("The Pest, '" + pestName[0].PestDiseaseName + "' is already entered."); 
+                        alert("The Pest, '" + pestName[0].PestDiseaseName + "' is already entered.");
                         r = false;
                     }
                 });
             }
             if (r == true) {
-                var k = { PestDiseaseDetails : pestName[0], ModerateIntensityPopulation: $scope.txtModerateIntensityPopulation, HighIntensityPopulation: $scope.txtHighIntensityPopulation };
+                var k = { PestDiseaseDetails: pestName[0], ModerateIntensityPopulation: $scope.txtModerateIntensityPopulation, HighIntensityPopulation: $scope.txtHighIntensityPopulation };
                 $scope.intensityArray.push(k);
             }
             clearData();
@@ -51,17 +51,17 @@ app.controller('myJDAPPETLCtrl', function($scope, $http, $filter) {
         $scope.intensityArray.splice(index, 1);
     };
 
-    var clearData = function() {
+    var clearData = function () {
         $scope.ddlPest = null;
         $scope.txtModerateIntensityPopulation = null;
         $scope.txtHighIntensityPopulation = null;
     };
 
-    $scope.submitETL = function(isValid) {
+    $scope.submitETL = function (isValid) {
         if (isValid) {
             if ($scope.intensityArray.length > 0) {
                 var obj = { CropCode: $scope.ddlCC };
-                $http.post('http://localhost:3000/jdapp/submitETL', { data: {cropCode: obj, pestIntensity: $scope.intensityArray} }, { credentials: 'same-origin', headers: { 'CSRF-Token': token } }).then(function success(response) {
+                $http.post('http://localhost:3000/jdapp/submitETL', { data: { cropCode: obj, pestIntensity: $scope.intensityArray } }, { credentials: 'same-origin', headers: { 'CSRF-Token': token } }).then(function success(response) {
                     var result = response.data;
                     if (result == 'The ETL details already exists.') {
                         alert(result);
@@ -91,7 +91,7 @@ app.controller('myJDAPPETLCtrl', function($scope, $http, $filter) {
 
     $scope.getETLDetails = function () {
         if ($scope.ddlPestD != null) {
-            $http.get('http://localhost:3000/jdapp/getETLDetails?pestdiseaseCode=' + $scope.ddlPestD).then(function success(response) { 
+            $http.get('http://localhost:3000/jdapp/getETLDetails?pestdiseaseCode=' + $scope.ddlPestD).then(function success(response) {
                 $scope.etlDetails = response.data;
                 $scope.slht = true;
                 $scope.sthl = false;
@@ -103,18 +103,18 @@ app.controller('myJDAPPETLCtrl', function($scope, $http, $filter) {
         }
     };
 
-    $scope.showTextHideLabel = function() {
+    $scope.showTextHideLabel = function () {
         $scope.sthl = true;
         $scope.slht = false;
     };
 
-    $scope.showLabelHideText = function() {
+    $scope.showLabelHideText = function () {
         $scope.slht = true;
         $scope.sthl = false;
         $scope.getETLDetails();
     };
 
-    $scope.updateETLDetails = function(isValid) {
+    $scope.updateETLDetails = function (isValid) {
         if (isValid) {
             var message = confirm('Do you really want to submit the form?');
             if (message) {
@@ -122,11 +122,11 @@ app.controller('myJDAPPETLCtrl', function($scope, $http, $filter) {
                     var pestCode = $scope.ddlPestD;
                     var myData = [];
                     var count = 0;
-                    angular.forEach($scope.etlDetails, function(i) {
+                    angular.forEach($scope.etlDetails, function (i) {
                         if (i.ModerateIntensityPopulation != null && i.ModerateIntensityPopulation != undefined && i.ModerateIntensityPopulation != '' && i.HighIntensityPopulation != null && i.HighIntensityPopulation != undefined && i.HighIntensityPopulation != '') {
                             var k = {
-                                PestdiseaseCode : $scope.ddlPestD,
-                                ModerateIntensityPopulation : i.ModerateIntensityPopulation,
+                                PestdiseaseCode: $scope.ddlPestD,
+                                ModerateIntensityPopulation: i.ModerateIntensityPopulation,
                                 HighIntensityPopulation: i.HighIntensityPopulation
                             }
                             count++;
@@ -134,7 +134,7 @@ app.controller('myJDAPPETLCtrl', function($scope, $http, $filter) {
                         }
                     });
                     if (count == $scope.etlDetails.length) {
-                        $http.post('http://localhost:3000/jdapp/updateETLDetails', { data: {uad: myData, pcode: pestCode} }, { credentials: 'same-origin', headers: { 'CSRF-Token': token } }).then(function success(response) {
+                        $http.post('http://localhost:3000/jdapp/updateETLDetails', { data: { uad: myData, pcode: pestCode } }, { credentials: 'same-origin', headers: { 'CSRF-Token': token } }).then(function success(response) {
                             var result = response.data;
                             if (result == 'OK') {
                                 alert('The records are updated.');
@@ -165,7 +165,7 @@ app.controller('myJDAPPETLCtrl', function($scope, $http, $filter) {
         }
     };
 
-    $scope.removeETL = function() {
+    $scope.removeETL = function () {
         var message = confirm('Do you really want to delete the intensity?');
         if (message) {
             var myData = { pestDiseaseCode: $scope.ddlPestD };

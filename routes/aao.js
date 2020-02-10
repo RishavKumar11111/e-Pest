@@ -62,14 +62,14 @@ var getCurrentDate = function () {
   if (MM < 10) {
     MM = '0' + MM;
   }
-  
+
   var currentDate = yyyy + '-' + MM + '-' + dd;
   return currentDate;
 };
 
 var getYesterdayDate = function () {
   var yd = new Date();
- 	yd.setDate(yd.getDate() - 1);
+  yd.setDate(yd.getDate() - 1);
   var dd = yd.getDate();
   var MM = yd.getMonth() + 1;
   var yyyy = yd.getFullYear();
@@ -162,12 +162,12 @@ router.get('/removeRecords', csrfProtection, permit.permission('AAO'), cache.ove
   res.render('aao/removerecords', { title: 'AAO Remove Records', csrfToken: req.csrfToken() });
 });
 
-router.get('/vawDetails', csrfProtection, permit.permission('AAO'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/vawDetails', csrfProtection, permit.permission('AAO'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('aao/vawdetails', { title: 'AAO VAW Details', csrfToken: req.csrfToken() });
 });
 
-router.get('/vawGPTargetDetails', csrfProtection, permit.permission('AAO'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/vawGPTargetDetails', csrfProtection, permit.permission('AAO'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('aao/vawgptargetdetails', { title: 'AAO VAW GP Target Details', csrfToken: req.csrfToken() });
 });
@@ -187,7 +187,7 @@ router.get('/lightTrapCatchReport', csrfProtection, permit.permission('AAO'), ca
   res.render('aao/lighttrapcatchreport', { title: 'Light Trap Catch Report', csrfToken: req.csrfToken() });
 });
 
-router.get('/emergencyCaseReport', csrfProtection, permit.permission('AAO'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/emergencyCaseReport', csrfProtection, permit.permission('AAO'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('aao/emergencycasereport', { title: 'AAO Emergency Case Report', csrfToken: req.csrfToken() });
 });
@@ -213,7 +213,7 @@ router.post('/changePassword', parseForm, csrfProtection, permit.permission('AAO
       balModule.getPasswordHistory(req.session.username).then(function success(response1) {
         var objP = req.body.data;
         if (response1.length > 0) {
-          var found = response1.some(function(i) {
+          var found = response1.some(function (i) {
             return i.OldPassword === objP.NewPassword;
           });
         }
@@ -348,7 +348,7 @@ router.post('/registerVAWs', parseForm, csrfProtection, permit.permission('AAO')
           var gpName = gn.join(', ');
           var mobileNo = obj.ContactNo;
           var sms = 'e-Pest - You have been registered under the GP(s) ' + gpName + ' with User ID ' + vawCode + '.';
-          SendSMS(mobileNo, sms, function() {
+          SendSMS(mobileNo, sms, function () {
             res.sendStatus(response1 == 1 ? 200 : 500);
           });
         }, function error(response1) {
@@ -407,7 +407,7 @@ router.post('/removeVAW', parseForm, csrfProtection, permit.permission('AAO'), c
   var financialYear = getFinancialYear();
   balModule.removeVAW(vawCode, gpCode, season, ipAddress, financialYear, function success(response1) {
     var sms = 'e-Pest - You have been unregistered from the GP ' + response1[0].GPName + '.';
-    SendSMS(response1[0].VAWMobileNo, sms, function() {
+    SendSMS(response1[0].VAWMobileNo, sms, function () {
       res.send(response1);
     });
   }, function error(response1) {
@@ -488,7 +488,7 @@ router.post('/assignVAWs', parseForm, csrfProtection, permit.permission('AAO'), 
           var gpName = gn.join(', ');
           var mobileNo = arrData[0].VAWMobileNo;
           var sms = 'e-Pest - You have been assigned for the GP(s) ' + gpName + ' with User ID ' + vawCode + '.';
-          SendSMS(mobileNo, sms, function() {
+          SendSMS(mobileNo, sms, function () {
             res.sendStatus(response1 > 0 ? 200 : 500);
           });
         }, function error(response1) {
@@ -546,7 +546,7 @@ router.post('/allocateGPsVAWs', parseForm, csrfProtection, permit.permission('AA
     var gpName = gn.join(', ');
     var mobileNo = response1.VAWMobileNo;
     var sms = 'e-Pest - You have been allocated under the GP(s) ' + gpName + ' with User ID ' + arrData[0].VAWCode + ' in e-Pest.';
-    SendSMS(mobileNo, sms, function() {
+    SendSMS(mobileNo, sms, function () {
       res.sendStatus(response1 != null ? 200 : 500);
     });
   }, function error(response1) {
@@ -641,7 +641,7 @@ router.get('/getLTCGPs', function (req, res, next) {
   });
 });
 
-router.get('/getCrops', function(req, res, next) {
+router.get('/getCrops', function (req, res, next) {
   res.get('X-Frame-Options');
   balModule.getCrops().then(function success(response) {
     res.send(response);
@@ -652,7 +652,7 @@ router.get('/getCrops', function(req, res, next) {
   });
 });
 
-router.get('/getPestDiseases', function(req, res, next) {
+router.get('/getPestDiseases', function (req, res, next) {
   res.get('X-Frame-Options');
   var cropCode = req.query.cropCode;
   balModule.getPestDiseases(cropCode).then(function success(response) {
@@ -664,7 +664,7 @@ router.get('/getPestDiseases', function(req, res, next) {
   });
 });
 
-router.post('/submitAAOLTC', function(req, res, next) {
+router.post('/submitAAOLTC', function (req, res, next) {
   res.get('X-Frame-Options');
   balModule.addActivityLog(req.connection.remoteAddress, req.session.username, getURL(req), req.device.type.toUpperCase(), os.platform(), req.headers['user-agent'], '/submitAAOLTC', 'INSERT', 'POST', function success(response) {
   }, function error(response) {
@@ -682,7 +682,7 @@ router.post('/submitAAOLTC', function(req, res, next) {
   delete obj.CC;
   balModule.checkLTC(getCurrentDate(), getSeason().charAt(0), getFinancialYear(), obj.GPCode, obj.PestDiseaseCode, req.session.username).then(function success(response) {
     if (response.length == 0) {
-      balModule.submitAAOLTC(obj, function(response1) {
+      balModule.submitAAOLTC(obj, function (response1) {
         res.send(response1 == true ? 'The Light Trap Catch details are successfully submitted.' : 'Error');
       }, function error(response1) {
         console.log(response1.status);
@@ -724,7 +724,7 @@ router.get('/getCropCategories', function (req, res, next) {
   });
 });
 
-router.get('/getCropsByCategory', function(req, res, next) {
+router.get('/getCropsByCategory', function (req, res, next) {
   res.get('X-Frame-Options');
   var cropCategoryCode = req.query.cropCategoryCode;
   balModule.getCropsByCategory(cropCategoryCode).then(function success(response) {
@@ -736,7 +736,7 @@ router.get('/getCropsByCategory', function(req, res, next) {
   });
 });
 
-router.get('/getAllPestDiseases', function(req, res, next) {
+router.get('/getAllPestDiseases', function (req, res, next) {
   res.get('X-Frame-Options');
   var cropCode = req.query.cropCode;
   balModule.getAllPestDiseases(cropCode, function success(response) {
@@ -746,7 +746,7 @@ router.get('/getAllPestDiseases', function(req, res, next) {
   });
 });
 
-router.post('/submitAAOPDE', function(req, res, next) {
+router.post('/submitAAOPDE', function (req, res, next) {
   res.get('X-Frame-Options');
   balModule.addActivityLog(req.connection.remoteAddress, req.session.username, getURL(req), req.device.type.toUpperCase(), os.platform(), req.headers['user-agent'], '/submitAAOPDE', 'INSERT', 'POST', function success(response) {
   }, function error(response) {
@@ -771,7 +771,7 @@ router.post('/submitAAOPDE', function(req, res, next) {
     }
     balModule.getPDs(getCurrentDate(), getYesterdayDate(), getSeason().charAt(0), getFinancialYear(), arrData[0].CropCategoryCode, arrData[0].CropCode, arrData[0].PestDiseaseCode, req.session.username).then(function success(response) {
       if (response.length == 0) {
-        balModule.submitAAOPDE(arrData, function(response1) {
+        balModule.submitAAOPDE(arrData, function (response1) {
           res.sendStatus(response1 > 0 ? 200 : 500);
         }, function error(response1) {
           console.log(response1.status);
@@ -806,7 +806,7 @@ router.get('/getPestDetails', function (req, res, next) {
   });
 });
 
-router.get('/getDashboardDetails', function(req, res, next) {
+router.get('/getDashboardDetails', function (req, res, next) {
   res.get('X-Frame-Options');
   var aaoCode = req.session.username;
   balModule.getDashboardDetails(aaoCode, function success(response) {
@@ -819,7 +819,7 @@ router.get('/getDashboardDetails', function(req, res, next) {
 function SendSMS(mobileNo, sms, callback) {
   var encodeSMS = encodeURI(sms);
   request('http://www.apicol.nic.in/Registration/EPestSMS?mobileNo=' + mobileNo + '&sms=' + encodeSMS, { json: true }, (err, res, body) => {
-    if (err) { 
+    if (err) {
       console.log(err);
     }
     else {
@@ -878,7 +878,7 @@ router.get('/getLTCReportDetails', function (req, res, next) {
   var username = req.session.username;
   var cropCode = req.query.cropCode;
   var pestDiseaseCode = req.query.pestDiseaseCode;
-  balModule.getLTCReportDetails(dateOfEntry, season, financialYear, cropCode, pestDiseaseCode,username, function success(response) {
+  balModule.getLTCReportDetails(dateOfEntry, season, financialYear, cropCode, pestDiseaseCode, username, function success(response) {
     res.send(response);
   }, function error(response) {
     console.log(response.status);
@@ -963,7 +963,7 @@ router.get('/getEMRNosForAAO', function (req, res, next) {
   });
 });
 
-router.get('/getEMRReferenceNoDetailsAAO', function(req, res, next) {
+router.get('/getEMRReferenceNoDetailsAAO', function (req, res, next) {
   res.get('X-Frame-Options');
   var emrRefNo = req.query.emrRefNo;
   balModule.getEMRReferenceNoDetailsAAO(emrRefNo).then(function success(response) {

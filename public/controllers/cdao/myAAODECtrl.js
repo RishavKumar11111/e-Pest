@@ -1,8 +1,8 @@
-app.controller('myAAODECtrl', function($scope, $http) {
-    
+app.controller('myAAODECtrl', function ($scope, $http) {
+
     var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-    $scope.getBlocks = function() {
+    $scope.getBlocks = function () {
         $http.get('http://localhost:3000/cdao/getBlocks').then(function success(response) {
             $scope.blocks = response.data;
         }, function error(response) {
@@ -11,7 +11,7 @@ app.controller('myAAODECtrl', function($scope, $http) {
             console.log('An error occurred...', error);
         });
     };
-    
+
     $scope.populateBlocks = [];
     $scope.getValue = function () {
         $scope.populateBlocks = [];
@@ -31,7 +31,7 @@ app.controller('myAAODECtrl', function($scope, $http) {
         });
     };
 
-    $scope.registerAAO = function(isValid) {
+    $scope.registerAAO = function (isValid) {
         if (isValid) {
             if ($scope.populateBlocks.length > 0) {
                 var encodedAAN = null;
@@ -40,7 +40,7 @@ app.controller('myAAODECtrl', function($scope, $http) {
                 }
                 var myData = [];
                 var myData1 = [];
-                angular.forEach($scope.populateBlocks, function(i) {
+                angular.forEach($scope.populateBlocks, function (i) {
                     var k = {};
                     k.AAOCode = 'AAO_' + i.BlockCode.toString();
                     k.BlockCode = i.BlockCode;
@@ -55,7 +55,7 @@ app.controller('myAAODECtrl', function($scope, $http) {
                     l.BlockName = i.BlockName;
                     myData1.push(l);
                 });
-                $http.post('http://localhost:3000/cdao/registerAAOs', { data: {arrData: myData, userData: myData1} }, { credentials: 'same-origin', headers: { 'CSRF-Token': token } }).then(function success(response) {
+                $http.post('http://localhost:3000/cdao/registerAAOs', { data: { arrData: myData, userData: myData1 } }, { credentials: 'same-origin', headers: { 'CSRF-Token': token } }).then(function success(response) {
                     var result = response.data;
                     if (result == 'OK') {
                         alert('AAO(s) are assigned to their respective Block(s).');
@@ -84,7 +84,7 @@ app.controller('myAAODECtrl', function($scope, $http) {
         }
     };
 
-    var clearData = function() {
+    var clearData = function () {
         $scope.getBlocks();
         $scope.getRegisteredAAOs();
         $scope.populateBlocks = [];
@@ -94,7 +94,7 @@ app.controller('myAAODECtrl', function($scope, $http) {
         $scope.txtAAOAadhaarNo = null;
     };
 
-    $scope.getRegisteredAAOs = function() {
+    $scope.getRegisteredAAOs = function () {
         $http.get('http://localhost:3000/cdao/getRegisteredAAOs').then(function success(response) {
             $scope.registeredAAOs = response.data;
         }, function error(response) {
@@ -104,7 +104,7 @@ app.controller('myAAODECtrl', function($scope, $http) {
         });
     };
 
-    $scope.removeAAO = function(aaoCode, blockCode, blockName) {
+    $scope.removeAAO = function (aaoCode, blockCode, blockName) {
         if (confirm('Do you want to remove ' + aaoCode + ' from the assigned Block - ' + blockName + '?')) {
             var myData = { AAOCode: aaoCode, BlockCode: blockCode };
             $http.post('http://localhost:3000/cdao/removeAAO', { data: myData }, { credentials: 'same-origin', headers: { 'CSRF-Token': token } }).then(function success(response) {

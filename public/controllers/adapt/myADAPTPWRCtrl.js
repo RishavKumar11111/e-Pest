@@ -1,8 +1,8 @@
-app.controller('myADAPTPWRCtrl', function($scope, $http) {
+app.controller('myADAPTPWRCtrl', function ($scope, $http) {
 
     var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-    $scope.checkCDay = function() {
+    $scope.checkCDay = function () {
         var day = new Date(document.getElementById('pdeDate').value).getDay();
         if (day == 6) {
             alert('Pest details entry are not enter in saturday.');
@@ -89,13 +89,13 @@ app.controller('myADAPTPWRCtrl', function($scope, $http) {
     };
 
     $scope.pestDetails = [];
-    $scope.getCropPestDetails = function() {
+    $scope.getCropPestDetails = function () {
         if ($scope.dateOfPDE != null && $scope.dateOfPDE != undefined && $scope.rbs != null && $scope.rbs != undefined && $scope.ddlFY != null && $scope.ddlFY != undefined && $scope.ddlCC != null && $scope.ddlCC != undefined && $scope.ddlC != null && $scope.ddlC != undefined && $scope.ddlPest != null && $scope.ddlPest != undefined) {
             var distcd = 0; var blkcd = 0; var pdcd = 0;
             $scope.ddlDistrict == undefined || $scope.ddlDistrict == null ? distcd = 0 : distcd = $scope.ddlDistrict;
             $scope.ddlBlock == undefined || $scope.ddlBlock == null ? blkcd = 0 : blkcd = $scope.ddlBlock;
             $scope.ddlPest == undefined || $scope.ddlPest == null ? pdcd = 0 : pdcd = $scope.ddlPest;
-            $http.get('http://localhost:3000/adapt/getCropPestDetails?dateOfEntry=' + document.getElementById('pdeDate').value + '&season=' + $scope.rbs + '&financialYear=' + $scope.ddlFY + '&districtCode=' + distcd + '&blockCode=' + blkcd + '&cropCategoryCode=' + $scope.ddlCC + '&cropCode=' + $scope.ddlC + '&pestDiseaseCode=' + pdcd ).then(function success(response) {
+            $http.get('http://localhost:3000/adapt/getCropPestDetails?dateOfEntry=' + document.getElementById('pdeDate').value + '&season=' + $scope.rbs + '&financialYear=' + $scope.ddlFY + '&districtCode=' + distcd + '&blockCode=' + blkcd + '&cropCategoryCode=' + $scope.ddlCC + '&cropCode=' + $scope.ddlC + '&pestDiseaseCode=' + pdcd).then(function success(response) {
                 if (response.data.length > 0) {
                     $scope.pestDetails = response.data;
                     if (response.data[0].hasOwnProperty('GPCode') && !(response.data[0].hasOwnProperty('PestDiseaseCode'))) {
@@ -147,7 +147,7 @@ app.controller('myADAPTPWRCtrl', function($scope, $http) {
                         $scope.sdd = true;
                     }
                     $scope.laa = 0.0; $scope.maa = 0.0; $scope.haa = 0.0; $scope.lta = 0.0; $scope.mta = 0.0; $scope.hta = 0.0; $scope.taa = 0.0; $scope.tta = 0.0;
-                    angular.forEach($scope.pestDetails, function(i) {
+                    angular.forEach($scope.pestDetails, function (i) {
                         $scope.laa += i.LowAffectedArea;
                         $scope.maa += i.MediumAffectedArea;
                         $scope.haa += i.HighAffectedArea;

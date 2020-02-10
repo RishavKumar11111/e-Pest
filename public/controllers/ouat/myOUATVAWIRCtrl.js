@@ -1,8 +1,8 @@
-app.controller('myOUATVAWIRCtrl', function($scope, $http) {
+app.controller('myOUATVAWIRCtrl', function ($scope, $http) {
 
     var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-    $scope.checkCDay = function() {
+    $scope.checkCDay = function () {
         var day = new Date(document.getElementById('pdeDate').value).getDay();
         if (day == 0 && day == 7) {
             alert('VAW Details entry done from monday to saturday.');
@@ -38,7 +38,7 @@ app.controller('myOUATVAWIRCtrl', function($scope, $http) {
     };
 
     $scope.pestDetails = [];
-    $scope.getVAWInspectionDetails = function() {
+    $scope.getVAWInspectionDetails = function () {
         if ($scope.dateOfPDE != null && $scope.dateOfPDE != undefined && $scope.rbs != null && $scope.rbs != undefined && $scope.ddlFY != null && $scope.ddlFY != undefined) {
             var distcd = 0; var blkcd = 0;
             $scope.ddlDistrict == undefined || $scope.ddlDistrict == null ? distcd = 0 : distcd = $scope.ddlDistrict;
@@ -47,7 +47,7 @@ app.controller('myOUATVAWIRCtrl', function($scope, $http) {
                 if (response.data.length > 0) {
                     $scope.pestDetails = response.data;
                     if (response.data[0].hasOwnProperty('DistrictName') && (response.data[0].hasOwnProperty('BlockName'))) {
-                    
+
                         $scope.sdbg = true;
                         $scope.sbg = false;
                         $scope.sg = false;

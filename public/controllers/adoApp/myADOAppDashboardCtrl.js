@@ -1,6 +1,6 @@
 app.controller('myADOAppDashboardCtrl', function ($scope, $filter, $state, adoService) {
 
-    $scope.checkUserDetails = function() {
+    $scope.checkUserDetails = function () {
         if ('indexedDB' in window) {
             readAllData('user-login').then(function success(response) {
                 if (response.length == 0) {
@@ -23,7 +23,7 @@ app.controller('myADOAppDashboardCtrl', function ($scope, $filter, $state, adoSe
     //     }
     // };
 
-    $scope.checkDay = function() {
+    $scope.checkDay = function () {
         var dt = new Date();
         var d = dt.getDay();
         if (d == 0) {
@@ -265,7 +265,7 @@ app.controller('myADOAppDashboardCtrl', function ($scope, $filter, $state, adoSe
         }
     };
 
-    $scope.getPesticides = function(pestCode) {
+    $scope.getPesticides = function (pestCode) {
         if ('indexedDB' in window) {
             readAllData('pesticide').then(function success(response) {
                 if (response.length > 0) {
@@ -277,7 +277,7 @@ app.controller('myADOAppDashboardCtrl', function ($scope, $filter, $state, adoSe
                         readItemFromData('crop-details', $scope.referenceNo).then(function success(response) {
                             if (response != null && response != undefined && response != '') {
                                 var cropName = response.CropName;
-                                angular.forEach(advisories, function(i) {
+                                angular.forEach(advisories, function (i) {
                                     var ma = {
                                         maObj: cropName + ' - ' + pestDetails[0].PestDiseaseName + ' - ' + i.PesticideName + ' - ' + i.RecommendedDose + ' / ' + i.PesticideNameOdia + ' - ' + i.RecommendedDoseOdia
                                     };
@@ -320,7 +320,7 @@ app.controller('myADOAppDashboardCtrl', function ($scope, $filter, $state, adoSe
     };
 
     $scope.pdIntensity = [];
-    $scope.checkAdvisoryandPP = function(pestCode) {
+    $scope.checkAdvisoryandPP = function (pestCode) {
         if (pestCode != null || pestCode != undefined) {
             readAllData('pesticide').then(function success(response) {
                 if (response.length > 0) {
@@ -490,7 +490,7 @@ app.controller('myADOAppDashboardCtrl', function ($scope, $filter, $state, adoSe
         angular.element(document.querySelector('#lblPD')).addClass('ng-hide');
         angular.element(document.querySelector('#txtPD')).removeClass('ng-hide');
     };
-    
+
     $scope.backToCropDetails = function () {
         $scope.referenceNo = adoService.getReferenceNo();
         $scope.cropCode = adoService.getCropCode();

@@ -1,14 +1,14 @@
-app.controller('myAAOAppSyncCtrl', function($scope, $http, $filter, $window) {
-    
+app.controller('myAAOAppSyncCtrl', function ($scope, $http, $filter, $window) {
+
     var token = document.querySelector('#_csrf').value;
 
-    $scope.randomNoInit = function(rno) {
+    $scope.randomNoInit = function (rno) {
         $scope.rNo = rno;
     };
 
-    $scope.reload = function() {
-        setTimeout(function() {
-            if(!($window.location.hash == '#!/synchronize#loaded')) {
+    $scope.reload = function () {
+        setTimeout(function () {
+            if (!($window.location.hash == '#!/synchronize#loaded')) {
                 $window.location.href = $window.location.href + '#loaded';
                 $window.location.reload();
             }
@@ -24,7 +24,7 @@ app.controller('myAAOAppSyncCtrl', function($scope, $http, $filter, $window) {
     //     }
     // };
 
-    $scope.checkDay = function() {
+    $scope.checkDay = function () {
         var dt = new Date();
         var d = dt.getDay();
         if (d == 0) {
@@ -34,11 +34,11 @@ app.controller('myAAOAppSyncCtrl', function($scope, $http, $filter, $window) {
     };
 
     var referenceFarmer = [];
-    var checkFarmerID = function(refNofIDaID, callback) {
+    var checkFarmerID = function (refNofIDaID, callback) {
         var counter = 0;
         referenceFarmer = [];
         if (refNofIDaID.length > 0) {
-            angular.forEach(refNofIDaID, function(i) {
+            angular.forEach(refNofIDaID, function (i) {
                 if (i.FarmerID != null) {
                     $http.get('http://apicol.nic.in/api/FarmerData?farmerID=' + i.FarmerID).then(function success(res) {
                         if (res.data.ErrorMessage == null) {
@@ -90,7 +90,7 @@ app.controller('myAAOAppSyncCtrl', function($scope, $http, $filter, $window) {
         }
     };
 
-    $scope.syncData = function(isValid) {
+    $scope.syncData = function (isValid) {
         if (isValid) {
             if ('indexedDB' in window) {
                 readAllData('user-login').then(function success(res) {
@@ -107,7 +107,7 @@ app.controller('myAAOAppSyncCtrl', function($scope, $http, $filter, $window) {
                                     rf = response1.filter(item => !statusOne.every(item2 => item2.ReferenceNo != item.ReferenceNo));
                                     checkFarmerID(rf, function success(resp) {
                                         var counter = 0;
-                                        angular.forEach(statusOne, function(i) {
+                                        angular.forEach(statusOne, function (i) {
                                             readItemFromData('crop-details', i.ReferenceNo).then(function success(response1) {
                                                 var k = {};
                                                 k.ReferenceNo = response1.ReferenceNo;
@@ -171,111 +171,111 @@ app.controller('myAAOAppSyncCtrl', function($scope, $http, $filter, $window) {
         }
     };
 
-    var syncPost = function(cd, rf, pd, ud) {
+    var syncPost = function (cd, rf, pd, ud) {
         var password = sha256(sha256($scope.txtPassword) + $scope.rNo);
         readAllData('user-authentication').then(function success(resun) {
             $http.post('http://localhost:3000/aaoApp/synchronize', { data: { unm: resun[0].Username, pwd: password, cropData: cd, refNofIDaID: rf, pestData: pd, userDetails: ud } }, { credentials: 'same-origin', headers: { 'CSRF-Token': token } }).then(function success(response) {
                 var result = response.data;
                 if (result.length == 13) {
                     if ('indexedDB' in window) {
-                        clearData(function() {
-                            angular.forEach(result[0], function(i) {
-                                writeData('referenceNo', i).then(function() {
+                        clearData(function () {
+                            angular.forEach(result[0], function (i) {
+                                writeData('referenceNo', i).then(function () {
                                 }, function error(response) {
                                     console.log(response.status);
                                 }).catch(function err(error) {
                                     console.log('An error occurred...', error);
                                 });
                             });
-                            angular.forEach(result[1], function(i) {
-                                writeData('crop-details', i).then(function() {
+                            angular.forEach(result[1], function (i) {
+                                writeData('crop-details', i).then(function () {
                                 }, function error(response) {
                                     console.log(response.status);
                                 }).catch(function err(error) {
                                     console.log('An error occurred...', error);
                                 });
                             });
-                            angular.forEach(result[2], function(i) {
-                                writeData('refNo-fID-aID', i).then(function() {
+                            angular.forEach(result[2], function (i) {
+                                writeData('refNo-fID-aID', i).then(function () {
                                 }, function error(response) {
                                     console.log(response.status);
                                 }).catch(function err(error) {
                                     console.log('An error occurred...', error);
                                 });
                             });
-                            angular.forEach(result[3], function(i) {
-                                writeData('crop-category', i).then(function() {
+                            angular.forEach(result[3], function (i) {
+                                writeData('crop-category', i).then(function () {
                                 }, function error(response) {
                                     console.log(response.status);
                                 }).catch(function err(error) {
                                     console.log('An error occurred...', error);
                                 });
                             });
-                            angular.forEach(result[4], function(i) {
-                                writeData('crop', i).then(function() {
+                            angular.forEach(result[4], function (i) {
+                                writeData('crop', i).then(function () {
                                 }, function error(response) {
                                     console.log(response.status);
                                 }).catch(function err(error) {
                                     console.log('An error occurred...', error);
                                 });
                             });
-                            angular.forEach(result[5], function(i) {
-                                writeData('crop-stage', i).then(function() {
+                            angular.forEach(result[5], function (i) {
+                                writeData('crop-stage', i).then(function () {
                                 }, function error(response) {
                                     console.log(response.status);
                                 }).catch(function err(error) {
                                     console.log('An error occurred...', error);
                                 });
                             });
-                            angular.forEach(result[6], function(i) {
-                                writeData('photo-location-details', i).then(function() {
+                            angular.forEach(result[6], function (i) {
+                                writeData('photo-location-details', i).then(function () {
                                 }, function error(response) {
                                     console.log(response.status);
                                 }).catch(function err(error) {
                                     console.log('An error occurred...', error);
                                 });
                             });
-                            angular.forEach(result[7], function(i) {
-                                writeData('pest-details', i).then(function() {
+                            angular.forEach(result[7], function (i) {
+                                writeData('pest-details', i).then(function () {
                                 }, function error(response) {
                                     console.log(response.status);
                                 }).catch(function err(error) {
                                     console.log('An error occurred...', error);
                                 });
                             });
-                            angular.forEach(result[8], function(i) {
-                                writeData('pest-disease', i).then(function() {
+                            angular.forEach(result[8], function (i) {
+                                writeData('pest-disease', i).then(function () {
                                 }, function error(response) {
                                     console.log(response.status);
                                 }).catch(function err(error) {
                                     console.log('An error occurred...', error);
                                 });
                             });
-                            angular.forEach(result[9], function(i) {
-                                writeData('pesticide', i).then(function() {
+                            angular.forEach(result[9], function (i) {
+                                writeData('pesticide', i).then(function () {
                                 }, function error(response) {
                                     console.log(response.status);
                                 }).catch(function err(error) {
                                     console.log('An error occurred...', error);
                                 });
                             });
-                            angular.forEach(result[10], function(i) {
-                                writeData('pest-disease-intensity', i).then(function() {
+                            angular.forEach(result[10], function (i) {
+                                writeData('pest-disease-intensity', i).then(function () {
                                 }, function error(response) {
                                     console.log(response.status);
                                 }).catch(function err(error) {
                                     console.log('An error occurred...', error);
                                 });
                             });
-                            angular.forEach(result[11], function(i) {
-                                writeData('referenceNo-status', i).then(function() {
+                            angular.forEach(result[11], function (i) {
+                                writeData('referenceNo-status', i).then(function () {
                                 }, function error(response) {
                                     console.log(response.status);
                                 }).catch(function err(error) {
                                     console.log('An error occurred...', error);
                                 });
                             });
-                            writeData('user-login', result[12]).then(function() {
+                            writeData('user-login', result[12]).then(function () {
                             }, function error(response) {
                                 console.log(response.status);
                             }).catch(function err(error) {
@@ -324,15 +324,15 @@ app.controller('myAAOAppSyncCtrl', function($scope, $http, $filter, $window) {
         });
     };
 
-    var clearData = function(callback) {
+    var clearData = function (callback) {
         if ('indexedDB' in window) {
-            clearAllData('referenceNo').then(function() {
-                clearAllData('crop-details').then(function() {
-                    clearAllData('refNo-fID-aID').then(function() {
-                        clearAllData('photo-location-details').then(function() {
-                            clearAllData('pest-details').then(function() {
-                                clearAllData('referenceNo-status').then(function() {
-                                    clearAllData('user-login').then(function() {
+            clearAllData('referenceNo').then(function () {
+                clearAllData('crop-details').then(function () {
+                    clearAllData('refNo-fID-aID').then(function () {
+                        clearAllData('photo-location-details').then(function () {
+                            clearAllData('pest-details').then(function () {
+                                clearAllData('referenceNo-status').then(function () {
+                                    clearAllData('user-login').then(function () {
                                         callback();
                                     }, function error(response) {
                                         console.log(response.status);

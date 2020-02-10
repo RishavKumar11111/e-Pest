@@ -1,8 +1,8 @@
-app.controller('myADAPTComplianceCtrl', function($scope, $http) {
-    
+app.controller('myADAPTComplianceCtrl', function ($scope, $http) {
+
     var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-    $scope.checkCDay = function() {
+    $scope.checkCDay = function () {
         var day = new Date(document.getElementById('pdeDate').value).getDay();
         // if (day == 0 || day == 5 || day == 6) {
         //     alert('Pest Surveillance is done from Monday to Thursday.');
@@ -50,11 +50,11 @@ app.controller('myADAPTComplianceCtrl', function($scope, $http) {
             console.log('An error occurred...', error);
         });
     };
-    
-    $scope.getSurveyGP = function (pdeDate,blockCode) {
+
+    $scope.getSurveyGP = function (pdeDate, blockCode) {
         $http.get('http://localhost:3000/adapt/getSurveyGP?dateOfEntry=' + document.getElementById('pdeDate').value + '&blockCode=' + blockCode).then(function success(response) {
             $scope.surveyGP = response.data[0];
-            $scope.notSurveyGP = response.data[1]; 
+            $scope.notSurveyGP = response.data[1];
         }, function error(response) {
             console.log(response.status);
         }).catch(function err(error) {

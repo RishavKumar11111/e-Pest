@@ -1,5 +1,5 @@
-app.controller('myVAWDECtrl', function($scope, $http) {
-    
+app.controller('myVAWDECtrl', function ($scope, $http) {
+
     var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
     $scope.dropdownSetting = {
@@ -10,10 +10,10 @@ app.controller('myVAWDECtrl', function($scope, $http) {
         styleActive: true
     };
 
-    $scope.customTexts = {buttonDefaultText: 'Select New GP(s)'};
+    $scope.customTexts = { buttonDefaultText: 'Select New GP(s)' };
 
     $scope.RestGPs = [];
-    $scope.getGPs = function() {
+    $scope.getGPs = function () {
         $http.get('http://localhost:3000/aao/getGPs').then(function success(response) {
             $scope.gps = response.data;
             $http.get('http://localhost:3000/aao/getUnallocatedGPs').then(function success(response1) {
@@ -51,7 +51,7 @@ app.controller('myVAWDECtrl', function($scope, $http) {
             alert('Please select atleast one GP.');
         }
     };
-    
+
     $scope.populateGPs = [];
     $scope.getValue = function () {
         $scope.populateGPs = [];
@@ -71,7 +71,7 @@ app.controller('myVAWDECtrl', function($scope, $http) {
         });
     };
 
-    $scope.registerVAW = function(isValid) {
+    $scope.registerVAW = function (isValid) {
         if (isValid) {
             if ($scope.populateGPs.length > 0) {
                 var encodedVAN = null;
@@ -79,7 +79,7 @@ app.controller('myVAWDECtrl', function($scope, $http) {
                     encodedVAN = btoa($scope.txtVAWAadhaarNo);
                 }
                 var myData = [];
-                angular.forEach($scope.populateGPs, function(i) {
+                angular.forEach($scope.populateGPs, function (i) {
                     var k = {};
                     k.GPCode = i.GPCode;
                     k.GPName = i.GPName;
@@ -117,7 +117,7 @@ app.controller('myVAWDECtrl', function($scope, $http) {
         }
     };
 
-    var clearData = function() {
+    var clearData = function () {
         $scope.getGPs();
         $scope.getRegisteredVAWs();
         $scope.getAllRegisteredVAWs();
@@ -133,7 +133,7 @@ app.controller('myVAWDECtrl', function($scope, $http) {
         $scope.txtVAWAadhaarNo = null;
     };
 
-    $scope.getRegisteredVAWs = function() {
+    $scope.getRegisteredVAWs = function () {
         $http.get('http://localhost:3000/aao/getRegisteredVAWs').then(function success(response) {
             $scope.registeredVAWs = response.data;
         }, function error(response) {
@@ -143,7 +143,7 @@ app.controller('myVAWDECtrl', function($scope, $http) {
         });
     };
 
-    $scope.removeVAW = function(vawCode, gpCode, gpName) {
+    $scope.removeVAW = function (vawCode, gpCode, gpName) {
         if (confirm('Do you want to remove ' + vawCode + ' from the assigned GP - ' + gpName + '?')) {
             var myData = { VAWCode: vawCode, GPCode: gpCode };
             $http.post('http://localhost:3000/aao/removeVAW', { data: myData }, { credentials: 'same-origin', headers: { 'CSRF-Token': token } }).then(function success(response) {
@@ -162,7 +162,7 @@ app.controller('myVAWDECtrl', function($scope, $http) {
         }
     };
 
-    $scope.getAllRegisteredVAWs = function() {
+    $scope.getAllRegisteredVAWs = function () {
         $http.get('http://localhost:3000/aao/getAllRegisteredVAWs').then(function success(response) {
             $scope.allRegisteredVAWs = response.data;
         }, function error(response) {
@@ -172,7 +172,7 @@ app.controller('myVAWDECtrl', function($scope, $http) {
         });
     };
 
-    $scope.getRegisteredVAWDetails = function(vawCode) {
+    $scope.getRegisteredVAWDetails = function (vawCode) {
         $http.get('http://localhost:3000/aao/getRegisteredVAWDetails?vawCode=' + vawCode).then(function success(response) {
             $scope.registeredVAWDetails = response.data;
             $scope.txtMVAWName = null; $scope.txtMVAWMobileNo = null; $scope.txtMVAWAadhaarNo = null;
@@ -195,16 +195,16 @@ app.controller('myVAWDECtrl', function($scope, $http) {
 
     $scope.lblVAWDetails = true;
     $scope.txtVAWDetails = false;
-    $scope.modifyVAWDetails = function() {
+    $scope.modifyVAWDetails = function () {
         $scope.txtVAWDetails = true;
         $scope.lblVAWDetails = false;
     };
 
-    $scope.cancelVAWDetails = function() {
+    $scope.cancelVAWDetails = function () {
         $scope.lblVAWDetails = true; $scope.txtVAWDetails = false; $scope.txtMVAWName = null; $scope.txtMVAWMobileNo = null; $scope.txtMVAWAadhaarNo = null;
     };
-    
-    $scope.updateVAWDetails = function() {
+
+    $scope.updateVAWDetails = function () {
         if ($scope.txtMVAWName != null && $scope.txtMVAWName != undefined && $scope.txtMVAWName != '' && $scope.txtMVAWMobileNo != null && $scope.txtMVAWMobileNo != undefined && $scope.txtMVAWMobileNo != '') {
             $scope.registeredVAWDetails[0].VAWName = $scope.txtMVAWName;
             $scope.registeredVAWDetails[0].VAWMobileNo = $scope.txtMVAWMobileNo;
@@ -215,7 +215,7 @@ app.controller('myVAWDECtrl', function($scope, $http) {
         }
     };
 
-    $scope.assignVAW = function(isValid) {
+    $scope.assignVAW = function (isValid) {
         if (isValid) {
             if ($scope.populateRGPs.length > 0) {
                 var myData = [];
@@ -232,14 +232,14 @@ app.controller('myVAWDECtrl', function($scope, $http) {
                     obj.VAWMobileNo = $scope.txtMVAWMobileNo;
                     obj.VAWAadhaarNo = encodedMVAN;
                 }
-                angular.forEach($scope.populateRGPs, function(i) {
+                angular.forEach($scope.populateRGPs, function (i) {
                     var k = {};
                     k.VAWCode = $scope.ddlVAWCode.VAWCode;
                     k.GPCode = i.GPCode;
                     k.GPName = i.GPName;
                     myData.push(k);
                 });
-                $http.post('http://localhost:3000/aao/assignVAWs', { data: {vawDetails: obj, gpDetails: myData} }, { credentials: 'same-origin', headers: { 'CSRF-Token': token } }).then(function success(response) {
+                $http.post('http://localhost:3000/aao/assignVAWs', { data: { vawDetails: obj, gpDetails: myData } }, { credentials: 'same-origin', headers: { 'CSRF-Token': token } }).then(function success(response) {
                     var result = response.data;
                     if (result == 'OK') {
                         alert('VAW(s) are assigned to their respective GP(s).');

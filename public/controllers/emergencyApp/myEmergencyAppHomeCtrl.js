@@ -2,21 +2,21 @@ app.controller('myEmergencyAppHomeCtrl', function ($scope, $http, emergencyAppSe
 
     var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-    var resetDiv = function() {
+    var resetDiv = function () {
         $scope.fd = true;
         $scope.otp = false;
         $scope.isDisabled = false;
     };
     resetDiv();
 
-    $scope.sendOTP = function() {
+    $scope.sendOTP = function () {
         $http.get('http://localhost:3000/emergencyApp/sendOTP?mobileNo=' + $scope.txtMobileNo).then(function success(response1) {
             if (response1.data.includes('Accepted')) {
                 $scope.otp = true;
                 $scope.fd = false;
                 $scope.isDisabled = true;
             }
-            else  {
+            else {
                 alert('Oops! An error occurred.');
                 resetDiv();
             }
@@ -74,7 +74,7 @@ app.controller('myEmergencyAppHomeCtrl', function ($scope, $http, emergencyAppSe
         }
     };
 
-    $scope.verifyOTP = function() {
+    $scope.verifyOTP = function () {
         if ($scope.txtOTP != null && $scope.txtOTP != undefined && $scope.txtOTP != '') {
             $http.get('http://localhost:3000/emergencyApp/verifyOTP?otp=' + sha256($scope.txtOTP)).then(function success(response) {
                 if (response.statusText == 'OK') {
@@ -176,96 +176,96 @@ app.controller('myEmergencyAppHomeCtrl', function ($scope, $http, emergencyAppSe
             if (document.getElementById("image1") !== null) {
                 if ($scope.firstLatitude != undefined && $scope.firstLatitude != null && $scope.firstLatitude != '' && $scope.firstLongitude != undefined && $scope.firstLongitude != null && $scope.firstLongitude != '') {
                     // if ($scope.firstLatitude != $scope.secondLatitude && $scope.secondLatitude != $scope.thirdLatitude && $scope.firstLatitude != $scope.thirdLatitude && $scope.firstLongitude != $scope.secondLongitude && $scope.secondLongitude != $scope.thirdLongitude && $scope.firstLongitude != $scope.thirdLongitude) {
-                        if ($scope.ddlCaCo != null && $scope.ddlCrop != null && $scope.ddlDistrict != null && $scope.ddlBlock != null && $scope.ddlGP != null && $scope.ddlVillage != null) {
-                            $scope.fID = emergencyAppService.getFarmerID();
-                            $scope.aadhaarNo = emergencyAppService.getAadhaarNo();
-                            $scope.voterIDNo = emergencyAppService.getVoterIDNo();
-                            $scope.mobileNo = emergencyAppService.getMobileNo();
-                            if ($scope.fID != undefined && $scope.fID != null && $scope.aadhaarNo != undefined && $scope.aadhaarNo != null && $scope.voterIDNo != undefined && $scope.voterIDNo != null && $scope.mobileNo != undefined && $scope.mobileNo != null) {
-                                var message = confirm('Do you really want to submit the form?');
-                                if (message) {
-                                    $http.get('http://apicol.nic.in/api/FarmerData?farmerID=' + $scope.farmerID).then(function success(response) {
-                                        var result = response.data;
-                                        if (result.ErrorMessage == null) {
-                                            if (result.LGDVillageCode != null) {
-                                                if (result.VCHAADHARNO == $scope.aadhaarNo && result.VCHVOTERIDCARDNO == $scope.voterIDNo) {
-                                                    var image1Data = document.getElementById("image1").src.replace('data:image/jpeg;base64,', '');
-                                                    var image2Data = null;
-                                                    if (document.getElementById("image2") !== null) {
-                                                        image2Data = document.getElementById("image2").src.replace('data:image/jpeg;base64,', '');
+                    if ($scope.ddlCaCo != null && $scope.ddlCrop != null && $scope.ddlDistrict != null && $scope.ddlBlock != null && $scope.ddlGP != null && $scope.ddlVillage != null) {
+                        $scope.fID = emergencyAppService.getFarmerID();
+                        $scope.aadhaarNo = emergencyAppService.getAadhaarNo();
+                        $scope.voterIDNo = emergencyAppService.getVoterIDNo();
+                        $scope.mobileNo = emergencyAppService.getMobileNo();
+                        if ($scope.fID != undefined && $scope.fID != null && $scope.aadhaarNo != undefined && $scope.aadhaarNo != null && $scope.voterIDNo != undefined && $scope.voterIDNo != null && $scope.mobileNo != undefined && $scope.mobileNo != null) {
+                            var message = confirm('Do you really want to submit the form?');
+                            if (message) {
+                                $http.get('http://apicol.nic.in/api/FarmerData?farmerID=' + $scope.farmerID).then(function success(response) {
+                                    var result = response.data;
+                                    if (result.ErrorMessage == null) {
+                                        if (result.LGDVillageCode != null) {
+                                            if (result.VCHAADHARNO == $scope.aadhaarNo && result.VCHVOTERIDCARDNO == $scope.voterIDNo) {
+                                                var image1Data = document.getElementById("image1").src.replace('data:image/jpeg;base64,', '');
+                                                var image2Data = null;
+                                                if (document.getElementById("image2") !== null) {
+                                                    image2Data = document.getElementById("image2").src.replace('data:image/jpeg;base64,', '');
+                                                }
+                                                var image3Data = null;
+                                                if (document.getElementById("image3") !== null) {
+                                                    image3Data = document.getElementById("image3").src.replace('data:image/jpeg;base64,', '');
+                                                }
+                                                var myData = {
+                                                    FarmerID: $scope.farmerID,
+                                                    MobileNo: $scope.mobileNo,
+                                                    CropCategoryCode: $scope.ddlCaCo,
+                                                    CropCode: $scope.ddlCrop,
+                                                    DistrictCode: $scope.ddlDistrict,
+                                                    BlockCode: $scope.ddlBlock,
+                                                    GPCode: $scope.ddlGP,
+                                                    VillageCode: $scope.ddlVillage,
+                                                    FLP: image1Data,
+                                                    RLP1: image2Data == undefined ? null : image2Data,
+                                                    RLP2: image3Data == undefined ? null : image3Data,
+                                                    FixedLandLatitude: $scope.firstLatitude,
+                                                    FixedLandLongitude: $scope.firstLongitude,
+                                                    RandomLandLatitude1: $scope.secondLatitude == undefined ? null : $scope.secondLatitude,
+                                                    RandomLandLongitude1: $scope.secondLongitude == undefined ? null : $scope.secondLongitude,
+                                                    RandomLandLatitude2: $scope.thirdLatitude == undefined ? null : $scope.thirdLatitude,
+                                                    RandomLandLongitude2: $scope.thirdLongitude == undefined ? null : $scope.thirdLongitude,
+                                                };
+                                                $http.post('http://localhost:3000/emergencyApp/submitCropPhotoDetails', { data: myData }, { credentials: 'same-origin', headers: { 'CSRF-Token': token } }).then(function success(response2) {
+                                                    var result = response2.data;
+                                                    if (result.includes('EMR/')) {
+                                                        alert('The Emergency Pest details are submitted with the Reference No. ' + result + '.');
+                                                        location.href = 'http://localhost:3000/emergencyApp#!/home/farmerDetails';
                                                     }
-                                                    var image3Data = null;
-                                                    if (document.getElementById("image3") !== null) {
-                                                        image3Data = document.getElementById("image3").src.replace('data:image/jpeg;base64,', '');
+                                                    else if (result.includes('a Phone or a Tablet')) {
+                                                        alert(result);
+                                                        location.href = 'http://localhost:3000/emergencyApp#!/home/farmerDetails';
                                                     }
-                                                    var myData = {
-                                                        FarmerID: $scope.farmerID,
-                                                        MobileNo: $scope.mobileNo,
-                                                        CropCategoryCode: $scope.ddlCaCo,
-                                                        CropCode: $scope.ddlCrop,
-                                                        DistrictCode: $scope.ddlDistrict,
-                                                        BlockCode: $scope.ddlBlock,
-                                                        GPCode: $scope.ddlGP,
-                                                        VillageCode: $scope.ddlVillage,
-                                                        FLP: image1Data,
-                                                        RLP1: image2Data == undefined ? null : image2Data,
-                                                        RLP2: image3Data == undefined ? null : image3Data,
-                                                        FixedLandLatitude: $scope.firstLatitude,
-                                                        FixedLandLongitude: $scope.firstLongitude,
-                                                        RandomLandLatitude1: $scope.secondLatitude == undefined ? null : $scope.secondLatitude,
-                                                        RandomLandLongitude1: $scope.secondLongitude == undefined ? null : $scope.secondLongitude,
-                                                        RandomLandLatitude2: $scope.thirdLatitude == undefined ? null : $scope.thirdLatitude,
-                                                        RandomLandLongitude2: $scope.thirdLongitude == undefined ? null : $scope.thirdLongitude,
-                                                    };
-                                                    $http.post('http://localhost:3000/emergencyApp/submitCropPhotoDetails', { data: myData }, { credentials: 'same-origin', headers: { 'CSRF-Token': token } }).then(function success(response2) {
-                                                        var result = response2.data;
-                                                        if (result.includes('EMR/')) {
-                                                            alert('The Emergency Pest details are submitted with the Reference No. ' + result + '.');
-                                                            location.href = 'http://localhost:3000/emergencyApp#!/home/farmerDetails';
-                                                        }
-                                                        else if (result.includes('a Phone or a Tablet')) {
-                                                            alert(result);
-                                                            location.href = 'http://localhost:3000/emergencyApp#!/home/farmerDetails';
-                                                        }
-                                                        else {
-                                                            alert('Oops! An error occurred.');
-                                                            console.log(response.status);
-                                                        }
-                                                    }, function error(response) {
+                                                    else {
+                                                        alert('Oops! An error occurred.');
                                                         console.log(response.status);
-                                                    }).catch(function err(error) {
-                                                        console.log('An error occurred...', error);
-                                                    });
-                                                }
-                                                else {
-                                                    alert('Aadhaar No. or Voter ID No. has been altered');
-                                                    location.href = 'http://localhost:3000/emergencyApp#!/home/farmerDetails';
-                                                }
+                                                    }
+                                                }, function error(response) {
+                                                    console.log(response.status);
+                                                }).catch(function err(error) {
+                                                    console.log('An error occurred...', error);
+                                                });
                                             }
                                             else {
-                                                alert('Farmer ID is altered. The village mapping has not been mapped for the Farmer ID. Contact the Administrator.');
+                                                alert('Aadhaar No. or Voter ID No. has been altered');
                                                 location.href = 'http://localhost:3000/emergencyApp#!/home/farmerDetails';
                                             }
                                         }
                                         else {
-                                            alert('Farmer ID is altered.');
+                                            alert('Farmer ID is altered. The village mapping has not been mapped for the Farmer ID. Contact the Administrator.');
                                             location.href = 'http://localhost:3000/emergencyApp#!/home/farmerDetails';
-                                        }    
-                                    }, function error(response) {
-                                        console.log(response.status);
-                                    }).catch(function err(error) {
-                                        console.log('An error occurred...', error);
-                                    });
-                                }
-                            }
-                            else {
-                                alert('Please complete the Farmer Details section.');
-                                location.href = 'http://localhost:3000/emergencyApp#!/home/farmerDetails';
+                                        }
+                                    }
+                                    else {
+                                        alert('Farmer ID is altered.');
+                                        location.href = 'http://localhost:3000/emergencyApp#!/home/farmerDetails';
+                                    }
+                                }, function error(response) {
+                                    console.log(response.status);
+                                }).catch(function err(error) {
+                                    console.log('An error occurred...', error);
+                                });
                             }
                         }
                         else {
-                            alert('Please select the Crop Category, Crop, District, Block, GP and Village.');
+                            alert('Please complete the Farmer Details section.');
+                            location.href = 'http://localhost:3000/emergencyApp#!/home/farmerDetails';
                         }
+                    }
+                    else {
+                        alert('Please select the Crop Category, Crop, District, Block, GP and Village.');
+                    }
                     // }
                     // else {
                     //     alert('GPS Location of all photos must be different.');

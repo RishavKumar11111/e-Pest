@@ -1,8 +1,8 @@
-app.controller('myCDAOVDReportCtrl', function($scope, $http) {
+app.controller('myCDAOVDReportCtrl', function ($scope, $http) {
 
     var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-    $scope.getBlocksByDistrict = function() {
+    $scope.getBlocksByDistrict = function () {
         $http.get('http://localhost:3000/cdao/getBlocksByDistrict').then(function success(response) {
             $scope.blocks = response.data;
         }, function error(response) {

@@ -13,9 +13,9 @@ app.controller('myADOAppCPCtrl', function ($scope, $http, $window) {
         'padding-top': '8px'
     };
 
-    $scope.reload = function() {
-        setTimeout(function() {
-            if(!($window.location.hash == '#!/changePassword#loaded')) {
+    $scope.reload = function () {
+        setTimeout(function () {
+            if (!($window.location.hash == '#!/changePassword#loaded')) {
                 $window.location.href = $window.location.href + '#loaded';
                 $window.location.reload();
             }

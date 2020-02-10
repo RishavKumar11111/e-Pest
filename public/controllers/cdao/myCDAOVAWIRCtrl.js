@@ -1,8 +1,8 @@
-app.controller('myCDAOVAWIRCtrl', function($scope, $http) {
+app.controller('myCDAOVAWIRCtrl', function ($scope, $http) {
 
     var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-    $scope.checkCDay = function() {
+    $scope.checkCDay = function () {
         var day = new Date(document.getElementById('pdeDate').value).getDay();
         if (day == 0 && day == 7) {
             alert('VAW Details entry done from monday to saturday.');
@@ -11,7 +11,7 @@ app.controller('myCDAOVAWIRCtrl', function($scope, $http) {
     };
 
     $scope.getBlocksByCDAO = function () {
-        $http.get('http://localhost:3000/cdao/getBlocksByCDAO').then(function success(response) {   
+        $http.get('http://localhost:3000/cdao/getBlocksByCDAO').then(function success(response) {
             $scope.blocks = response.data;
         }, function error(response) {
             console.log(response.status);
@@ -21,7 +21,7 @@ app.controller('myCDAOVAWIRCtrl', function($scope, $http) {
     };
 
     $scope.pestDetails = [];
-    $scope.getVAWInspectionDetails = function() {
+    $scope.getVAWInspectionDetails = function () {
         if ($scope.dateOfPDE != null && $scope.dateOfPDE != undefined && $scope.rbs != null && $scope.rbs != undefined && $scope.ddlFY != null && $scope.ddlFY != undefined) {
             var blkcd = 0;
             $scope.ddlBlock == undefined || $scope.ddlBlock == null ? blkcd = 0 : blkcd = $scope.ddlBlock;

@@ -1,14 +1,14 @@
-app.controller('myADAPTSWRCtrl', function($scope, $http) {
-    
+app.controller('myADAPTSWRCtrl', function ($scope, $http) {
+
     var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-    $scope.checkCDay = function() {
+    $scope.checkCDay = function () {
         var day = new Date(document.getElementById('pdeDate').value).getDay();
         if (day != 1 && day != 2 && day != 3 && day != 4 && day != 5) {
             alert('Pest details entry are not done on Saturday.');
             $scope.dateOfPDE = null;
         }
-        else{
+        else {
             if ($scope.dateOfPDE != null && $scope.dateOfPDE != undefined) {
                 $http.get('http://localhost:3000/adapt/getStatePestDetails?dateOfEntry=' + document.getElementById('pdeDate').value).then(function success(response) {
                     if (response.data.length > 0) {
@@ -38,5 +38,5 @@ app.controller('myADAPTSWRCtrl', function($scope, $http) {
         popupWinindow.print();
         // popupWinindow.close();
     };
-    
+
 });

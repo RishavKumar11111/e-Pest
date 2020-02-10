@@ -67,7 +67,7 @@ app.controller('myOUATGADCtrl', function ($scope, $http) {
         }
     };
 
-    $scope.submitGeneralAdvisory = function(isValid) {
+    $scope.submitGeneralAdvisory = function (isValid) {
         if (isValid) {
             var english = /^[A-Za-z0-9\s]+$/;
             if (!(english.test($scope.txtOdiaAdvisory))) {

@@ -75,7 +75,7 @@ var getURL = function (req) {
   return fullURL;
 };
 
-var getSeason = function() {
+var getSeason = function () {
   var seasonName;
   var month = new Date().getMonth();
   if (month >= 6 && month <= 10) {
@@ -93,12 +93,12 @@ router.get('/', cache.overrideCacheHeaders(overrideConfig), function (req, res, 
   res.render('adoApp/layout', { title: 'ADO App Layout' });
 });
 
-router.get('/authentication', cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/authentication', cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('adoApp/authentication', { title: 'ADO App Authentication' });
 });
 
-router.get('/home',cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
+router.get('/home', cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('adoApp/home', { title: 'ADO App Home' });
 });
@@ -111,7 +111,7 @@ router.get('/dashboard', cache.overrideCacheHeaders(overrideConfig), function (r
 router.get('/emergencyCase', cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('adoApp/emergencycase', { title: 'ADO App Emergency Case' });
- });
+});
 
 router.get('/synchronize', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
@@ -142,77 +142,77 @@ router.post('/synchronize', parseForm, csrfProtection, cache.overrideCacheHeader
             //   res.send('You are only allowed to synchronize on Monday, Tuesday, Wednesday, Thursday & Friday.');
             // }
             // else {
-              let tempsession = req.session;
-              req.session.regenerate(function(err) {
-                Object.assign(req.session, tempsession);
-              });
-              balModule.addActivityLog(req.connection.remoteAddress, response[0].UserID, getURL(req), req.device.type.toUpperCase(), os.platform(), req.headers['user-agent'], '/synchronize', 'INSERT & / OR SELECT', 'POST', function success(response) { }, function error(response) { console.log(response.status); });
-              balModule.updateFailedCount(0, response[0].UserID, function success(response) { }, function error(response) { console.log(response.status); });
-              balModule.checkCPStatus(response[0].UserID).then(function success(response1) {
-                if (response1.length > 0) {
-                  req.session.save(function(err) {
-                    var pestData = req.body.data.pestData;
-                    var refNoBlock = req.body.data.distBlock;
-                    var distCode = null;
-                    if (refNoBlock.length > 0) {
-                      distCode = refNoBlock[0].DistrictCode;
+            let tempsession = req.session;
+            req.session.regenerate(function (err) {
+              Object.assign(req.session, tempsession);
+            });
+            balModule.addActivityLog(req.connection.remoteAddress, response[0].UserID, getURL(req), req.device.type.toUpperCase(), os.platform(), req.headers['user-agent'], '/synchronize', 'INSERT & / OR SELECT', 'POST', function success(response) { }, function error(response) { console.log(response.status); });
+            balModule.updateFailedCount(0, response[0].UserID, function success(response) { }, function error(response) { console.log(response.status); });
+            balModule.checkCPStatus(response[0].UserID).then(function success(response1) {
+              if (response1.length > 0) {
+                req.session.save(function (err) {
+                  var pestData = req.body.data.pestData;
+                  var refNoBlock = req.body.data.distBlock;
+                  var distCode = null;
+                  if (refNoBlock.length > 0) {
+                    distCode = refNoBlock[0].DistrictCode;
+                  }
+                  if (pestData.length > 0) {
+                    for (var i = 0; i < pestData.length; i++) {
+                      pestData[i].Status = 1;
+                      pestData[i].IPAddress = req.connection.remoteAddress;
+                      pestData[i].FinancialYear = getFinancialYear();
                     }
-                    if (pestData.length > 0) {
-                      for (var i = 0; i < pestData.length; i++) {
-                        pestData[i].Status = 1;
-                        pestData[i].IPAddress = req.connection.remoteAddress;
-                        pestData[i].FinancialYear = getFinancialYear();
-                      }
-                    }
-                    var adoCode = response[0].UserID;
-                    var adoStatus = 1;
-                    var existingUserDetails = req.body.data.userDetails;
-                    var userLoginDetails = {Username: response[0].UserID, Role: response[0].RoleName };
-                    balModule.synchronize(pestData, adoCode, distCode, refNoBlock, adoStatus, existingUserDetails, function success(response) {
-                      response.push(userLoginDetails);
-                      if (response[3].length > 0) {
-                        for (var i = 0; i < response[3].length; i++) {
-                          var flp = Buffer.from(response[3][i].FixedLandPhoto, 'binary').toString('base64');
-                          if (response[3][i].RandomLandPhoto1 != null) {
-                            var rlp1 = Buffer.from(response[3][i].RandomLandPhoto1, 'binary').toString('base64');
-                          }
-                          else {
-                            var rlp1 = null;
-                          }
-                          if (response[3][i].RandomLandPhoto2 != null) {
-                            var rlp2 = Buffer.from(response[3][i].RandomLandPhoto2, 'binary').toString('base64');
-                          }
-                          else {
-                            var rlp2 = null;
-                          }
-                          delete response[3][i].FixedLandPhoto; delete response[3][i].RandomLandPhoto1; delete response[3][i].RandomLandPhoto2;
-                          response[3][i].FLP = flp; response[3][i].RLP1 = rlp1; response[3][i].RLP2 = rlp2;
+                  }
+                  var adoCode = response[0].UserID;
+                  var adoStatus = 1;
+                  var existingUserDetails = req.body.data.userDetails;
+                  var userLoginDetails = { Username: response[0].UserID, Role: response[0].RoleName };
+                  balModule.synchronize(pestData, adoCode, distCode, refNoBlock, adoStatus, existingUserDetails, function success(response) {
+                    response.push(userLoginDetails);
+                    if (response[3].length > 0) {
+                      for (var i = 0; i < response[3].length; i++) {
+                        var flp = Buffer.from(response[3][i].FixedLandPhoto, 'binary').toString('base64');
+                        if (response[3][i].RandomLandPhoto1 != null) {
+                          var rlp1 = Buffer.from(response[3][i].RandomLandPhoto1, 'binary').toString('base64');
                         }
+                        else {
+                          var rlp1 = null;
+                        }
+                        if (response[3][i].RandomLandPhoto2 != null) {
+                          var rlp2 = Buffer.from(response[3][i].RandomLandPhoto2, 'binary').toString('base64');
+                        }
+                        else {
+                          var rlp2 = null;
+                        }
+                        delete response[3][i].FixedLandPhoto; delete response[3][i].RandomLandPhoto1; delete response[3][i].RandomLandPhoto2;
+                        response[3][i].FLP = flp; response[3][i].RLP1 = rlp1; response[3][i].RLP2 = rlp2;
                       }
-                      if (refNoBlock.length > 0 && pestData.length > 0) {
-                        SendSMS(refNoBlock, pestData, function() {
-                          res.send(response);
-                        });
-                      }
-                      else {
+                    }
+                    if (refNoBlock.length > 0 && pestData.length > 0) {
+                      SendSMS(refNoBlock, pestData, function () {
                         res.send(response);
-                      }
-                    }, function error(response) {
-                      console.log(response.status);
-                    });
+                      });
+                    }
+                    else {
+                      res.send(response);
+                    }
+                  }, function error(response) {
+                    console.log(response.status);
                   });
-                }
-                else {
-                  req.session.save(function(err) {
-                    req.session.destroy();
-                    res.send('Please change your password.');
-                  });
-                }
-              }, function error(response) {
-                console.log(response.status);
-              }).catch(function err(error) {
-                console.log('An error occurred...', error);
-              });
+                });
+              }
+              else {
+                req.session.save(function (err) {
+                  req.session.destroy();
+                  res.send('Please change your password.');
+                });
+              }
+            }, function error(response) {
+              console.log(response.status);
+            }).catch(function err(error) {
+              console.log('An error occurred...', error);
+            });
             // }
           }
           else {
@@ -255,7 +255,7 @@ function SendSMS(refNoBlock, pestData, callback) {
           var sms = 'e-Pest - ADO Advisory : (Moderate - ' + moderateAdvisory + ', High - ' + highAdvisory + ')';
           var encodeSMS = encodeURI(sms);
           request('http://www.apicol.nic.in/Registration/EPestSMS?mobileNo=' + mobileNo + '&sms=' + encodeSMS, { json: true }, (err, res, body) => {
-            if (err) { 
+            if (err) {
               console.log(err);
             }
           });
@@ -294,7 +294,7 @@ router.get('/changePassword', csrfProtection, cache.overrideCacheHeaders(overrid
   res.render('adoApp/changepassword', { title: 'ADO App Change Password', csrfToken: req.csrfToken(), randomNo: req.session.RandomNo });
 });
 
-router.post('/changePassword', parseForm, csrfProtection, cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.post('/changePassword', parseForm, csrfProtection, cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   balModule.getUserDetails(req.body.data.Username).then(function success(response) {
     if (response.length === 0) {
@@ -308,7 +308,7 @@ router.post('/changePassword', parseForm, csrfProtection, cache.overrideCacheHea
       balModule.getPasswordHistory(req.body.data.Username).then(function success(response1) {
         var objP = req.body.data;
         if (response1.length > 0) {
-          var found = response1.some(function(i) {
+          var found = response1.some(function (i) {
             return i.OldPassword === objP.NewPassword;
           });
         }
@@ -356,7 +356,7 @@ router.post('/changePassword', parseForm, csrfProtection, cache.overrideCacheHea
   });
 });
 
-router.get('/offline', cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/offline', cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('adoApp/offline', { title: 'ADO App Offline' });
 });

@@ -1,7 +1,7 @@
-app.controller('myADOAAODetailsCtrl', function($scope, $http) {
+app.controller('myADOAAODetailsCtrl', function ($scope, $http) {
 
     var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    
+
     $scope.getAAODetails = function () {
         $http.get('http://localhost:3000/ado/getAAODetails').then(function success(response) {
             $scope.aaoDetails = response.data;
@@ -21,5 +21,5 @@ app.controller('myADOAAODetailsCtrl', function($scope, $http) {
         popupWinindow.print();
         // popupWinindow.close();
     };
-    
+
 });

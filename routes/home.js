@@ -23,7 +23,7 @@ function randomNumber() {
   return buf.toString('hex');
 };
 
-var getCurrentDateTime = function() {
+var getCurrentDateTime = function () {
   var today = new Date();
   var dd = today.getDate();
   var MM = today.getMonth() + 1;
@@ -32,10 +32,10 @@ var getCurrentDateTime = function() {
   var mm = today.getMinutes();
   var ss = today.getSeconds();
   if (dd < 10) {
-      dd = '0' + dd;
+    dd = '0' + dd;
   }
   if (MM < 10) {
-      MM = '0' + MM;
+    MM = '0' + MM;
   }
   if (HH < 10) {
     HH = '0' + HH;
@@ -52,7 +52,7 @@ var getCurrentDateTime = function() {
   //return currentDate;
 };
 
-var getDateTime = function() {
+var getDateTime = function () {
   var dateTime = require('node-datetime');
   var dt = dateTime.create().format('Y-m-d H:M:S.N');
   var date = new Date(dt);
@@ -61,7 +61,7 @@ var getDateTime = function() {
   return currentDate;
 };
 
-var getFinancialYear = function() {
+var getFinancialYear = function () {
   var fiscalYear = "";
   var today = new Date();
   if ((today.getMonth() + 1) <= 3) {
@@ -73,7 +73,7 @@ var getFinancialYear = function() {
   return fiscalYear;
 };
 
-var getURL = function(req) {
+var getURL = function (req) {
   var fullURL = req.protocol + '://' + req.get('host') + req.originalUrl;
   return fullURL;
 };
@@ -87,7 +87,7 @@ router.get('/captcha', function (req, res) {
 });
 
 /* GET home page. */
-router.get('/', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('odiahome', { title: 'Home', csrfToken: req.csrfToken() });
 });
@@ -96,118 +96,123 @@ router.get('/odiahome', csrfProtection, function (req, res) {
   res.render('odiahome', { csrfToken: req.csrfToken() });
 });
 
-router.get('/home', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/home', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('home', { title: 'Home', csrfToken: req.csrfToken() });
 });
 
-router.get('/history', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/history', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('history', { title: 'History', csrfToken: req.csrfToken() });
 });
 
-router.get('/secretaryDesk', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/advisoriesGeneral', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
+  res.get('X-Frame-Options');
+  res.render('advisoriesgeneral', { title: 'General Advisory', csrfToken: req.csrfToken() });
+});
+
+router.get('/secretaryDesk', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('secretarydesk', { title: 'Secretary Desk', csrfToken: req.csrfToken() });
 });
 
-router.get('/directorDesk', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/directorDesk', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('directordesk', { title: 'Director Desk', csrfToken: req.csrfToken() });
 });
 
-router.get('/RTI', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/RTI', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('rti', { title: 'RTI', csrfToken: req.csrfToken() });
 });
 
-router.get('/terms&Conditions', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/terms&Conditions', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('termsandconditions', { title: 'Terms & Conditions', csrfToken: req.csrfToken() });
 });
 
-router.get('/disclaimer', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/disclaimer', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('disclaimer', { title: 'Disclaimer', csrfToken: req.csrfToken() });
 });
 
-router.get('/privacyPolicy', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/privacyPolicy', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('privacypolicy', { title: 'Privacy Policy', csrfToken: req.csrfToken() });
 });
 
-router.get('/websitePolicies', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/websitePolicies', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('websitepolicies', { title: 'Website Policies', csrfToken: req.csrfToken() });
 });
 
-router.get('/screenReader', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/screenReader', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('screenreader', { title: 'Screen Reader', csrfToken: req.csrfToken() });
 });
 
-router.get('/copyrightPolicy', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/copyrightPolicy', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('copyrightpolicy', { title: 'Copyright Policy', csrfToken: req.csrfToken() });
 });
 
-router.get('/hyperlinkPolicy', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/hyperlinkPolicy', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('hyperlinkpolicy', { title: 'Hyperlink Policy', csrfToken: req.csrfToken() });
 });
 
-router.get('/aboutUs', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/aboutUs', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('aboutus', { title: 'About Us', csrfToken: req.csrfToken() });
 });
 
-router.get('/odiaAboutUs', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/odiaAboutUs', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('odiaaboutus', { title: 'About Us', csrfToken: req.csrfToken() });
 });
 
-router.get('/processFlow', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/processFlow', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('processflow', { title: 'Process Flow', csrfToken: req.csrfToken() });
 });
 
-router.get('/organogram', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/organogram', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('organogram', { title: 'Organogram', csrfToken: req.csrfToken() });
 });
 
-router.get('/faq', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/faq', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('faq', { title: 'FAQ', csrfToken: req.csrfToken() });
 });
 
-router.get('/newsEvents', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/newsEvents', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('newsevents', { title: 'News & Events', csrfToken: req.csrfToken() });
 });
 
-router.get('/odiaNewsEvents', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/odiaNewsEvents', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('odianewsevents', { title: 'News & Events', csrfToken: req.csrfToken() });
 });
 
-router.get('/photoGallery', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/photoGallery', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('photogallery', { title: 'Photo Gallery', csrfToken: req.csrfToken() });
- });
+});
 
- router.get('/videoGallery', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/videoGallery', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('videogallery', { title: 'Video Gallery', csrfToken: req.csrfToken() });
- });
+});
 
-router.get('/login', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/login', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   req.session.RandomNo = randomNumber();
   res.get('X-Frame-Options');
   res.render('login', { randomNo: req.session.RandomNo, csrfToken: req.csrfToken(), title: 'Login', error: '' });
 });
 
-router.post('/plogin', parseForm, csrfProtection, cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.post('/plogin', parseForm, csrfProtection, cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   if (req.body.captcha !== req.session.captcha) {
     res.render('login', { randomNo: req.session.RandomNo, csrfToken: req.csrfToken(), title: 'Login', error: 'Invalid Captcha' });
@@ -229,7 +234,7 @@ router.post('/plogin', parseForm, csrfProtection, cache.overrideCacheHeaders(ove
             balModule.getLastLoginStatus(req.body.userName).then(function success(response1) {
               var s = '00:00:00';
               if (response1.length > 0) {
-                var ms = moment(getCurrentDateTime(),"DD-MM-YYYY HH:mm:ss").diff(moment(response1[0].LastLoginDateTime,"DD-MM-YYYY HH:mm:ss"));
+                var ms = moment(getCurrentDateTime(), "DD-MM-YYYY HH:mm:ss").diff(moment(response1[0].LastLoginDateTime, "DD-MM-YYYY HH:mm:ss"));
                 var d = moment.duration(ms);
                 s = Math.floor(d.asHours()) + moment.utc(ms).format(":mm:ss");
               }
@@ -238,7 +243,7 @@ router.post('/plogin', parseForm, csrfProtection, cache.overrideCacheHeaders(ove
                 req.session.role = response[0].RoleName;
                 req.session.cookie.expires = 1800000;
                 let tempSession = req.session;
-                req.session.regenerate(function(err) {
+                req.session.regenerate(function (err) {
                   Object.assign(req.session, tempSession);
                 });
                 balModule.addActivityLog(req.connection.remoteAddress, req.session.username, getURL(req), req.device.type.toUpperCase(), os.platform(), req.headers['user-agent'], '/login', 'LOGIN', 'POST', function success(response) { }, function error(response) { console.log(response.status); });
@@ -248,7 +253,7 @@ router.post('/plogin', parseForm, csrfProtection, cache.overrideCacheHeaders(ove
                 balModule.updateIsLoggedIn(0, response[0].UserID, function success(response) { }, function error(response) { console.log(response.status); });
                 balModule.checkCPStatus(req.session.username).then(function success(response) {
                   if (response.length > 0) {
-                    req.session.save(function(err) {
+                    req.session.save(function (err) {
                       switch (req.session.role) {
                         case 'VAW':
                           res.redirect('vaw');
@@ -281,7 +286,7 @@ router.post('/plogin', parseForm, csrfProtection, cache.overrideCacheHeaders(ove
                     });
                   }
                   else {
-                    req.session.save(function(err) {
+                    req.session.save(function (err) {
                       res.redirect('changePassword');
                     });
                   }
@@ -327,13 +332,13 @@ router.post('/plogin', parseForm, csrfProtection, cache.overrideCacheHeaders(ove
   }
 });
 
-router.get('/forgotPassword', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/forgotPassword', csrfProtection, cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   req.session.RandomNo = randomNumber();
   res.get('X-Frame-Options');
   res.render('forgotpassword', { randomNo: req.session.RandomNo, csrfToken: req.csrfToken(), title: 'Forgot Password', message: '', error: '' });
 });
 
-router.post('/pforgotPassword', parseForm, csrfProtection, cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.post('/pforgotPassword', parseForm, csrfProtection, cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   if (req.body.captcha !== req.session.captcha) {
     res.render('forgotpassword', { randomNo: req.session.RandomNo, csrfToken: req.csrfToken(), title: 'Forgot Password', message: '', error: 'Invalid Captcha' });
@@ -359,7 +364,7 @@ router.post('/pforgotPassword', parseForm, csrfProtection, cache.overrideCacheHe
         req.session.username = req.body.userName;
         req.session.role = response[0].RoleName;
         var mobileNo = response[0].ContactNo;
-        SendOTP(mobileNo, otp, function(response1) {
+        SendOTP(mobileNo, otp, function (response1) {
           res.render('forgotpassword', { randomNo: req.session.RandomNo, csrfToken: req.csrfToken(), title: 'Forgot Password', message: response1, error: '' });
         });
       }
@@ -380,7 +385,7 @@ function SendOTP(mobileNo, OTP, callback) {
   var sms = 'e-Pest - OTP for Password Reset is ' + OTP;
   var encodeSMS = encodeURI(sms);
   request('http://www.apicol.nic.in/Registration/EPestSMS?mobileNo=' + mobileNo + '&sms=' + encodeSMS, { json: true }, (err, res, body) => {
-    if (err) { 
+    if (err) {
       console.log(err);
     }
     else {
@@ -395,7 +400,7 @@ router.get('/sendOTP', function (req, res, next) {
   req.session.cookie.expires = 900000;
   req.session.OTP = sha256(otp.toString());
   var mobileNo = req.session.MobileNo;
-  SendOTP(mobileNo, otp, function(response) {
+  SendOTP(mobileNo, otp, function (response) {
     res.send(response);
   });
 });
@@ -410,11 +415,11 @@ router.post('/verifyOTP', parseForm, csrfProtection, cache.overrideCacheHeaders(
   }
 });
 
-router.post('/updatePassword', parseForm, csrfProtection, cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.post('/updatePassword', parseForm, csrfProtection, cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   balModule.getPasswordHistory(req.session.username).then(function success(response) {
     if (response.length > 0) {
-      var found = response.some(function(i) {
+      var found = response.some(function (i) {
         return i.OldPassword === req.body.npassword;
       });
     }
@@ -448,6 +453,55 @@ router.post('/updatePassword', parseForm, csrfProtection, cache.overrideCacheHea
     console.log(response.status);
   }).catch(function err(error) {
     console.log('An error occurred...', error);
+  });
+});
+
+router.get('/getCropCategories', function (req, res, next) {
+  res.get('X-Frame-Options');
+  balModule.getCropCategories().then(function success(response) {
+    res.send(response);
+  }, function error(response) {
+    console.log(response.status);
+  }).catch(function err(error) {
+    console.log('An error occurred...', error);
+  });
+});
+
+router.get('/getCropsByCategory', function (req, res, next) {
+  res.get('X-Frame-Options');
+  var cropCategoryCode = req.query.cropCategoryCode;
+  balModule.getCropsByCategory(cropCategoryCode).then(function success(response) {
+    res.send(response);
+  }, function error(response) {
+    console.log(response.status);
+  }).catch(function err(error) {
+    console.log('An error occurred...', error);
+  });
+});
+
+router.get('/getPestDiseases', function (req, res, next) {
+  res.get('X-Frame-Options');
+  var cropCode = req.query.cropCode;
+  balModule.getPestDiseases(cropCode, function success(response) {
+    res.send(response);
+  }, function error(response) {
+    console.log(response.status);
+  });
+});
+
+router.get('/getAdvisoryDetails', function (req, res, next) {
+  res.get('X-Frame-Options');
+  var dateOfEntry = req.query.dateOfEntry;
+  var season = req.query.season;
+  var financialYear = req.query.financialYear;
+  var month = req.query.month;
+  var cropCategoryCode = req.query.cropCategoryCode;
+  var cropCode = req.query.cropCode;
+  var pestDiseaseCode = req.query.pestDiseaseCode;
+  balModule.getAdvisoryDetails(dateOfEntry, season, financialYear, month, cropCategoryCode, cropCode, pestDiseaseCode, function success(response) {
+    res.send(response);
+  }, function error(response) {
+    console.log(response.status);
   });
 });
 

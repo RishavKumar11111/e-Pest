@@ -1,8 +1,8 @@
-app.controller('myADOEMRCtrl', function($scope, $http, $filter, $timeout) {
+app.controller('myADOEMRCtrl', function ($scope, $http, $filter, $timeout) {
 
     var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    
-    var getImage = function(a, b, c) {
+
+    var getImage = function (a, b, c) {
         var flp = "data:image/jpeg;base64," + a;
         document.getElementById('flp').setAttribute("src", flp);
         var rlp1 = "data:image/jpeg;base64," + b;
@@ -11,7 +11,7 @@ app.controller('myADOEMRCtrl', function($scope, $http, $filter, $timeout) {
         document.getElementById('rlp2').setAttribute("src", rlp2);
     };
 
-    $scope.getPestDiseases = function() {
+    $scope.getPestDiseases = function () {
         $http.get('http://localhost:3000/ado/getAllPestDiseases?cropCode=' + $scope.cropCode).then(function success(response) {
             $scope.pestDiseases = response.data;
         }, function error(response) {
@@ -21,7 +21,7 @@ app.controller('myADOEMRCtrl', function($scope, $http, $filter, $timeout) {
         });
     };
 
-    $scope.getPesticides = function(pestCode) {
+    $scope.getPesticides = function (pestCode) {
         $http.get('http://localhost:3000/ado/getPesticide?pestCode=' + pestCode).then(function success(response) {
             var advisories = response.data;
             if (advisories.length > 0) {
@@ -29,7 +29,7 @@ app.controller('myADOEMRCtrl', function($scope, $http, $filter, $timeout) {
                 var hAdvisory = [];
                 if ($scope.pestDiseases != undefined) {
                     var pest = ($filter('filter')($scope.pestDiseases, { PestDiseaseCode: pestCode }, true));
-                    angular.forEach(advisories, function(i) {
+                    angular.forEach(advisories, function (i) {
                         var ma = {
                             maObj: $scope.rnd.CropName + ' - ' + pest[0].PestDiseaseName + ' - ' + i.PesticideName + ' - ' + i.RecommendedDose + ' / ' + i.PesticideNameOdia + ' - ' + i.RecommendedDoseOdia
                         };
@@ -41,7 +41,7 @@ app.controller('myADOEMRCtrl', function($scope, $http, $filter, $timeout) {
                     });
                 }
                 else {
-                    angular.forEach(advisories, function(i) {
+                    angular.forEach(advisories, function (i) {
                         var ma = {
                             maObj: $scope.rnd.CropName + ' - ' + $scope.rnd.PestDiseaseName + ' - ' + i.PesticideName + ' - ' + i.RecommendedDose + ' / ' + i.PesticideNameOdia + ' - ' + i.RecommendedDoseOdia
                         };
@@ -66,7 +66,7 @@ app.controller('myADOEMRCtrl', function($scope, $http, $filter, $timeout) {
         });
     };
 
-    $scope.getCropCategories = function() {
+    $scope.getCropCategories = function () {
         $http.get('http://localhost:3000/ado/getCropCategories').then(function success(response) {
             $scope.cropCategories = response.data;
         }, function error(response) {
@@ -76,7 +76,7 @@ app.controller('myADOEMRCtrl', function($scope, $http, $filter, $timeout) {
         });
     };
 
-    $scope.getCropsByCategory = function() {
+    $scope.getCropsByCategory = function () {
         $http.get('http://localhost:3000/ado/getCropsByCategory?cropCategoryCode=' + $scope.ddlCropCategory).then(function success(response) {
             $scope.crops = response.data;
         }, function error(response) {
@@ -86,7 +86,7 @@ app.controller('myADOEMRCtrl', function($scope, $http, $filter, $timeout) {
         });
     };
 
-    $scope.getRefNos = function() {
+    $scope.getRefNos = function () {
         $http.get('http://localhost:3000/ado/getRefNos?cropCategoryCode=' + $scope.ddlCropCategory + '&cropCode=' + $scope.ddlCrop).then(function success(response) {
             $scope.referenceNos = response.data;
         }, function error(response) {
@@ -197,7 +197,7 @@ app.controller('myADOEMRCtrl', function($scope, $http, $filter, $timeout) {
         }
     };
 
-    var clearData = function() {
+    var clearData = function () {
         $scope.ddlPest = null;
         $scope.ddlMAdvisory = null;
         $scope.ddlHAdvisory = null;

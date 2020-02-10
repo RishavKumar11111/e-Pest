@@ -3,9 +3,9 @@ var sequelize = dbConfig.sequelize;
 var sql = dbConfig.sql;
 var locConfig = dbConfig.locConfig;
 
-exports.addActivityLog = function(ipAddress, userID, url, deviceType, os, browser, action, attack, mode) {
+exports.addActivityLog = function (ipAddress, userID, url, deviceType, os, browser, action, attack, mode) {
     sequelize.query('insert into ActivityLog (IPAddress, UserID, URL, DeviceType, OS, Browser, DateTime, Action, Attack, Mode) values (:ip_address, :user_id, :url, :device_type, :os, :browser, getdate(), :action, :attack, :mode)', {
-    replacements: { ip_address: ipAddress, user_id: userID, url: url, device_type: deviceType, os: os, browser: browser, action: action, attack: attack, mode: mode}, type: sequelize.QueryTypes.SELECT
+        replacements: { ip_address: ipAddress, user_id: userID, url: url, device_type: deviceType, os: os, browser: browser, action: action, attack: attack, mode: mode }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
         return data;
     }).catch(function error(err) {
@@ -43,7 +43,7 @@ exports.getVAWsCount = function () {
     });
 };
 
-exports.checkMobileNo = function(mobileNo) {
+exports.checkMobileNo = function (mobileNo) {
     return sequelize.query('select distinct(VAWMobileNo) from VAWGPMapping where Status = 1 and VAWMobileNo = :mobile_no', {
         replacements: { mobile_no: mobileNo }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
@@ -149,7 +149,7 @@ exports.getVAWDetails = function (vawCode) {
     });
 };
 
-exports.checkDupMobileNo = function(mobileNo, vawCode) {
+exports.checkDupMobileNo = function (mobileNo, vawCode) {
     return sequelize.query('select distinct(VAWMobileNo) from VAWGPMapping where Status = 1 and VAWMobileNo = :mobile_no and VAWMobileNo not in (select distinct(VAWMobileNo) from VAWGPMapping where VAWCode = :vaw_code and Status = 1)', {
         replacements: { mobile_no: mobileNo, vaw_code: vawCode }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
@@ -311,7 +311,7 @@ exports.getLTCGPs = function (blockCode) {
     });
 };
 
-exports.getCrops = function() {
+exports.getCrops = function () {
     return sequelize.query("select CropCode, CropName, CategoryCode, CategoryName from crop a inner join CropCategory b on a.CropCategoryCode = b.CategoryCode where Status = 'LTC'", {
         type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
@@ -321,7 +321,7 @@ exports.getCrops = function() {
     });
 };
 
-exports.getPestDiseases = function(cropCode) {
+exports.getPestDiseases = function (cropCode) {
     return sequelize.query("select PestDiseaseCode, PestDiseaseName from PestDisease a inner join Crop b on a.CropCode = b.CropCode where ((a.CropCode = :crop_code and a.Status = 'LTC') or (CropCategoryCode = :crop_code and a.Status = 'LTC' and b.Status = 'LTC'))", {
         replacements: { crop_code: cropCode }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
@@ -331,7 +331,7 @@ exports.getPestDiseases = function(cropCode) {
     });
 };
 
-exports.checkLTC = function(dateOfEntry, season, financialYear, gpCode, pestDiseaseCode, aaoCode) {
+exports.checkLTC = function (dateOfEntry, season, financialYear, gpCode, pestDiseaseCode, aaoCode) {
     return sequelize.query('select * from LightTrapCatchDetails where GPCode = :gp_code and PestDiseaseCode = :pest_disease_code and convert(datetime, convert(varchar(10), DateTime, 103), 103) = :date_of_entry and Season = :season and FinancialYear = :financial_year and AAOCode = :aao_code', {
         replacements: { date_of_entry: dateOfEntry, season: season, financial_year: financialYear, gp_code: gpCode, pest_disease_code: pestDiseaseCode, aao_code: aaoCode }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
@@ -341,9 +341,9 @@ exports.checkLTC = function(dateOfEntry, season, financialYear, gpCode, pestDise
     });
 };
 
-exports.submitAAOLTC = function(obj, callback) {
+exports.submitAAOLTC = function (obj, callback) {
     sequelize.query('insert into LightTrapCatchDetails (GPCode, CropCode, PestDiseaseCode, Season, PestTrappedNo, AAOCode, BlockCode, AAOStatus, Status, DateTime, IPAddress, FinancialYear) values (:gp_code, :crop_code, :pest_disease_code, :season, :pest_trapped_no, :aao_code, :block_code, :aao_status, :status, getdate(), :ip_address, :financial_year)', {
-    replacements: { gp_code: obj.GPCode, crop_code: obj.CropCode, pest_disease_code: obj.PestDiseaseCode, season: obj.Season, pest_trapped_no: obj.PestTrappedNo, aao_code: obj.AAOCode, block_code: obj.BlockCode, aao_status: obj.AAOStatus, status: obj.Status, ip_address: obj.IPAddress, financial_year: obj.FinancialYear }, type: sequelize.QueryTypes.INSERT
+        replacements: { gp_code: obj.GPCode, crop_code: obj.CropCode, pest_disease_code: obj.PestDiseaseCode, season: obj.Season, pest_trapped_no: obj.PestTrappedNo, aao_code: obj.AAOCode, block_code: obj.BlockCode, aao_status: obj.AAOStatus, status: obj.Status, ip_address: obj.IPAddress, financial_year: obj.FinancialYear }, type: sequelize.QueryTypes.INSERT
     }).then(function success(data) {
         callback(true);
     }).catch(function error(err) {
@@ -351,7 +351,7 @@ exports.submitAAOLTC = function(obj, callback) {
     });
 };
 
-exports.getLTCDetails = function(aaoCode, dateOfEntry, season, financialYear) {
+exports.getLTCDetails = function (aaoCode, dateOfEntry, season, financialYear) {
     return sequelize.query("select a.GPCode, GPName, a.CropCode, CropName, a.PestDiseaseCode, PestDiseaseName, PestTrappedNo from LightTrapCatchDetails a inner join LGDGP b on a.GPCode = b.GPCode left join Crop d on a.CropCode = d.CropCode inner join PestDisease e on a.PestDiseaseCode = e.PestDiseaseCode where AAOCode = :aao_code and convert(datetime, convert(varchar(10), DateTime, 103), 103) = :date_of_entry and Season = :season and FinancialYear = :financial_year", {
         replacements: { aao_code: aaoCode, date_of_entry: dateOfEntry, season: season, financial_year: financialYear }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
@@ -361,7 +361,7 @@ exports.getLTCDetails = function(aaoCode, dateOfEntry, season, financialYear) {
     });
 };
 
-exports.getCropCategories = function() {
+exports.getCropCategories = function () {
     return sequelize.query('select * from CropCategory where IsActive = 1', {
         type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
@@ -371,7 +371,7 @@ exports.getCropCategories = function() {
     });
 };
 
-exports.getCropsByCategory = function(cropCategoryCode) {
+exports.getCropsByCategory = function (cropCategoryCode) {
     return sequelize.query('select CropCode, CropName from Crop where CropCategoryCode = :crop_category_code and IsActive = 1', {
         replacements: { crop_category_code: cropCategoryCode }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
@@ -381,16 +381,16 @@ exports.getCropsByCategory = function(cropCategoryCode) {
     });
 };
 
-exports.getAllPestDiseases = function(cropCode, callback) {
+exports.getAllPestDiseases = function (cropCode, callback) {
     var con = new sql.ConnectionPool(locConfig);
     con.connect().then(function success() {
         const request = new sql.Request(con);
         request.input('CropCode', cropCode);
-        request.execute('spGetPestDisease', function(err, result) {
+        request.execute('spGetPestDisease', function (err, result) {
             if (err) {
                 console.log('An error occurred...', err);
             }
-            else{
+            else {
                 callback(result.recordset);
             }
             con.close();
@@ -409,12 +409,12 @@ exports.submitAAOPDE = function (pestData, callback) {
         tableAAOPestDetailsEntry.columns.add('CropCategoryCode', sql.Int, { nullable: false });
         tableAAOPestDetailsEntry.columns.add('CropCode', sql.Int, { nullable: false });
         tableAAOPestDetailsEntry.columns.add('PestDiseaseCode', sql.Int, { nullable: false });
-        tableAAOPestDetailsEntry.columns.add('LowAffectedArea', sql.Decimal(18, 3), {nullable: false});
-        tableAAOPestDetailsEntry.columns.add('MediumAffectedArea', sql.Decimal(18, 3), {nullable: false});
-        tableAAOPestDetailsEntry.columns.add('HighAffectedArea', sql.Decimal(18, 3), {nullable: false});
-        tableAAOPestDetailsEntry.columns.add('LowTreatedArea', sql.Decimal(18, 3), {nullable: false});
-        tableAAOPestDetailsEntry.columns.add('MediumTreatedArea', sql.Decimal(18, 3), {nullable: false});
-        tableAAOPestDetailsEntry.columns.add('HighTreatedArea', sql.Decimal(18, 3), {nullable: false});
+        tableAAOPestDetailsEntry.columns.add('LowAffectedArea', sql.Decimal(18, 3), { nullable: false });
+        tableAAOPestDetailsEntry.columns.add('MediumAffectedArea', sql.Decimal(18, 3), { nullable: false });
+        tableAAOPestDetailsEntry.columns.add('HighAffectedArea', sql.Decimal(18, 3), { nullable: false });
+        tableAAOPestDetailsEntry.columns.add('LowTreatedArea', sql.Decimal(18, 3), { nullable: false });
+        tableAAOPestDetailsEntry.columns.add('MediumTreatedArea', sql.Decimal(18, 3), { nullable: false });
+        tableAAOPestDetailsEntry.columns.add('HighTreatedArea', sql.Decimal(18, 3), { nullable: false });
         tableAAOPestDetailsEntry.columns.add('Season', sql.VarChar(10), { nullable: false });
         tableAAOPestDetailsEntry.columns.add('AAOCode', sql.VarChar(10), { nullable: false });
         tableAAOPestDetailsEntry.columns.add('BlockCode', sql.Int, { nullable: false });
@@ -441,7 +441,7 @@ exports.submitAAOPDE = function (pestData, callback) {
     });
 };
 
-exports.getPDs = function(dateOfEntry, yesterdayDate, season, financialYear, cropCategoryCode, cropCode, pestDiseaseCode, aaoCode) {
+exports.getPDs = function (dateOfEntry, yesterdayDate, season, financialYear, cropCategoryCode, cropCode, pestDiseaseCode, aaoCode) {
     return sequelize.query('select a.GPCode, b.GPName, LowAffectedArea, MediumAffectedArea, HighAffectedArea, LowTreatedArea, MediumTreatedArea, HighTreatedArea from AAOPestDetailsEntry a inner join LGDGP b on a.GPCode = b.GPCode where convert(datetime, convert(varchar(10), DateTime, 103), 103) in(:date) and Season = :season and FinancialYear = :financial_year and CropCategoryCode = :crop_category_code and CropCode = :crop_code and PestDiseaseCode = :pest_disease_code and AAOCode = :aao_code', {
         replacements: { date: [dateOfEntry, yesterdayDate], season: season, financial_year: financialYear, crop_category_code: cropCategoryCode, crop_code: cropCode, pest_disease_code: pestDiseaseCode, aao_code: aaoCode }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
@@ -451,7 +451,7 @@ exports.getPDs = function(dateOfEntry, yesterdayDate, season, financialYear, cro
     });
 };
 
-exports.getPestDetails = function(dateOfEntry, season, financialYear, blockCode, cropCategoryCode, cropCode, pestDiseaseCode, username, role, callback) {
+exports.getPestDetails = function (dateOfEntry, season, financialYear, blockCode, cropCategoryCode, cropCode, pestDiseaseCode, username, role, callback) {
     var con = new sql.ConnectionPool(locConfig);
     con.connect().then(function success() {
         const request = new sql.Request(con);
@@ -464,11 +464,11 @@ exports.getPestDetails = function(dateOfEntry, season, financialYear, blockCode,
         request.input('PestDiseaseCode', pestDiseaseCode);
         request.input('Username', username);
         request.input('Role', role);
-        request.execute('spGetPestDetails', function(err, result) {
+        request.execute('spGetPestDetails', function (err, result) {
             if (err) {
                 console.log('An error occurred...', err);
             }
-            else{
+            else {
                 callback(result.recordset);
             }
             con.close();
@@ -498,7 +498,7 @@ exports.getPasswordHistory = function (userName) {
     });
 };
 
-exports.changePasssword = function(obj, callback) {
+exports.changePasssword = function (obj, callback) {
     var con = new sql.ConnectionPool(locConfig);
     con.connect().then(function success() {
         const request = new sql.Request(con);
@@ -507,7 +507,7 @@ exports.changePasssword = function(obj, callback) {
         request.input('Status', obj.Status);
         request.input('IPAddress', obj.IPAddress);
         request.input('FinancialYear', obj.FinancialYear);
-        request.execute('spChangePassword', function(err, result) {
+        request.execute('spChangePassword', function (err, result) {
             if (err) {
                 console.log('An error occurred...', err);
             }
@@ -521,9 +521,9 @@ exports.changePasssword = function(obj, callback) {
     });
 };
 
-exports.updateIsLoggedIn = function(isLoggedIn, userID) {
+exports.updateIsLoggedIn = function (isLoggedIn, userID) {
     sequelize.query('update UserLogin set IsLoggedIn = :is_logged_in where UserID = :user_id', {
-    replacements: { is_logged_in: isLoggedIn, user_id: userID }, type: sequelize.QueryTypes.SELECT
+        replacements: { is_logged_in: isLoggedIn, user_id: userID }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
         return data;
     }).catch(function error(err) {
@@ -531,16 +531,16 @@ exports.updateIsLoggedIn = function(isLoggedIn, userID) {
     });
 };
 
-exports.getDashboardDetails = function(aaoCode, callback) {
+exports.getDashboardDetails = function (aaoCode, callback) {
     var con = new sql.ConnectionPool(locConfig);
     con.connect().then(function success() {
         const request = new sql.Request(con);
         request.input('AAOCode', aaoCode);
-        request.execute('spGetAAODashboardDetails', function(err, result) {
+        request.execute('spGetAAODashboardDetails', function (err, result) {
             if (err) {
                 console.log('An error occurred...', err);
             }
-            else{
+            else {
                 callback(result.recordsets);
             }
             con.close();
@@ -570,7 +570,7 @@ exports.getVAWGPTargets = function (aaoCode) {
     });
 };
 
-exports.getAAOPestDetails = function(dateOfEntry, season, financialYear, cropCategoryCode, cropCode, pestDiseaseCode, userType, username, role, callback) {
+exports.getAAOPestDetails = function (dateOfEntry, season, financialYear, cropCategoryCode, cropCode, pestDiseaseCode, userType, username, role, callback) {
     var con = new sql.ConnectionPool(locConfig);
     con.connect().then(function success() {
         const request = new sql.Request(con);
@@ -583,53 +583,7 @@ exports.getAAOPestDetails = function(dateOfEntry, season, financialYear, cropCat
         request.input('UserType', userType);
         request.input('Username', username);
         request.input('Role', role);
-        request.execute('spGetAAOPestDetails', function(err, result) {
-            if (err) {
-                console.log('An error occurred...', err);
-            }
-            else{
-                callback(result.recordset);
-            }
-            con.close();
-        });
-    }).catch(function error(err) {
-        console.log('An error occurred...', err);
-    });
-};
-
-exports.getLTCReportDetails = function(dateOfEntry, season, financialYear, cropCode, pestDiseaseCode,username, callback) {
-    var con = new sql.ConnectionPool(locConfig);
-    con.connect().then(function success() {
-        const request = new sql.Request(con);
-        request.input('DateOfEntry', dateOfEntry);
-        request.input('Season', season);
-        request.input('FinancialYear', financialYear);
-        request.input('CropCode', cropCode);
-        request.input('PestDiseaseCode', pestDiseaseCode);
-        request.input('Username', username);
-        request.execute('spGetAAOLTCReport', function(err, result) {
-            if (err) {
-                console.log('An error occurred...', err);
-            }
-            else{
-                callback(result.recordset);
-            }
-            con.close();
-        });
-    }).catch(function error(err) {
-        console.log('An error occurred...', err);
-    });
-};
-
-exports.getVAWInspectionDetails = function(dateOfEntry, season, financialYear, username, callback) {
-    var con = new sql.ConnectionPool(locConfig);
-    con.connect().then(function success() {
-        const request = new sql.Request(con);
-        request.input('DateOfEntry', dateOfEntry);
-        request.input('Season', season);
-        request.input('FinancialYear', financialYear);
-        request.input('Username', username);
-        request.execute('spGetAAOVAWInspectionReport', function(err, result) {
+        request.execute('spGetAAOPestDetails', function (err, result) {
             if (err) {
                 console.log('An error occurred...', err);
             }
@@ -643,7 +597,53 @@ exports.getVAWInspectionDetails = function(dateOfEntry, season, financialYear, u
     });
 };
 
-exports.getEMRNosForAAO = function(dateOfEntry, cropCategory, crop, financialYear, username, callback) {
+exports.getLTCReportDetails = function (dateOfEntry, season, financialYear, cropCode, pestDiseaseCode, username, callback) {
+    var con = new sql.ConnectionPool(locConfig);
+    con.connect().then(function success() {
+        const request = new sql.Request(con);
+        request.input('DateOfEntry', dateOfEntry);
+        request.input('Season', season);
+        request.input('FinancialYear', financialYear);
+        request.input('CropCode', cropCode);
+        request.input('PestDiseaseCode', pestDiseaseCode);
+        request.input('Username', username);
+        request.execute('spGetAAOLTCReport', function (err, result) {
+            if (err) {
+                console.log('An error occurred...', err);
+            }
+            else {
+                callback(result.recordset);
+            }
+            con.close();
+        });
+    }).catch(function error(err) {
+        console.log('An error occurred...', err);
+    });
+};
+
+exports.getVAWInspectionDetails = function (dateOfEntry, season, financialYear, username, callback) {
+    var con = new sql.ConnectionPool(locConfig);
+    con.connect().then(function success() {
+        const request = new sql.Request(con);
+        request.input('DateOfEntry', dateOfEntry);
+        request.input('Season', season);
+        request.input('FinancialYear', financialYear);
+        request.input('Username', username);
+        request.execute('spGetAAOVAWInspectionReport', function (err, result) {
+            if (err) {
+                console.log('An error occurred...', err);
+            }
+            else {
+                callback(result.recordset);
+            }
+            con.close();
+        });
+    }).catch(function error(err) {
+        console.log('An error occurred...', err);
+    });
+};
+
+exports.getEMRNosForAAO = function (dateOfEntry, cropCategory, crop, financialYear, username, callback) {
     var con = new sql.ConnectionPool(locConfig);
     con.connect().then(function success() {
         const request = new sql.Request(con);
@@ -652,7 +652,7 @@ exports.getEMRNosForAAO = function(dateOfEntry, cropCategory, crop, financialYea
         request.input('CropCode', crop);
         request.input('FinancialYear', financialYear);
         request.input('Username', username);
-        request.execute('spGetEMRNosForAAODetails', function(err, result) {
+        request.execute('spGetEMRNosForAAODetails', function (err, result) {
             if (err) {
                 console.log('An error occurred...', err);
             }

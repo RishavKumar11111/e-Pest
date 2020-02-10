@@ -1,8 +1,8 @@
-app.controller('myJDAPPCDAODetailsEntryCtrl', function($scope, $http) {
+app.controller('myJDAPPCDAODetailsEntryCtrl', function ($scope, $http) {
 
     var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    
-    $scope.getData = function(i) {
+
+    $scope.getData = function (i) {
         $scope.dn = i.DistrictName;
         $scope.cuid = i.CDAOUserID;
         $scope.cdaoName = i.CDAOName;
@@ -10,22 +10,22 @@ app.controller('myJDAPPCDAODetailsEntryCtrl', function($scope, $http) {
         $scope.cdaoANo = i.CDAOAadhaarNo;
         $scope.status = i.Status;
     };
-    
+
     $scope.getAllCDAODetails = function () {
-            $http.get('http://localhost:3000/jdapp/getAllCDAODetails').then(function success(response) {
-                $scope.cdaoDetails = response.data;
-            }, function error(response) {
-                console.log(response.status);
-            }).catch(function err(error) {
-                console.log('An error occurred...', error);
-            });       
+        $http.get('http://localhost:3000/jdapp/getAllCDAODetails').then(function success(response) {
+            $scope.cdaoDetails = response.data;
+        }, function error(response) {
+            console.log(response.status);
+        }).catch(function err(error) {
+            console.log('An error occurred...', error);
+        });
     };
 
-    $scope.submitCDAODetails = function(userID, cdaoName, cdaoMobileNo, cdaoAadhaarNo, status) {
+    $scope.submitCDAODetails = function (userID, cdaoName, cdaoMobileNo, cdaoAadhaarNo, status) {
         if (userID != null && userID != undefined && cdaoName != null && cdaoName != undefined && cdaoMobileNo != null && cdaoMobileNo != undefined) {
             var ca = (cdaoAadhaarNo == null || cdaoAadhaarNo == undefined || cdaoAadhaarNo == '') ? 'NA' : cdaoAadhaarNo;
             var st = (status == true) ? 1 : status;
-            var myData = { CDAOUserID: userID, CDAOName: cdaoName , CDAOMobileNo: cdaoMobileNo, CDAOAadhaarNo: ca, Status: st };
+            var myData = { CDAOUserID: userID, CDAOName: cdaoName, CDAOMobileNo: cdaoMobileNo, CDAOAadhaarNo: ca, Status: st };
             $http.post('http://localhost:3000/jdapp/submitCDAODetails', { data: myData }, { credentials: 'same-origin', headers: { 'CSRF-Token': token } }).then(function success(response) {
                 var result = response.data;
                 if (result == 'OK') {

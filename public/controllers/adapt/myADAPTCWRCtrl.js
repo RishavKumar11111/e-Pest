@@ -1,8 +1,8 @@
-app.controller('myADAPTCWRCtrl', function($scope, $http) {
+app.controller('myADAPTCWRCtrl', function ($scope, $http) {
 
     var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-    $scope.month = function() {
+    $scope.month = function () {
         var m = new Date().getMonth();
         if (m >= 6 && m <= 10) {
             $scope.rbSeason = 'Kharif';
@@ -14,9 +14,9 @@ app.controller('myADAPTCWRCtrl', function($scope, $http) {
     };
 
     $scope.selectables = [
-        { label: '2019-20', value: '2019-20'},
-        { label: '2020-21', value: '2020-21'},
-        { label: '2021-22', value: '2021-22'}
+        { label: '2019-20', value: '2019-20' },
+        { label: '2020-21', value: '2020-21' },
+        { label: '2021-22', value: '2021-22' }
     ];
     $scope.selectedItemvalue = "2019-20";
 
@@ -32,7 +32,7 @@ app.controller('myADAPTCWRCtrl', function($scope, $http) {
         return $scope.fiscalYear;
     };
 
-    $scope.checkCDay = function() {
+    $scope.checkCDay = function () {
         var day = new Date(document.getElementById('pdeDate').value).getDay();
         if (day != 4 && day != 5) {
             alert('Pest details entry are only done on Thursday and Friday.');
@@ -75,7 +75,7 @@ app.controller('myADAPTCWRCtrl', function($scope, $http) {
     };
 
     $scope.getDistricts = function () {
-        var k = {DistrictCode:1,DistrictName: "Select All"};
+        var k = { DistrictCode: 1, DistrictName: "Select All" };
         $http.get('http://localhost:3000/adapt/getDistricts').then(function success(response) {
             $scope.districts = response.data;
             $scope.districts.push(k);
@@ -87,7 +87,7 @@ app.controller('myADAPTCWRCtrl', function($scope, $http) {
     };
 
     $scope.getBlocksByDistrict = function () {
-        var j = {BlockCode: 1, BlockName: "Select All"};
+        var j = { BlockCode: 1, BlockName: "Select All" };
         if ($scope.ddlDistrict != null && $scope.ddlDistrict != undefined) {
             $http.get('http://localhost:3000/adapt/getBlocksByDistrict?districtCode=' + $scope.ddlDistrict).then(function success(response) {
                 $scope.blocks = response.data;
@@ -106,54 +106,54 @@ app.controller('myADAPTCWRCtrl', function($scope, $http) {
     };
 
     $scope.pestDetails = [];
-    $scope.getPestDetails = function() {
+    $scope.getPestDetails = function () {
         if ($scope.dateOfPDE != null && $scope.dateOfPDE != undefined && $scope.rbSeason != null && $scope.rbSeason != undefined && $scope.selectedItemvalue != null && $scope.selectedItemvalue != undefined && $scope.ddlCC != null && $scope.ddlCC != undefined && $scope.ddlC != null && $scope.ddlC != undefined) {
-            var distcd = 0; var blkcd = 0; var crcd = 0; var ccd = 0 ; var pecd = 0;
+            var distcd = 0; var blkcd = 0; var crcd = 0; var ccd = 0; var pecd = 0;
             $scope.ddlDistrict == undefined || $scope.ddlDistrict == null ? distcd = 0 : distcd = $scope.ddlDistrict;
             $scope.ddlBlock == undefined || $scope.ddlBlock == null ? blkcd = 0 : blkcd = $scope.ddlBlock;
             $scope.ddlCC == undefined || $scope.ddlCC == null ? crcd = 0 : crcd = $scope.ddlCC;
             $scope.ddlC == undefined || $scope.ddlC == null ? ccd = 0 : ccd = $scope.ddlC;
             $scope.ddlPest == undefined || $scope.ddlPest == null ? pecd = 0 : pecd = $scope.ddlPest;
-            $scope.rbSeason  == 'Kharif' ? season  = 'K' : season = 'R' ;
-            $http.get('http://localhost:3000/adapt/getPestDetails?dateOfEntry=' + document.getElementById('pdeDate').value + '&season=' + season + '&financialYear=' + $scope.selectedItemvalue + '&districtCode=' + distcd + '&blockCode=' + blkcd + '&cropCategoryCode=' + crcd+ '&cropCode=' + ccd + '&pestDiseaseCode=' + pecd).then(function success(response) {
+            $scope.rbSeason == 'Kharif' ? season = 'K' : season = 'R';
+            $http.get('http://localhost:3000/adapt/getPestDetails?dateOfEntry=' + document.getElementById('pdeDate').value + '&season=' + season + '&financialYear=' + $scope.selectedItemvalue + '&districtCode=' + distcd + '&blockCode=' + blkcd + '&cropCategoryCode=' + crcd + '&cropCode=' + ccd + '&pestDiseaseCode=' + pecd).then(function success(response) {
                 if (response.data.length > 0) {
                     $scope.pestDetails = response.data;
-                    if($scope.cbHIntensity == true && ($scope.cbMIntensity == false || $scope.cbMIntensity == undefined) && ($scope.cbLIntensity == false || $scope.cbLIntensity == undefined) ){
+                    if ($scope.cbHIntensity == true && ($scope.cbMIntensity == false || $scope.cbMIntensity == undefined) && ($scope.cbLIntensity == false || $scope.cbLIntensity == undefined)) {
                         $scope.H = true;
                         $scope.L = false;
                         $scope.M = false;
                     }
-                    else if($scope.cbMIntensity == true && ($scope.cbHIntensity == false || $scope.cbHIntensity == undefined) && ($scope.cbLIntensity == false || $scope.cbLIntensity == undefined )){
+                    else if ($scope.cbMIntensity == true && ($scope.cbHIntensity == false || $scope.cbHIntensity == undefined) && ($scope.cbLIntensity == false || $scope.cbLIntensity == undefined)) {
                         $scope.H = false;
                         $scope.L = false;
                         $scope.M = true;
                     }
-                    else if($scope.cbLIntensity == true && ($scope.cbHIntensity == false || $scope.cbHIntensity == undefined) && ($scope.cbMIntensity == false || $scope.cbMIntensity == undefined )){
+                    else if ($scope.cbLIntensity == true && ($scope.cbHIntensity == false || $scope.cbHIntensity == undefined) && ($scope.cbMIntensity == false || $scope.cbMIntensity == undefined)) {
                         $scope.H = false;
                         $scope.L = true;
                         $scope.M = false;
                     }
-                    else if($scope.cbHIntensity == true && $scope.cbMIntensity == true && ($scope.cbLIntensity == false || $scope.cbLIntensity == undefined)){
+                    else if ($scope.cbHIntensity == true && $scope.cbMIntensity == true && ($scope.cbLIntensity == false || $scope.cbLIntensity == undefined)) {
                         $scope.H = true;
                         $scope.L = false;
                         $scope.M = true;
                     }
-                    else if($scope.cbHIntensity == true && $scope.cbLIntensity == true && ($scope.cbMIntensity == false || $scope.cbMIntensity == undefined)){
+                    else if ($scope.cbHIntensity == true && $scope.cbLIntensity == true && ($scope.cbMIntensity == false || $scope.cbMIntensity == undefined)) {
                         $scope.H = true;
                         $scope.L = true;
                         $scope.M = false;
                     }
-                    else if($scope.cbMIntensity == true && $scope.cbLIntensity == true && ($scope.cbHIntensity == false || $scope.cbHIntensity == undefined)){
+                    else if ($scope.cbMIntensity == true && $scope.cbLIntensity == true && ($scope.cbHIntensity == false || $scope.cbHIntensity == undefined)) {
                         $scope.H = false;
                         $scope.L = true;
                         $scope.M = true;
                     }
-                    else if($scope.cbHIntensity == true && $scope.cbMIntensity == true && $scope.cbLIntensity == true){
+                    else if ($scope.cbHIntensity == true && $scope.cbMIntensity == true && $scope.cbLIntensity == true) {
                         $scope.H = true;
                         $scope.L = true;
                         $scope.M = true;
                     }
-                    else{
+                    else {
                         $scope.H = true;
                         $scope.L = true;
                         $scope.M = true;
@@ -207,7 +207,7 @@ app.controller('myADAPTCWRCtrl', function($scope, $http) {
                         $scope.sdd = true;
                     }
                     $scope.laa = 0.0; $scope.maa = 0.0; $scope.haa = 0.0; $scope.lta = 0.0; $scope.mta = 0.0; $scope.hta = 0.0; $scope.taa = 0.0; $scope.tta = 0.0;
-                    angular.forEach($scope.pestDetails, function(i) {
+                    angular.forEach($scope.pestDetails, function (i) {
                         $scope.laa += i.LowAffectedArea;
                         $scope.maa += i.MediumAffectedArea;
                         $scope.haa += i.HighAffectedArea;

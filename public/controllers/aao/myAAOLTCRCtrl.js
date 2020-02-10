@@ -1,4 +1,4 @@
-app.controller('myAAOLTCRCtrl', function($scope, $http, $filter) {
+app.controller('myAAOLTCRCtrl', function ($scope, $http, $filter) {
 
     var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
@@ -7,7 +7,7 @@ app.controller('myAAOLTCRCtrl', function($scope, $http, $filter) {
             var k = ($filter('filter')(response.data, { CategoryCode: 3 }, true));
             var l = { CC: k[0].CategoryCode, CN: k[0].CategoryName };
             var m = response.data.filter(function (i) { return !k.includes(i); });
-            $scope.crops = m.map(function(i) { return { CC: i.CropCode, CN: i.CropName }; });
+            $scope.crops = m.map(function (i) { return { CC: i.CropCode, CN: i.CropName }; });
             $scope.crops.push(l);
         }, function error(response) {
             console.log(response.status);
@@ -29,11 +29,11 @@ app.controller('myAAOLTCRCtrl', function($scope, $http, $filter) {
     };
 
     $scope.ltcDetails = [];
-    $scope.getLTCReportDetails = function() {
+    $scope.getLTCReportDetails = function () {
         if ($scope.dateOfPDE != null && $scope.dateOfPDE != undefined && $scope.rbs != null && $scope.rbs != undefined && $scope.ddlFY != null && $scope.ddlFY != undefined && $scope.ddlC != null && $scope.ddlC != undefined) {
             var pdcd = 0;
             $scope.ddlPD == undefined || $scope.ddlPD == null ? pdcd = 0 : pdcd = $scope.ddlPD;
-            $http.get('http://localhost:3000/aao/getLTCReportDetails?dateOfEntry=' + document.getElementById('pdeDate').value + '&season=' + $scope.rbs + '&financialYear=' + $scope.ddlFY  + '&cropCode=' + $scope.ddlC + '&pestDiseaseCode=' + pdcd).then(function success(response) {
+            $http.get('http://localhost:3000/aao/getLTCReportDetails?dateOfEntry=' + document.getElementById('pdeDate').value + '&season=' + $scope.rbs + '&financialYear=' + $scope.ddlFY + '&cropCode=' + $scope.ddlC + '&pestDiseaseCode=' + pdcd).then(function success(response) {
                 if (response.data.length > 0) {
                     $scope.ltcDetails = response.data;
                     if (!(response.data[0].hasOwnProperty('PestDiseaseCode')) && response.data[0].hasOwnProperty('PestTrappedNo')) {
@@ -45,7 +45,7 @@ app.controller('myAAOLTCRCtrl', function($scope, $http, $filter) {
                         $scope.sgpd = true;
                     }
                     $scope.ptn = 0.0;
-                    angular.forEach($scope.ltcDetails, function(i) {
+                    angular.forEach($scope.ltcDetails, function (i) {
                         $scope.ptn += i.PestTrappedNo;
                     });
                 }

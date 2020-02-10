@@ -1,8 +1,8 @@
-app.controller('myJDAPPUACtrl', function($scope, $http, $filter) {
+app.controller('myJDAPPUACtrl', function ($scope, $http, $filter) {
 
     var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-    $scope.getLockedAccounts = function() {
+    $scope.getLockedAccounts = function () {
         $http.get('http://localhost:3000/jdapp/getLockedAccounts').then(function success(response) {
             $scope.lockedAccounts = response.data;
             $scope.laVAW = ($filter('filter')($scope.lockedAccounts, { RoleName: 'VAW' }, true));
@@ -17,7 +17,7 @@ app.controller('myJDAPPUACtrl', function($scope, $http, $filter) {
         });
     };
 
-    $scope.unlock = function(userID) {
+    $scope.unlock = function (userID) {
         var message = confirm('Do you really want to unlock the account?');
         if (message) {
             $http.post('http://localhost:3000/jdapp/unlock', { data: userID }, { credentials: 'same-origin', headers: { 'CSRF-Token': token } }).then(function success(response) {
@@ -31,11 +31,11 @@ app.controller('myJDAPPUACtrl', function($scope, $http, $filter) {
         }
     };
 
-    $scope.unlockAll = function(userIDs) {
+    $scope.unlockAll = function (userIDs) {
         var message = confirm('Do you really want to unlock all the accounts?');
         if (message) {
             var uIDs = [];
-            angular.forEach(userIDs, function(i) {
+            angular.forEach(userIDs, function (i) {
                 var k = {};
                 k.UserID = i.UserID;
                 uIDs.push(k);

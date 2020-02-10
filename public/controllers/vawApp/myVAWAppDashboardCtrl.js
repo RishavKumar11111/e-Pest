@@ -1,6 +1,6 @@
-app.controller('myVAWAppDashboardCtrl', function($scope, $filter, $state, vawService) {
+app.controller('myVAWAppDashboardCtrl', function ($scope, $filter, $state, vawService) {
 
-    $scope.checkUserDetails = function() {
+    $scope.checkUserDetails = function () {
         if ('indexedDB' in window) {
             readAllData('user-login').then(function success(response) {
                 if (response.length == 0) {
@@ -26,7 +26,7 @@ app.controller('myVAWAppDashboardCtrl', function($scope, $filter, $state, vawSer
     //     }
     // };
 
-    $scope.checkDay = function() {
+    $scope.checkDay = function () {
         var dt = new Date();
         var d = dt.getDay();
         if (d == 0) {
@@ -35,18 +35,18 @@ app.controller('myVAWAppDashboardCtrl', function($scope, $filter, $state, vawSer
         }
     };
 
-    $scope.clearData = function() {
+    $scope.clearData = function () {
         if ('indexedDB' in window) {
             readAllData('referenceNo-status').then(function success(response) {
                 if (response.length > 0) {
-                    angular.forEach(response, function(i) {
+                    angular.forEach(response, function (i) {
                         if (i.Status == 0) {
-                            clearItemFromData('crop-details-entry', i.ReferenceNo).then(function() {
+                            clearItemFromData('crop-details-entry', i.ReferenceNo).then(function () {
                                 readAllData('refNo-fID-aID').then(function success(response1) {
                                     if (response1.length > 0) {
-                                        angular.forEach(response1, function(j) {
+                                        angular.forEach(response1, function (j) {
                                             if (j.ReferenceNo == i.ReferenceNo) {
-                                                clearItemFromData('refNo-fID-aID', j.ID).then(function() {
+                                                clearItemFromData('refNo-fID-aID', j.ID).then(function () {
                                                 }, function error(response) {
                                                     console.log(response.status);
                                                 }).catch(function err(error) {
@@ -55,11 +55,11 @@ app.controller('myVAWAppDashboardCtrl', function($scope, $filter, $state, vawSer
                                             }
                                         });
                                     }
-                                    clearItemFromData('pest-details-entry', i.ReferenceNo).then(function() {
-                                        clearItemFromData('photo-location-entry', i.ReferenceNo).then(function() {
-                                            clearItemFromData('referenceNo-status', i.ReferenceNo).then(function() {
+                                    clearItemFromData('pest-details-entry', i.ReferenceNo).then(function () {
+                                        clearItemFromData('photo-location-entry', i.ReferenceNo).then(function () {
+                                            clearItemFromData('referenceNo-status', i.ReferenceNo).then(function () {
                                             }, function error(response) {
-                                            console.log(response.status);
+                                                console.log(response.status);
                                             }).catch(function err(error) {
                                                 console.log('An error occurred...', error);
                                             });
@@ -94,7 +94,7 @@ app.controller('myVAWAppDashboardCtrl', function($scope, $filter, $state, vawSer
         }
     };
 
-    $scope.getVAWGPs = function() {
+    $scope.getVAWGPs = function () {
         if ('indexedDB' in window) {
             readAllData('gp').then(function success(response) {
                 if (response.length > 0) {
@@ -114,7 +114,7 @@ app.controller('myVAWAppDashboardCtrl', function($scope, $filter, $state, vawSer
         }
     };
 
-    $scope.getVillages = function(gpCode) {
+    $scope.getVillages = function (gpCode) {
         if ('indexedDB' in window) {
             readAllData('village').then(function success(response) {
                 if (response.length > 0) {
@@ -132,15 +132,15 @@ app.controller('myVAWAppDashboardCtrl', function($scope, $filter, $state, vawSer
             });
             readAllData('crop-details-entry').then(function success(response1) {
                 if (response1.length > 0) {
-                    angular.forEach(response1, function(i) {
+                    angular.forEach(response1, function (i) {
                         if (($scope.ddlGP).toString() == i.ReferenceNo.substr(11, 6)) {
-                            $scope.refNo = i.ReferenceNo.substr(0, 18) + (parseInt(i.ReferenceNo.substr(18,)) + 1).toString();
+                            $scope.refNo = i.ReferenceNo.substr(0, 18) + (parseInt(i.ReferenceNo.substr(18)) + 1).toString();
                         }
                     });
                     if ($scope.refNo == undefined || $scope.refNo == null || $scope.refNo == '') {
                         readAllData('referenceNo-count').then(function success(response2) {
                             if (response2.length > 0) {
-                                angular.forEach(response2, function(i) {
+                                angular.forEach(response2, function (i) {
                                     if (($scope.ddlGP).toString() == i.semiRefNo.substr(11, 6)) {
                                         $scope.refNo = i.semiRefNo + (i.countRefNo + 1).toString();
                                     }
@@ -160,7 +160,7 @@ app.controller('myVAWAppDashboardCtrl', function($scope, $filter, $state, vawSer
                 else {
                     readAllData('referenceNo-count').then(function success(response3) {
                         if (response3.length > 0) {
-                            angular.forEach(response3, function(i) {
+                            angular.forEach(response3, function (i) {
                                 if (($scope.ddlGP).toString() == i.semiRefNo.substr(11, 6)) {
                                     $scope.refNo = i.semiRefNo + (i.countRefNo + 1).toString();
                                 }
@@ -185,13 +185,13 @@ app.controller('myVAWAppDashboardCtrl', function($scope, $filter, $state, vawSer
     };
 
     $scope.faArray = [];
-    $scope.addFAID = function() {
+    $scope.addFAID = function () {
         if (($scope.txtAadhaarNo != '' && $scope.txtAadhaarNo != null && $scope.txtAadhaarNo != undefined && $scope.txtAadhaarNo.length == 12) || ($scope.txtFarmerID != '' && $scope.txtFarmerID != null && $scope.txtFarmerID != undefined && ($scope.txtAadhaarNo == null || $scope.txtAadhaarNo == '' || $scope.txtAadhaarNo == undefined || $scope.txtAadhaarNo.length == 12))) {
             if ($scope.txtFarmerID != '' && $scope.txtFarmerID != null && $scope.txtFarmerID != undefined) {
                 var l = $scope.districtName + '/' + $scope.txtFarmerID;
                 var r = true;
                 if ($scope.faArray.length > 0) {
-                    angular.forEach($scope.faArray, function(i) {
+                    angular.forEach($scope.faArray, function (i) {
                         if (i.FarmerID == l || (i.AadhaarNo == $scope.txtAadhaarNo && i.AadhaarNo != null && $scope.txtAadhaarNo != null)) {
                             alert('The Farmer ID or Aadhaar No. is already entered.');
                             r = false;
@@ -209,7 +209,7 @@ app.controller('myVAWAppDashboardCtrl', function($scope, $filter, $state, vawSer
             else {
                 var r = true;
                 if ($scope.faArray.length > 0) {
-                    angular.forEach($scope.faArray, function(i) {
+                    angular.forEach($scope.faArray, function (i) {
                         if (i.AadhaarNo == $scope.txtAadhaarNo) {
                             alert('The Aadhaar No. is already entered.');
                             r = false;
@@ -233,7 +233,7 @@ app.controller('myVAWAppDashboardCtrl', function($scope, $filter, $state, vawSer
         $scope.faArray.splice(index, 1);
     };
 
-    $scope.month = function() {
+    $scope.month = function () {
         var m = new Date().getMonth();
         if (m >= 6 && m <= 10) {
             $scope.rbSeason = 'Kharif';
@@ -244,7 +244,7 @@ app.controller('myVAWAppDashboardCtrl', function($scope, $filter, $state, vawSer
         return $scope.rbSeason;
     };
 
-    $scope.getCropCategories = function() {
+    $scope.getCropCategories = function () {
         if ('indexedDB' in window) {
             readAllData('crop-category').then(function success(response) {
                 if (response.length > 0) {
@@ -263,7 +263,7 @@ app.controller('myVAWAppDashboardCtrl', function($scope, $filter, $state, vawSer
         }
     };
 
-    $scope.getCrops = function(cropCategoryCode) {
+    $scope.getCrops = function (cropCategoryCode) {
         if ('indexedDB' in window) {
             readAllData('crop').then(function success(response) {
                 if (response.length > 0) {
@@ -282,7 +282,7 @@ app.controller('myVAWAppDashboardCtrl', function($scope, $filter, $state, vawSer
         }
     };
 
-    $scope.checkPest = function(cropCode) {
+    $scope.checkPest = function (cropCode) {
         if (cropCode != null || cropCode != undefined) {
             readAllData('pest-disease').then(function success(response) {
                 if (response.length > 0) {
@@ -305,7 +305,7 @@ app.controller('myVAWAppDashboardCtrl', function($scope, $filter, $state, vawSer
         }
     };
 
-    $scope.getCropStages = function() {
+    $scope.getCropStages = function () {
         if ('indexedDB' in window) {
             readAllData('crop-stage').then(function success(response) {
                 if (response.length > 0) {
@@ -324,9 +324,9 @@ app.controller('myVAWAppDashboardCtrl', function($scope, $filter, $state, vawSer
         }
     };
 
-    var addFarmerData = function(faData, callback) {
-        angular.forEach(faData, function(i) {
-            writeData('refNo-fID-aID', i).then(function() {
+    var addFarmerData = function (faData, callback) {
+        angular.forEach(faData, function (i) {
+            writeData('refNo-fID-aID', i).then(function () {
             }, function error(response) {
                 console.log(response.status);
             }).catch(function err(error) {
@@ -336,7 +336,7 @@ app.controller('myVAWAppDashboardCtrl', function($scope, $filter, $state, vawSer
         callback();
     };
 
-    $scope.submitCropDetails = function(isValid) {
+    $scope.submitCropDetails = function (isValid) {
         if (isValid) {
             if ($scope.faArray.length > 0) {
                 var message = confirm('Do you really want to submit the form?');
@@ -353,7 +353,7 @@ app.controller('myVAWAppDashboardCtrl', function($scope, $filter, $state, vawSer
                         VAWCode: $scope.vawCode
                     };
                     var faData = [];
-                    angular.forEach($scope.faArray, function(i) {
+                    angular.forEach($scope.faArray, function (i) {
                         var encodedAN = null;
                         if (i.AadhaarNo != null) {
                             encodedAN = btoa(i.AadhaarNo);
@@ -370,9 +370,9 @@ app.controller('myVAWAppDashboardCtrl', function($scope, $filter, $state, vawSer
                         Status: 0
                     };
                     if ('indexedDB' in window) {
-                        writeData('crop-details-entry', cropData).then(function() {
-                            addFarmerData(faData, function() {
-                                writeData('referenceNo-status', refNoStatus).then(function() {
+                        writeData('crop-details-entry', cropData).then(function () {
+                            addFarmerData(faData, function () {
+                                writeData('referenceNo-status', refNoStatus).then(function () {
                                     alert('The crop information is submitted with the Reference No. ' + cropData.ReferenceNo + '.');
                                     vawService.setReferenceNo(cropData.ReferenceNo);
                                     vawService.setCropCode(cropData.CropCode);
@@ -382,7 +382,7 @@ app.controller('myVAWAppDashboardCtrl', function($scope, $filter, $state, vawSer
                                 }).catch(function err(error) {
                                     console.log('An error occurred...', error);
                                 });
-                           });
+                            });
                         }, function error(response) {
                             console.log(response.status);
                         }).catch(function err(error) {
@@ -400,13 +400,13 @@ app.controller('myVAWAppDashboardCtrl', function($scope, $filter, $state, vawSer
         }
     };
 
-    $scope.getCropDetailsData = function() {
+    $scope.getCropDetailsData = function () {
         document.getElementById('top').scrollIntoView();
         $scope.referenceNo = vawService.getReferenceNo();
         $scope.cropCode = vawService.getCropCode();
     };
 
-    $scope.getPestDiseases = function() {
+    $scope.getPestDiseases = function () {
         if ('indexedDB' in window) {
             readAllData('pest-disease').then(function success(response) {
                 if (response.length > 0) {
@@ -431,7 +431,7 @@ app.controller('myVAWAppDashboardCtrl', function($scope, $filter, $state, vawSer
         }
     };
 
-    $scope.getPestPopulation = function(pestCode) {
+    $scope.getPestPopulation = function (pestCode) {
         if ('indexedDB' in window) {
             readAllData('pest-disease-intensity').then(function success(response) {
                 if (response.length > 0) {
@@ -439,7 +439,7 @@ app.controller('myVAWAppDashboardCtrl', function($scope, $filter, $state, vawSer
                     if ($scope.pestPopulation.length > 0) {
                         var mppArray = [];
                         var hppArray = [];
-                        angular.forEach($scope.pestPopulation, function(i) {
+                        angular.forEach($scope.pestPopulation, function (i) {
                             var mpp = {
                                 mppObj: i.ModerateIntensityPopulation
                             };
@@ -466,7 +466,7 @@ app.controller('myVAWAppDashboardCtrl', function($scope, $filter, $state, vawSer
         }
     };
 
-    $scope.getPesticides = function(pestCode) {
+    $scope.getPesticides = function (pestCode) {
         if ('indexedDB' in window) {
             readAllData('pesticide').then(function success(response) {
                 if (response.length > 0) {
@@ -478,7 +478,7 @@ app.controller('myVAWAppDashboardCtrl', function($scope, $filter, $state, vawSer
                         readItemFromData('crop', $scope.cropCode).then(function success(response) {
                             if (response != null && response != undefined && response != '') {
                                 var cropName = response.CropName;
-                                angular.forEach(advisories, function(i) {
+                                angular.forEach(advisories, function (i) {
                                     var ma = {
                                         maObj: cropName + ' - ' + pestDetails[0].PestDiseaseName + ' - ' + i.PesticideName + ' - ' + i.RecommendedDose + ' / ' + i.PesticideNameOdia + ' - ' + i.RecommendedDoseOdia
                                     };
@@ -521,7 +521,7 @@ app.controller('myVAWAppDashboardCtrl', function($scope, $filter, $state, vawSer
     };
 
     $scope.pdIntensity = [];
-    $scope.checkAdvisoryandPP = function(pestCode) {
+    $scope.checkAdvisoryandPP = function (pestCode) {
         if (pestCode != null || pestCode != undefined) {
             readAllData('pesticide').then(function success(response) {
                 if (response.length > 0) {
@@ -558,7 +558,7 @@ app.controller('myVAWAppDashboardCtrl', function($scope, $filter, $state, vawSer
         }
     };
 
-    $scope.submitPestDetails = function(isValid) {
+    $scope.submitPestDetails = function (isValid) {
         if (isValid) {
             var maa = parseFloat($scope.txtMediumAreaAffected);
             var haa = parseFloat($scope.txtHighAreaAffected);
@@ -595,8 +595,8 @@ app.controller('myVAWAppDashboardCtrl', function($scope, $filter, $state, vawSer
                                             Status: 0
                                         };
                                         if ('indexedDB' in window) {
-                                            writeData('pest-details-entry', pestData).then(function() {
-                                                writeData('referenceNo-status', refNoStatus).then(function() {
+                                            writeData('pest-details-entry', pestData).then(function () {
+                                                writeData('referenceNo-status', refNoStatus).then(function () {
                                                     alert('The pest information is submitted with the Reference No. ' + pestData.ReferenceNo + '.');
                                                     vawService.setReferenceNo(pestData.ReferenceNo);
                                                     $state.go('dashboard.capturePhoto');
@@ -658,25 +658,25 @@ app.controller('myVAWAppDashboardCtrl', function($scope, $filter, $state, vawSer
         }
     };
 
-    $scope.getPestDetailsData = function() {
+    $scope.getPestDetailsData = function () {
         document.getElementById('top').scrollIntoView();
         $scope.referenceNo = vawService.getReferenceNo();
     };
 
-    $scope.readFile = function(e) {
+    $scope.readFile = function (e) {
         var file = e.files[0];
         if (e.files && file) {
             var reader = new FileReader();
             var blob = file.slice(0, 4);
             reader.readAsArrayBuffer(blob);
-            reader.onload = function(event) {
-                checkMIMEType(event, file, function(obj) {
+            reader.onload = function (event) {
+                checkMIMEType(event, file, function (obj) {
                     if (obj.fileName == null || obj.fileName == '' || obj.fileName == undefined || obj.fileType == 'Unknown / Missing Extension' || obj.binaryFileType == 'Unknown File Type') {
                         alert('Invalid File.');
                         return false;
                     }
                     else {
-                        compressImage(file, reader, obj.fileName, function(compressedFile) {
+                        compressImage(file, reader, obj.fileName, function (compressedFile) {
                             getImage(compressedFile, e, reader);
                             getGeolocation(e.parentElement.id);
                         });
@@ -686,11 +686,11 @@ app.controller('myVAWAppDashboardCtrl', function($scope, $filter, $state, vawSer
         }
     };
 
-    var checkMIMEType = function(event, file, callback) {
+    var checkMIMEType = function (event, file, callback) {
         if (event.target.readyState === FileReader.DONE) {
             var uint = new Uint8Array(event.target.result);
             var bytes = [];
-            uint.forEach(function(byte) {
+            uint.forEach(function (byte) {
                 bytes.push(byte.toString(16));
             })
             var hex = bytes.join('').toUpperCase();
@@ -703,7 +703,7 @@ app.controller('myVAWAppDashboardCtrl', function($scope, $filter, $state, vawSer
         }
     };
 
-    var getMIMEType = function(signature) {
+    var getMIMEType = function (signature) {
         switch (signature) {
             case '89504E47':
                 return 'image/png'
@@ -721,21 +721,21 @@ app.controller('myVAWAppDashboardCtrl', function($scope, $filter, $state, vawSer
         }
     };
 
-    var compressImage = function(file, reader, fileName, callback) {
+    var compressImage = function (file, reader, fileName, callback) {
         var width = 500;
         var height = 300;
         reader.readAsDataURL(file);
         reader.onload = function (evt) {
             var img = new Image();
             img.src = evt.target.result;
-            img.onload = function() {
+            img.onload = function () {
                 var elem = document.createElement('canvas');
                 elem.width = width;
                 elem.height = height;
                 var ctx = elem.getContext('2d');
                 ctx.drawImage(img, 0, 0, width, height);
-                ctx.canvas.toBlob(function(blob) {
-                   var compressedFile =  new File([blob], fileName, {
+                ctx.canvas.toBlob(function (blob) {
+                    var compressedFile = new File([blob], fileName, {
                         type: 'image/jpeg',
                         lastModified: Date.now()
                     });
@@ -748,7 +748,7 @@ app.controller('myVAWAppDashboardCtrl', function($scope, $filter, $state, vawSer
         };
     };
 
-    var getImage = function(file, e, reader) {
+    var getImage = function (file, e, reader) {
         reader.readAsDataURL(file);
         reader.onload = function (evt) {
             appendImage(e.parentElement.id, evt);
@@ -758,7 +758,7 @@ app.controller('myVAWAppDashboardCtrl', function($scope, $filter, $state, vawSer
         };
     };
 
-    var appendImage = function(id, evt) {
+    var appendImage = function (id, evt) {
         if (id == 'recapture1') { id = 'image1'; } else if (id == 'recapture2') { id = 'image2'; } else if (id == 'recapture3') { id = 'image3'; }
         var divID = document.getElementById(id);
         if (divID) {
@@ -769,7 +769,7 @@ app.controller('myVAWAppDashboardCtrl', function($scope, $filter, $state, vawSer
         }
     };
 
-    var getGeolocation = function(id) {
+    var getGeolocation = function (id) {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function (position) {
                 var lat = parseFloat(position.coords.latitude.toFixed(7));
@@ -779,7 +779,7 @@ app.controller('myVAWAppDashboardCtrl', function($scope, $filter, $state, vawSer
                         $scope.firstLatitude = lat;
                         $scope.firstLongitude = long;
                     }
-                    else{
+                    else {
                         $scope.firstLatitude = undefined;
                         $scope.firstLongitude = undefined;
                     }
@@ -789,7 +789,7 @@ app.controller('myVAWAppDashboardCtrl', function($scope, $filter, $state, vawSer
                         $scope.secondLatitude = lat;
                         $scope.secondLongitude = long;
                     }
-                    else{
+                    else {
                         $scope.secondLatitude = undefined;
                         $scope.secondLongitude = undefined;
                     }
@@ -799,14 +799,14 @@ app.controller('myVAWAppDashboardCtrl', function($scope, $filter, $state, vawSer
                         $scope.thirdLatitude = lat;
                         $scope.thirdLongitude = long;
                     }
-                    else{
+                    else {
                         $scope.thirdLatitude = undefined;
                         $scope.thirdLongitude = undefined;
                     }
                 }
                 $scope.$apply();
             }, function (error) {
-                switch(error.code) {
+                switch (error.code) {
                     case error.PERMISSION_DENIED:
                         alert('User denied the request for Geolocation. Please visit "https://support.google.com/chrome/answer/142065" to re-enable and use the application.');
                         if (id == 'cameraBtn1' || id == 'recapture1') {
@@ -853,65 +853,65 @@ app.controller('myVAWAppDashboardCtrl', function($scope, $filter, $state, vawSer
         }
     };
 
-    $scope.submitPhotoDetails = function(isValid) {
+    $scope.submitPhotoDetails = function (isValid) {
         if (isValid) {
             if (document.getElementById("image1") !== null) {
                 // if ($scope.firstLatitude != undefined && $scope.firstLatitude != null && $scope.firstLatitude != '' && $scope.firstLongitude != undefined && $scope.firstLongitude != null && $scope.firstLongitude != '') {
                 if ($scope.firstLatitude != undefined && $scope.firstLatitude != null && $scope.firstLongitude != undefined && $scope.firstLongitude != null) {
                     // if ($scope.firstLatitude != $scope.secondLatitude && $scope.firstLatitude != $scope.thirdLatitude && $scope.firstLongitude != $scope.secondLongitude && $scope.firstLongitude != $scope.thirdLongitude && (($scope.secondLatitude != undefined && $scope.secondLatitude != null && $scope.thirdLatitude != undefined && $scope.thirdLatitude != null && $scope.secondLatitude != $scope.thirdLatitude) || (($scope.secondLatitude == undefined || $scope.secondLatitude == null) && ($scope.thirdLatitude == undefined || $scope.thirdLatitude == null) && $scope.secondLatitude == $scope.thirdLatitude) || (((($scope.secondLatitude == undefined || $scope.secondLatitude == null) && $scope.thirdLatitude != undefined && $scope.thirdLatitude != null) || ($scope.secondLatitude != undefined && $scope.secondLatitude != null && ($scope.thirdLatitude == undefined || $scope.thirdLatitude == null))) && $scope.secondLatitude != $scope.thirdLatitude)) && (($scope.secondLongitude != undefined && $scope.secondLongitude != null && $scope.thirdLongitude != undefined && $scope.thirdLongitude != null && $scope.secondLongitude != $scope.thirdLongitude) || (($scope.secondLongitude == undefined || $scope.secondLongitude == null) && ($scope.thirdLongitude == undefined || $scope.thirdLongitude == null) && $scope.secondLongitude == $scope.thirdLongitude) || (((($scope.secondLongitude == undefined || $scope.secondLongitude == null) && $scope.thirdLongitude != undefined && $scope.thirdLongitude != null) || ($scope.secondLongitude != undefined && $scope.secondLongitude != null && ($scope.thirdLongitude == undefined || $scope.thirdLongitude == null))) && $scope.secondLongitude != $scope.thirdLongitude))) {
-                        var message = confirm('Do you really want to submit the form?');
-                        if (message) {
-                            if ($scope.referenceNo != null && $scope.referenceNo != undefined && $scope.referenceNo != '') {
-                                var image1Data = document.getElementById("image1").src.replace('data:image/jpeg;base64,', '');
-                                if (document.getElementById("image2") !== null) {
-                                    var image2Data = document.getElementById("image2").src.replace('data:image/jpeg;base64,', '');
-                                }
-                                else {
-                                    var image2Data = null; $scope.secondLatitude = null; $scope.secondLongitude = null;
-                                }
-                                if (document.getElementById("image3") !== null) {
-                                    var image3Data = document.getElementById("image3").src.replace('data:image/jpeg;base64,', '');
-                                }
-                                else {
-                                    var image3Data = null; $scope.thirdLatitude = null; $scope.thirdLongitude = null;
-                                }
-                                var plData = {
-                                    ReferenceNo: $scope.referenceNo,
-                                    Image1: image1Data,
-                                    Image2: image2Data,
-                                    Image3: image3Data,
-                                    FixedLandLatitude: $scope.firstLatitude,
-                                    FixedLandLongitude: $scope.firstLongitude,
-                                    RandomLandLatitude1: $scope.secondLatitude,
-                                    RandomLandLongitude1: $scope.secondLongitude,
-                                    RandomLandLatitude2: $scope.thirdLatitude,
-                                    RandomLandLongitude2: $scope.thirdLongitude
-                                };
-                                var refNoStatus = {
-                                    ReferenceNo: $scope.referenceNo,
-                                    Status: 1
-                                };
-                                if ('indexedDB' in window) {
-                                    writeData('photo-location-entry', plData).then(function() {
-                                        writeData('referenceNo-status', refNoStatus).then(function() {
-                                            alert('The photo and location information is submitted with the Reference No. ' + plData.ReferenceNo + '.');
-                                            location.href = 'http://localhost:3000/vawApp#!/home';
-                                        }, function error(response) {
-                                            console.log(response.status);
-                                        }).catch(function err(error) {
-                                            console.log('An error occurred...', error);
-                                        });
+                    var message = confirm('Do you really want to submit the form?');
+                    if (message) {
+                        if ($scope.referenceNo != null && $scope.referenceNo != undefined && $scope.referenceNo != '') {
+                            var image1Data = document.getElementById("image1").src.replace('data:image/jpeg;base64,', '');
+                            if (document.getElementById("image2") !== null) {
+                                var image2Data = document.getElementById("image2").src.replace('data:image/jpeg;base64,', '');
+                            }
+                            else {
+                                var image2Data = null; $scope.secondLatitude = null; $scope.secondLongitude = null;
+                            }
+                            if (document.getElementById("image3") !== null) {
+                                var image3Data = document.getElementById("image3").src.replace('data:image/jpeg;base64,', '');
+                            }
+                            else {
+                                var image3Data = null; $scope.thirdLatitude = null; $scope.thirdLongitude = null;
+                            }
+                            var plData = {
+                                ReferenceNo: $scope.referenceNo,
+                                Image1: image1Data,
+                                Image2: image2Data,
+                                Image3: image3Data,
+                                FixedLandLatitude: $scope.firstLatitude,
+                                FixedLandLongitude: $scope.firstLongitude,
+                                RandomLandLatitude1: $scope.secondLatitude,
+                                RandomLandLongitude1: $scope.secondLongitude,
+                                RandomLandLatitude2: $scope.thirdLatitude,
+                                RandomLandLongitude2: $scope.thirdLongitude
+                            };
+                            var refNoStatus = {
+                                ReferenceNo: $scope.referenceNo,
+                                Status: 1
+                            };
+                            if ('indexedDB' in window) {
+                                writeData('photo-location-entry', plData).then(function () {
+                                    writeData('referenceNo-status', refNoStatus).then(function () {
+                                        alert('The photo and location information is submitted with the Reference No. ' + plData.ReferenceNo + '.');
+                                        location.href = 'http://localhost:3000/vawApp#!/home';
                                     }, function error(response) {
                                         console.log(response.status);
                                     }).catch(function err(error) {
                                         console.log('An error occurred...', error);
                                     });
-                                }
-                            }
-                            else {
-                                alert('Please submit the Crop Details & Pest Details Sections.');
+                                }, function error(response) {
+                                    console.log(response.status);
+                                }).catch(function err(error) {
+                                    console.log('An error occurred...', error);
+                                });
                             }
                         }
+                        else {
+                            alert('Please submit the Crop Details & Pest Details Sections.');
+                        }
+                    }
                     // }
                     // else {
                     //     alert('GPS Location of all photos must be different.');
@@ -1059,26 +1059,26 @@ app.directive('integerAll', function () {
                     else if ($.inArray(event.which, [110, 190]) > -1 && oVal.indexOf('.') > -1) event.preventDefault();
                 }
             })
-            .on('blur', function () {
-                if (element.val() == '' || element.val() == '-') {
-                    ngModelCtrl.$setViewValue('');
-                }
-                else if(parseFloat(element.val()) == 0.0){
-                    ngModelCtrl.$setViewValue('0');
-                }
-                else if (attrs.allowDecimal == "false") {
-                    ngModelCtrl.$setViewValue(element.val());
-                }
-                else {
-                    if (attrs.decimalUpto) {
-                        var fixedValue = parseFloat(element.val()).toFixed(attrs.decimalUpto);
+                .on('blur', function () {
+                    if (element.val() == '' || element.val() == '-') {
+                        ngModelCtrl.$setViewValue('');
                     }
-                    else { var fixedValue = parseFloat(element.val()).toFixed(2); }
-                    ngModelCtrl.$setViewValue(fixedValue);
-                }
-                ngModelCtrl.$render();
-                scope.$apply();
-            });
+                    else if (parseFloat(element.val()) == 0.0) {
+                        ngModelCtrl.$setViewValue('0');
+                    }
+                    else if (attrs.allowDecimal == "false") {
+                        ngModelCtrl.$setViewValue(element.val());
+                    }
+                    else {
+                        if (attrs.decimalUpto) {
+                            var fixedValue = parseFloat(element.val()).toFixed(attrs.decimalUpto);
+                        }
+                        else { var fixedValue = parseFloat(element.val()).toFixed(2); }
+                        ngModelCtrl.$setViewValue(fixedValue);
+                    }
+                    ngModelCtrl.$render();
+                    scope.$apply();
+                });
             ngModelCtrl.$parsers.push(function (text) {
                 var oVal = ngModelCtrl.$modelValue;
                 var nVal = ngModelCtrl.$viewValue;

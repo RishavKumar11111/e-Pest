@@ -1,8 +1,8 @@
 var app = angular.module('myHomeFPApp', []);
 
-app.controller('myForgotPWDCtrl', function($scope, $http) {
+app.controller('myForgotPWDCtrl', function ($scope, $http) {
 
-    var getCaptcha = function() {
+    var getCaptcha = function () {
         $scope.URL = 'http://localhost:3000/captcha';
     };
     getCaptcha();
@@ -10,7 +10,7 @@ app.controller('myForgotPWDCtrl', function($scope, $http) {
     $scope.abc = true;
     $scope.def = false;
     $scope.xyz = false;
-    $scope.showHide = function() {
+    $scope.showHide = function () {
         if (document.getElementById('msg').value.includes('Accepted')) {
             alert('An OTP has been sent to your registered Mobile No.');
             $scope.abc = false;
@@ -34,7 +34,7 @@ app.controller('myForgotPWDCtrl', function($scope, $http) {
         }
     };
 
-    $scope.sendOTP = function() {
+    $scope.sendOTP = function () {
         $http.get('http://localhost:3000/sendOTP').then(function success(response1) {
             if (response1.data.includes('Accepted')) {
                 alert('An OTP has been sent to your registered Mobile No.');
@@ -51,7 +51,7 @@ app.controller('myForgotPWDCtrl', function($scope, $http) {
 
     var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})");
     var mediumRegex = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
-    
+
     $scope.npCheck = {
         'padding-top': '8px'
     };
@@ -60,7 +60,7 @@ app.controller('myForgotPWDCtrl', function($scope, $http) {
         'padding-top': '8px'
     };
 
-    $scope.analyzeNP = function(value) {
+    $scope.analyzeNP = function (value) {
         if (strongRegex.test(value)) {
             $scope.nPWDCheck = "glyphicon glyphicon-ok";
             $scope.npCheck['color'] = 'green';
@@ -73,9 +73,9 @@ app.controller('myForgotPWDCtrl', function($scope, $http) {
         }
     };
 
-    $scope.analyzeCP = function(value) {
+    $scope.analyzeCP = function (value) {
         $scope.pnm = null;
-        if(strongRegex.test(value)) {
+        if (strongRegex.test(value)) {
             if ($scope.txtNewPassword === $scope.txtConfirmPassword) {
                 $scope.cPWDCheck = "glyphicon glyphicon-ok";
                 $scope.cpCheck['color'] = 'green';

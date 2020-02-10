@@ -1,4 +1,4 @@
-app.controller('myJDAPPDashboardCtrl', function($scope, $http, $filter, $timeout) {
+app.controller('myJDAPPDashboardCtrl', function ($scope, $http, $filter, $timeout) {
 
     var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
@@ -26,7 +26,7 @@ app.controller('myJDAPPDashboardCtrl', function($scope, $http, $filter, $timeout
         });
     };
 
-    $scope.getPests = function() {
+    $scope.getPests = function () {
         $http.get('http://localhost:3000/jdapp/getPestDiseases?cropCode=' + $scope.ddlCrop).then(function success(response) {
             $scope.pests = response.data;
             var k = { PestDiseaseCode: 1, PestDiseaseName: 'Unidentified Pests' };
@@ -40,7 +40,7 @@ app.controller('myJDAPPDashboardCtrl', function($scope, $http, $filter, $timeout
         });
     };
 
-    $scope.clearData = function() {
+    $scope.clearData = function () {
         // document.getElementById('cbmi').checked = false;
         // document.getElementById('cbhi').checked = false;
         // $scope.cbMIntensity = false;
@@ -59,7 +59,7 @@ app.controller('myJDAPPDashboardCtrl', function($scope, $http, $filter, $timeout
         $scope.taOHAdvisory = null;
     };
 
-    $scope.checkPestIntensityPest = function() {
+    $scope.checkPestIntensityPest = function () {
         if ($scope.ddlPest == null || ($scope.cbMIntensity == false || $scope.cbMIntensity == undefined) && ($scope.cbHIntensity == false || $scope.cbHIntensity == undefined)) {
             alert('Please select the Pest and Pest Intensity.');
         }
@@ -188,7 +188,7 @@ app.controller('myJDAPPDashboardCtrl', function($scope, $http, $filter, $timeout
     };
 
     $scope.pestDiseases = [];
-    $scope.getPestDiseases = function() {
+    $scope.getPestDiseases = function () {
         var crop = ($filter('filter')($scope.refNoDetails, { ReferenceNo: $scope.pd.ReferenceNo }, true));
         $http.get('http://localhost:3000/jdapp/getPestDiseases?cropCode=' + crop[0].CropCode).then(function success(response) {
             $scope.pestDiseases = response.data;
@@ -200,14 +200,14 @@ app.controller('myJDAPPDashboardCtrl', function($scope, $http, $filter, $timeout
     };
 
     $scope.pestPopulation = [];
-    $scope.getPestPopulation = function(pestCode) {
+    $scope.getPestPopulation = function (pestCode) {
         if (pestCode != undefined) {
             $http.get('http://localhost:3000/jdapp/getPestPopulation?pestCode=' + pestCode).then(function success(response) {
                 $scope.pestPopulation = response.data;
                 var mppArray = [];
                 var hppArray = [];
                 if ($scope.pestPopulation.length > 0) {
-                    angular.forEach($scope.pestPopulation, function(i) {
+                    angular.forEach($scope.pestPopulation, function (i) {
                         var mpp = {
                             mppObj: i.ModerateIntensityPopulation
                         };
@@ -233,7 +233,7 @@ app.controller('myJDAPPDashboardCtrl', function($scope, $http, $filter, $timeout
         }
     };
 
-    $scope.getPesticides = function(pestCode) {
+    $scope.getPesticides = function (pestCode) {
         if (pestCode != undefined) {
             $http.get('http://localhost:3000/jdapp/getPesticide?pestCode=' + pestCode).then(function success(response) {
                 var advisories = response.data;
@@ -249,7 +249,7 @@ app.controller('myJDAPPDashboardCtrl', function($scope, $http, $filter, $timeout
                     }
                     if ($scope.pestDiseases.length > 0) {
                         var pest = ($filter('filter')($scope.pestDiseases, { PestDiseaseCode: pestCode }, true));
-                        angular.forEach(advisories, function(i) {
+                        angular.forEach(advisories, function (i) {
                             var ma = {
                                 maObj: crop[0].CropName + ' - ' + pest[0].PestDiseaseName + ' - ' + i.PesticideName + ' - ' + i.RecommendedDose
                             };
@@ -261,7 +261,7 @@ app.controller('myJDAPPDashboardCtrl', function($scope, $http, $filter, $timeout
                         });
                     }
                     else if ($scope.pd != undefined) {
-                        angular.forEach(advisories, function(i) {
+                        angular.forEach(advisories, function (i) {
                             var ma = {
                                 maObj: crop[0].CropName + ' - ' + $scope.pd.PestDiseaseName + ' - ' + i.PesticideName + ' - ' + i.RecommendedDose
                             };
@@ -274,7 +274,7 @@ app.controller('myJDAPPDashboardCtrl', function($scope, $http, $filter, $timeout
                     }
                     else {
                         var pest = ($filter('filter')($scope.pests, { PestDiseaseCode: pestCode }, true));
-                        angular.forEach(advisories, function(i) {
+                        angular.forEach(advisories, function (i) {
                             var ma = {
                                 maObj: crop[0].CropName + ' - ' + pest[0].PestDiseaseName + ' - ' + i.PesticideName + ' - ' + i.RecommendedDose + ' / ' + i.PesticideNameOdia + ' - ' + i.RecommendedDoseOdia
                             };
@@ -302,7 +302,7 @@ app.controller('myJDAPPDashboardCtrl', function($scope, $http, $filter, $timeout
             });
         }
     };
-    
+
     $scope.updatePestDetails = function (isValid) {
         if (isValid) {
             var maa = parseFloat($scope.txtMediumAreaAffected);
@@ -401,13 +401,13 @@ app.controller('myJDAPPDashboardCtrl', function($scope, $http, $filter, $timeout
         }
     };
 
-    $scope.updateMADetails = function(isValid) {
+    $scope.updateMADetails = function (isValid) {
         if (isValid) {
             if ($scope.refNoDetails != [] && $scope.rbPI == 'Yes' && (($scope.cbMIntensity == true && ($scope.cbHIntensity == false || $scope.cbHIntensity == undefined) && $scope.ddlMA != null && $scope.ddlHA == null) || ($scope.cbHIntensity == true && ($scope.cbMIntensity == false || $scope.cbMIntensity == undefined) && $scope.ddlHA != null && $scope.ddlMA == null) || ($scope.cbMIntensity == true && $scope.cbHIntensity == true && $scope.ddlMA != null && $scope.ddlHA != null))) {
                 var message = confirm('Do you really want to submit the form?');
                 if (message) {
                     var myData = [];
-                    angular.forEach($scope.refNoDetails, function(i) {
+                    angular.forEach($scope.refNoDetails, function (i) {
                         var k = {};
                         k.ReferenceNo = i.ReferenceNo;
                         myData.push(k);
@@ -417,7 +417,7 @@ app.controller('myJDAPPDashboardCtrl', function($scope, $http, $filter, $timeout
                         ma: $scope.ddlMA,
                         ha: $scope.ddlHA
                     };
-                    $http.post('http://localhost:3000/jdapp/updateMADetails', { data: {refNos: myData, pestData: l} }, { credentials: 'same-origin', headers: { 'CSRF-Token': token } }).then(function success(response) {
+                    $http.post('http://localhost:3000/jdapp/updateMADetails', { data: { refNos: myData, pestData: l } }, { credentials: 'same-origin', headers: { 'CSRF-Token': token } }).then(function success(response) {
                         var result = response.data;
                         if (result == '1') {
                             alert('The records are updated.');
@@ -451,7 +451,7 @@ app.controller('myJDAPPDashboardCtrl', function($scope, $http, $filter, $timeout
                     var message = confirm('Do you really want to submit the form?');
                     if (message) {
                         var myData = [];
-                        angular.forEach($scope.refNoDetails, function(i) {
+                        angular.forEach($scope.refNoDetails, function (i) {
                             var k = {};
                             k.ReferenceNo = i.ReferenceNo;
                             k.JDAPPAdvisoryModerate = $scope.taOMAdvisory;

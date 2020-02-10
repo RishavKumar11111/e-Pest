@@ -1,0 +1,181 @@
+<%- include('header.ejs') -%>
+<script type="text/javascript" src="../public/controllers/myGeneralAdvisoryCtrl.js"></script>
+<script type="text/javascript" src="../public/javascripts/sha256.js"></script>
+<link type="text/css" rel=stylesheet href="../public/stylesheets/bootstrap.min.css" />
+<script src="../../public/javascripts/angular-filter.min.js"></script>
+<style>
+    .form-label
+    {
+        font-family: initial;
+        margin-top: 9px;
+        font-size: 16px;
+    }
+</style>
+<div class="content-outer" id="COntentDiv" ng-app="myGeneralAdvisoryApp" ng-cloak ng-controller="myGeneralAdvisoryCtrl" ng-init="getCropCategories()">
+    <div class="content">     
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading" style="font-weight: bold;background: #074b72;color:  white;text-align: center">General Advisory Report</div>
+                    <div class="panel-body">
+                        <div class="x_content">
+                            <br />
+                            <div class="col-md-12 col-sm-12 col-xs-12" style="height: 44px">
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <label style="text-align: left; padding-top: 8px; white-space: nowrap" class="control-label col-md-4 col-sm-4 col-xs-12">Crop Category : <span style="color: red">*</span></label>
+                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                            <select class="form-control" ng-model="ddlCropCategory" ng-options="i.CategoryCode as i.CategoryName for i in cropCategories" ng-change="getCropsByCategory()">
+                                                <option value="" disabled>Select Crop Category</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <label style="text-align: left; padding-top: 8px" class="control-label col-md-4 col-sm-4 col-xs-12">Crop : <span style="color: red">*</span></label>
+                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                            <select class="form-control" ng-model="ddlCrop" ng-options="i.CropCode as i.CropName for i in crops" ng-change="getPests()">
+                                                <option value="" disabled>Select Crop</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <label style="text-align: left; padding-top: 8px" class="control-label col-md-4 col-sm-4 col-xs-12">Pest :</label>
+                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                            <select class="form-control" ng-model="ddlPest" ng-options="i.PestDiseaseCode as i.PestDiseaseName for i in pests" ng-change="clearData()">
+                                                <option value="">Select Pest</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <label style="text-align: left; padding-top: 10px; white-space: nowrap" class="control-label col-md-4 col-sm-4 col-xs-12">Financial Year : <span style="color: red">*</span></label>
+                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                            <select class="form-control" ng-model="ddlFY">
+                                                <option value="" disabled>Select Financial Year</option>
+                                                <option value="2019-20">2019-20</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-xs-12" style="text-align: left">
+                                    <div class="form-group">
+                                        <label style="text-align: left; padding-top: 8px" class="control-label col-md-4 col-sm-4 col-xs-12">Season : <span style="color: red">*</span></label>
+                                        <div class="col-md-8 col-sm-8 col-xs-12">
+                                            <div class="col-md-6 col-sm-6 col-xs-12" style="padding-top: 7px">
+                                                <input id="kcb" type="checkbox" ng-checked="cbSeason == 'Kharif'" ng-true-value="'K'" ng-model="cbSeason" ng-change="getMonth()"> <span>Kharif</span>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 col-xs-12" style="padding-top: 7px">
+                                                <input id="rcb" type="checkbox" ng-checked="cbSeason == 'Rabi'" ng-true-value="'R'" ng-model="cbSeason" ng-change="getMonth()"> <span>Rabi</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <div class="form-group">
+                                        <label style="text-align: left; white-space: nowrap; padding-top: 8px" class="control-label col-md-4 col-sm-4 col-xs-12">Select Date :</label>
+                                        <div class="col-md-8 col-sm-8 col-xs-12">
+                                            <input type="date" class="form-control" ng-model="dateOfPDE" id="pdeDate" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 10px">
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <label style="text-align: left; padding-top: 10px; white-space: nowrap" class="control-label col-md-4 col-sm-4 col-xs-12">Month : </label>
+                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                            <select class="form-control" ng-model="ddlMonth" ng-options="i.MonthCode as i.MonthName for i in months">
+                                                <option value="" >Select Month</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="ln_solid"></div>
+                            <div class="col-md-12 col-sm-12 col-xs-12 text-center">
+                                <input type="button" class="btn btn-success" style="background-color:#074b72;color:white;text-align: center;" value="Get Pest Details" ng-click="getAdvisoryDetails()"/>
+                            </div>
+                            <div class="clearfix"></div>
+                            <hr />
+                        </div>
+                    </div>
+                </div>  
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="row" ng-show="pestDetails.length > 0">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading" style="font-weight: bold;background: #074b72;color:  white;text-align: center">Advisory Details View</div>
+                    <div class="panel-body">
+			            <div ng-show="poe">
+                            <input type="button" class="btn btn-info" value="Print" ng-click="print($event, 'General Advisory Pest-wise Report')" style="margin-bottom: 10px; float: right" />
+                            <table id="poePrint" class="table table-hover table-striped jambo_table bulk_action">
+                                <thead>
+                                    <tr class="headings" >
+                                        <td style="vertical-align: middle"><b>Serial No.</b></td>
+                                        <td style="vertical-align: middle"><b>Pest Name</b></td>
+                                        <td style="vertical-align: middle"><b>Advisory Details</b></td>
+                                    </tr>
+                                </thead>
+                                <tr ng-repeat="(key, value) in pestDetails | orderBy: 'PestDiseaseName' | groupBy: 'PestDiseaseName'">
+                                    <td style="vertical-align: middle">{{$index + 1}}</td>
+                                    <td style="vertical-align: middle">{{key}}</td>
+                                    <td>
+                                        <table class="table table-hover table-striped jambo_table bulk_action">
+                                            <thead>
+                                                <tr class="headings"> 
+                                                    <td style="vertical-align: middle"><b>Serial No.</b></td>
+                                                    <td style="vertical-align: middle"><b>Advisory in English</b></td>
+                                                    <td style="vertical-align: middle"><b>Advisory in Odia</b></td>
+                                                </tr>
+                                            </thead>
+                                            <tr ng-repeat="i in value">
+                                                <td style="vertical-align: middle">{{$index + 1}}</td>
+                                                <td style="vertical-align: middle">{{i.EnglishAdvisory}}</td>
+                                                <td style="vertical-align: middle">{{i.OdiaAdvisory}}</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table id="poePrint">
+                        </div>  
+                        <div ng-show="oea">
+                            <input type="button" class="btn btn-info" value="Print" ng-click="print($event, 'General Advisory Report')" style="margin-bottom: 10px; float: right" />
+                            <table id="oeaPrint" class="table table-hover table-striped jambo_table bulk_action">
+                                <thead>
+                                    <tr class="headings" >
+                                        <td style="vertical-align: middle"><b>Serial No.</b></td>
+                                        <td style="vertical-align: middle"><b>Advisory in English</b></td>
+                                        <td style="vertical-align: middle"><b>Advisory in Odia</b></td>
+                                    </tr>
+                                </thead>
+                                <tr ng-repeat="i in pestDetails">
+                                    <td style="vertical-align: middle">{{$index + 1}}</td>
+                                    <td style="vertical-align: middle">{{i.EnglishAdvisory}}</td>
+                                    <td style="vertical-align: middle">{{i.OdiaAdvisory}}</td>
+                                </tr>
+                            </table id="oeaPrint">
+                        </div>
+                        <div ng-show="pestDetails.length == 0" style="text-align: center">
+                            <span colspan="5" style="color: red"><b>No records are found.</b></span>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<%- include('footer.ejs') -%>

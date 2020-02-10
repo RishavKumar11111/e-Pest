@@ -1,3 +1,3 @@
-app.controller('myAdminHomeCtrl', function() {
-    
+app.controller('myAdminHomeCtrl', function () {
+
 });

@@ -2,7 +2,7 @@ app.controller('myJDAPPDashbord1Ctrl', function ($scope, $http, $filter) {
 
     var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-    $scope.generateGraphs = function() {
+    $scope.generateGraphs = function () {
         if ($scope.cbSeason != undefined && $scope.cbSeason != null && $scope.ddlFY != undefined && $scope.ddlFY != null) {
             if (myChart9) myChart9.destroy();
             if (myChart10) myChart10.destroy();

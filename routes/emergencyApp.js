@@ -106,7 +106,7 @@ function SendOTP(mobileNo, OTP, callback) {
   var sms = 'e-Pest - OTP for Emergency Pest details is ' + OTP;
   var encodeSMS = encodeURI(sms);
   request('http://www.apicol.nic.in/Registration/EPestSMS?mobileNo=' + mobileNo + '&sms=' + encodeSMS, { json: true }, (err, res, body) => {
-    if (err) { 
+    if (err) {
       console.log(err);
     }
     else {
@@ -121,7 +121,7 @@ router.get('/sendOTP', function (req, res, next) {
   req.session.cookie.expires = 900000;
   req.session.RandomNo = sha256(randomNo.toString());
   var mobileNo = req.query.mobileNo;
-  SendOTP(mobileNo, randomNo, function(response) {
+  SendOTP(mobileNo, randomNo, function (response) {
     res.send(response);
   });
 });
@@ -158,7 +158,7 @@ router.get('/getCropCategories', function (req, res, next) {
   });
 });
 
-router.get('/getCrops', function(req, res, next) {
+router.get('/getCrops', function (req, res, next) {
   res.get('X-Frame-Options');
   var cropCategoryCode = req.query.cropCategoryCode;
   balModule.getCrops(cropCategoryCode).then(function success(response) {
@@ -170,7 +170,7 @@ router.get('/getCrops', function(req, res, next) {
   });
 });
 
-router.get('/getDistricts', function(req, res, next) {
+router.get('/getDistricts', function (req, res, next) {
   res.get('X-Frame-Options');
   balModule.getDistricts().then(function success(response) {
     res.send(response);
@@ -181,7 +181,7 @@ router.get('/getDistricts', function(req, res, next) {
   });
 });
 
-router.get('/getBlocksByDistrict', function(req, res, next) {
+router.get('/getBlocksByDistrict', function (req, res, next) {
   res.get('X-Frame-Options');
   var districtCode = req.query.districtCode;
   balModule.getBlocksByDistrict(districtCode).then(function success(response) {
@@ -193,7 +193,7 @@ router.get('/getBlocksByDistrict', function(req, res, next) {
   });
 });
 
-router.get('/getGPsByBlock', function(req, res, next) {
+router.get('/getGPsByBlock', function (req, res, next) {
   res.get('X-Frame-Options');
   var blockCode = req.query.blockCode;
   balModule.getGPsByBlock(blockCode).then(function success(response) {
@@ -205,7 +205,7 @@ router.get('/getGPsByBlock', function(req, res, next) {
   });
 });
 
-router.get('/getVillagesByGP', function(req, res, next) {
+router.get('/getVillagesByGP', function (req, res, next) {
   res.get('X-Frame-Options');
   var gpCode = req.query.gpCode;
   balModule.getVillagesByGP(gpCode).then(function success(response) {

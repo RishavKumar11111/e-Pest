@@ -1,8 +1,8 @@
-app.controller('myJDAPPADODetailsEntryCtrl', function($scope, $http) {
+app.controller('myJDAPPADODetailsEntryCtrl', function ($scope, $http) {
 
     var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-    $scope.getData = function(k) {
+    $scope.getData = function (k) {
         $scope.dn = k.DistrictName;
         $scope.cuid = k.ADOCode;
         $scope.adoName = k.ADOName;
@@ -10,7 +10,7 @@ app.controller('myJDAPPADODetailsEntryCtrl', function($scope, $http) {
         $scope.adoANo = k.ADOAadhaarNo;
         $scope.status = k.Status;
     };
-    
+
     $scope.getAllADODetails = function () {
         $http.get('http://localhost:3000/jdapp/getAllADODetails').then(function success(response) {
             $scope.adoDetails = response.data;
@@ -21,11 +21,11 @@ app.controller('myJDAPPADODetailsEntryCtrl', function($scope, $http) {
         });
     };
 
-    $scope.submitADODetails = function(userCode, adoName, adoMobileNo, adoAadhaarNo, status) {
+    $scope.submitADODetails = function (userCode, adoName, adoMobileNo, adoAadhaarNo, status) {
         if (userCode != null && userCode != undefined && adoName != null && adoName != undefined && adoMobileNo != null && adoMobileNo != undefined) {
             var ca = (adoAadhaarNo == null || adoAadhaarNo == undefined || adoAadhaarNo == '') ? 'NA' : adoAadhaarNo;
             var st = (status == true) ? 1 : status;
-            var myData = { ADOCode: userCode, ADOName: adoName , ADOMobileNo: adoMobileNo, ADOAadhaarNo: ca, Status: st };
+            var myData = { ADOCode: userCode, ADOName: adoName, ADOMobileNo: adoMobileNo, ADOAadhaarNo: ca, Status: st };
             $http.post('http://localhost:3000/jdapp/submitADODetails', { data: myData }, { credentials: 'same-origin', headers: { 'CSRF-Token': token } }).then(function success(response) {
                 var result = response.data;
                 if (result == 'OK') {

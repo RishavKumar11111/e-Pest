@@ -6,9 +6,9 @@ app.controller('myADOAppSyncCtrl', function ($scope, $http, $filter, $window) {
         $scope.rNo = rno;
     };
 
-    $scope.reload = function() {
-        setTimeout(function() {
-            if(!($window.location.hash == '#!/synchronize#loaded')) {
+    $scope.reload = function () {
+        setTimeout(function () {
+            if (!($window.location.hash == '#!/synchronize#loaded')) {
                 $window.location.href = $window.location.href + '#loaded';
                 $window.location.reload();
             }
@@ -24,7 +24,7 @@ app.controller('myADOAppSyncCtrl', function ($scope, $http, $filter, $window) {
     //     }
     // };
 
-    $scope.checkDay = function() {
+    $scope.checkDay = function () {
         var dt = new Date();
         var d = dt.getDay();
         if (d == 0) {
@@ -144,7 +144,7 @@ app.controller('myADOAppSyncCtrl', function ($scope, $http, $filter, $window) {
         }
     };
 
-    var redirect = function(result, c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, callback) {
+    var redirect = function (result, c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, callback) {
         if (c0 == result[0].length && c1 == result[1].length && c2 == result[2].length && c3 == result[3].length && c4 == result[4].length && c5 == result[5].length && c6 == result[6].length && c7 == result[7].length && c8 == result[8].length && c9 == result[9].length && c10 == 1) {
             alert('Data synchronized successfully.');
             document.getElementById("loader").style.display = 'none';
@@ -167,7 +167,7 @@ app.controller('myADOAppSyncCtrl', function ($scope, $http, $filter, $window) {
                             angular.forEach(result[0], function (i) {
                                 writeData('referenceNo', i).then(function () {
                                     c0++;
-                                    redirect(result, c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, function() { });
+                                    redirect(result, c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, function () { });
                                 }, function error(response) {
                                     console.log(response.status);
                                 }).catch(function err(error) {
@@ -177,7 +177,7 @@ app.controller('myADOAppSyncCtrl', function ($scope, $http, $filter, $window) {
                             angular.forEach(result[1], function (i) {
                                 writeData('crop-details', i).then(function () {
                                     c1++;
-                                    redirect(result, c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, function() { });
+                                    redirect(result, c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, function () { });
                                 }, function error(response) {
                                     console.log(response.status);
                                 }).catch(function err(error) {
@@ -187,7 +187,7 @@ app.controller('myADOAppSyncCtrl', function ($scope, $http, $filter, $window) {
                             angular.forEach(result[2], function (i) {
                                 writeData('pest-details', i).then(function () {
                                     c2++;
-                                    redirect(result, c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, function() { });
+                                    redirect(result, c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, function () { });
                                 }, function error(response) {
                                     console.log(response.status);
                                 }).catch(function err(error) {
@@ -197,7 +197,7 @@ app.controller('myADOAppSyncCtrl', function ($scope, $http, $filter, $window) {
                             angular.forEach(result[3], function (i) {
                                 writeData('photo-location', i).then(function () {
                                     c3++;
-                                    redirect(result, c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, function() { });
+                                    redirect(result, c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, function () { });
                                 }, function error(response) {
                                     console.log(response.status);
                                 }).catch(function err(error) {
@@ -207,7 +207,7 @@ app.controller('myADOAppSyncCtrl', function ($scope, $http, $filter, $window) {
                             angular.forEach(result[4], function (i) {
                                 writeData('pest-disease', i).then(function () {
                                     c4++;
-                                    redirect(result, c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, function() { });
+                                    redirect(result, c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, function () { });
                                 }, function error(response) {
                                     console.log(response.status);
                                 }).catch(function err(error) {
@@ -217,7 +217,7 @@ app.controller('myADOAppSyncCtrl', function ($scope, $http, $filter, $window) {
                             angular.forEach(result[5], function (i) {
                                 writeData('pesticide', i).then(function () {
                                     c5++;
-                                    redirect(result, c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, function() { });
+                                    redirect(result, c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, function () { });
                                 }, function error(response) {
                                     console.log(response.status);
                                 }).catch(function err(error) {
@@ -227,7 +227,7 @@ app.controller('myADOAppSyncCtrl', function ($scope, $http, $filter, $window) {
                             angular.forEach(result[6], function (i) {
                                 writeData('pest-disease-intensity', i).then(function () {
                                     c6++;
-                                    redirect(result, c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, function() { });
+                                    redirect(result, c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, function () { });
                                 }, function error(response) {
                                     console.log(response.status);
                                 }).catch(function err(error) {
@@ -237,7 +237,7 @@ app.controller('myADOAppSyncCtrl', function ($scope, $http, $filter, $window) {
                             angular.forEach(result[7], function (i) {
                                 writeData('referenceNo-status', i).then(function () {
                                     c7++;
-                                    redirect(result, c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, function() { });
+                                    redirect(result, c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, function () { });
                                 }, function error(response) {
                                     console.log(response.status);
                                 }).catch(function err(error) {
@@ -247,7 +247,7 @@ app.controller('myADOAppSyncCtrl', function ($scope, $http, $filter, $window) {
                             angular.forEach(result[8], function (i) {
                                 writeData('emrRefNo-fID', i).then(function () {
                                     c8++;
-                                    redirect(result, c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, function() { });
+                                    redirect(result, c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, function () { });
                                 }, function error(response) {
                                     console.log(response.status);
                                 }).catch(function err(error) {
@@ -257,7 +257,7 @@ app.controller('myADOAppSyncCtrl', function ($scope, $http, $filter, $window) {
                             angular.forEach(result[9], function (i) {
                                 writeData('block', i).then(function () {
                                     c9++;
-                                    redirect(result, c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, function() { });
+                                    redirect(result, c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, function () { });
                                 }, function error(response) {
                                     console.log(response.status);
                                 }).catch(function err(error) {
@@ -266,7 +266,7 @@ app.controller('myADOAppSyncCtrl', function ($scope, $http, $filter, $window) {
                             });
                             writeData('user-login', result[10]).then(function () {
                                 c10++;
-                                redirect(result, c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, function() { });
+                                redirect(result, c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, function () { });
                             }, function error(response) {
                                 console.log(response.status);
                             }).catch(function err(error) {

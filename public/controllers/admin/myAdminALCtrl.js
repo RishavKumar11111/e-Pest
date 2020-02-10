@@ -1,6 +1,6 @@
-app.controller('myAdminALCtrl', function($scope, $http) {
+app.controller('myAdminALCtrl', function ($scope, $http) {
 
-    $scope.getAuditLog = function() {
+    $scope.getAuditLog = function () {
         $http.get('http://localhost:3000/admin/getAuditLog').then(function success(response) {
             $scope.auditLogs = response.data;
         }, function error(response) {
@@ -10,7 +10,7 @@ app.controller('myAdminALCtrl', function($scope, $http) {
         });
     };
 
-    $scope.sort = function(keyname) {
+    $scope.sort = function (keyname) {
         $scope.sortKey = keyname;
         $scope.reverse = !$scope.reverse;
     };

@@ -1,4 +1,4 @@
-app.controller('myOUATEMRCtrl', function($scope, $http, $filter, $timeout) {
+app.controller('myOUATEMRCtrl', function ($scope, $http, $filter, $timeout) {
 
     var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
@@ -23,7 +23,7 @@ app.controller('myOUATEMRCtrl', function($scope, $http, $filter, $timeout) {
         });
     };
 
-    var getImage = function(a, b, c) {
+    var getImage = function (a, b, c) {
         var flp = "data:image/jpeg;base64," + a;
         document.getElementById('flp').setAttribute("src", flp);
         var rlp1 = "data:image/jpeg;base64," + b;
@@ -31,16 +31,16 @@ app.controller('myOUATEMRCtrl', function($scope, $http, $filter, $timeout) {
         var rlp2 = "data:image/jpeg;base64," + c;
         document.getElementById('rlp2').setAttribute("src", rlp2);
     };
-    
+
     $scope.pestPopulation = [];
-    $scope.getPestPopulation = function(pestCode) {
+    $scope.getPestPopulation = function (pestCode) {
         if (pestCode != undefined) {
             $http.get('http://localhost:3000/ouat/getPestPopulation?pestCode=' + pestCode).then(function success(response) {
                 $scope.pestPopulation = response.data;
                 var mppArray = [];
                 var hppArray = [];
                 if ($scope.pestPopulation.length > 0) {
-                    angular.forEach($scope.pestPopulation, function(i) {
+                    angular.forEach($scope.pestPopulation, function (i) {
                         var mpp = {
                             mppObj: i.ModerateIntensityPopulation
                         };
@@ -65,7 +65,7 @@ app.controller('myOUATEMRCtrl', function($scope, $http, $filter, $timeout) {
         }
     };
 
-    $scope.getPestDiseases = function() {
+    $scope.getPestDiseases = function () {
         $http.get('http://localhost:3000/ouat/getPestDiseases?cropCode=' + $scope.ddlCrop).then(function success(response) {
             $scope.pestDiseases = response.data;
         }, function error(response) {
@@ -75,7 +75,7 @@ app.controller('myOUATEMRCtrl', function($scope, $http, $filter, $timeout) {
         });
     };
 
-    $scope.getPesticides = function(pestCode) {
+    $scope.getPesticides = function (pestCode) {
         if (pestCode != undefined) {
             $http.get('http://localhost:3000/ouat/getPesticide?pestCode=' + pestCode).then(function success(response) {
                 var advisories = response.data;
@@ -86,7 +86,7 @@ app.controller('myOUATEMRCtrl', function($scope, $http, $filter, $timeout) {
                     crop = ($filter('filter')($scope.crops, { CropCode: $scope.ddlCrop }, true));
                     if ($scope.pestDiseases.length > 0) {
                         var pest = ($filter('filter')($scope.pestDiseases, { PestDiseaseCode: pestCode }, true));
-                        angular.forEach(advisories, function(i) {
+                        angular.forEach(advisories, function (i) {
                             var ma = {
                                 maObj: crop[0].CropName + ' - ' + pest[0].PestDiseaseName + ' - ' + i.PesticideName + ' - ' + i.RecommendedDose + ' / ' + i.PesticideNameOdia + ' - ' + i.RecommendedDoseOdia
                             };
@@ -112,7 +112,7 @@ app.controller('myOUATEMRCtrl', function($scope, $http, $filter, $timeout) {
             });
         }
     };
-    
+
     $scope.getEMRRefNos = function () {
         $http.get('http://localhost:3000/ouat/getEMRRefNos?cropCode=' + $scope.ddlCrop).then(function success(response) {
             $scope.emrReferenceNos = response.data;
@@ -189,8 +189,8 @@ app.controller('myOUATEMRCtrl', function($scope, $http, $filter, $timeout) {
             clearData();
         }
     };
-    
-    var clearData = function() {
+
+    var clearData = function () {
         $scope.ddlPest = null;
         $scope.ddlMAdvisory = null;
         $scope.ddlHAdvisory = null;

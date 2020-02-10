@@ -1,8 +1,8 @@
-app.controller('myJDAPPVAWRecordDCtrl', function($scope, $http) {
+app.controller('myJDAPPVAWRecordDCtrl', function ($scope, $http) {
 
     var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-    $scope.getVAWRecordDetails = function() {
+    $scope.getVAWRecordDetails = function () {
         if ($scope.vawCode != null && $scope.vawCode != undefined) {
             $http.get('http://localhost:3000/jdapp/getVAWRecordDetails?vawCode=' + $scope.vawCode).then(function success(response) {
                 if (response.data.length > 0) {
@@ -22,5 +22,5 @@ app.controller('myJDAPPVAWRecordDCtrl', function($scope, $http) {
             alert('Please select all the fields.');
         }
     };
-   
+
 });

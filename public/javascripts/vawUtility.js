@@ -1,4 +1,4 @@
-var dbPromise = idb.open('e-pest', 1, function(db) {
+var dbPromise = idb.open('e-pest', 1, function (db) {
     if (!db.objectStoreNames.contains('user-authentication')) {
         db.createObjectStore('user-authentication', { keyPath: 'Pin' });
     }
@@ -51,57 +51,57 @@ var dbPromise = idb.open('e-pest', 1, function(db) {
 
 function writeData(st, data) {
     return dbPromise
-    .then(function(db) {
-        var tx = db.transaction(st, 'readwrite');
-        var store = tx.objectStore(st);
-        store.put(data);
-        return tx.complete;
-    });
+        .then(function (db) {
+            var tx = db.transaction(st, 'readwrite');
+            var store = tx.objectStore(st);
+            store.put(data);
+            return tx.complete;
+        });
 };
 
 function readAllData(st) {
     return dbPromise
-    .then(function(db) {
-        var tx = db.transaction(st, 'readonly');
-        var store = tx.objectStore(st);
-        return store.getAll();
-    });
+        .then(function (db) {
+            var tx = db.transaction(st, 'readonly');
+            var store = tx.objectStore(st);
+            return store.getAll();
+        });
 };
 
 function readItemFromData(st, ID) {
     return dbPromise
-    .then(function(db) {
-        var tx = db.transaction(st, 'readonly');
-        var store = tx.objectStore(st);
-        return store.get(ID);
-    });
+        .then(function (db) {
+            var tx = db.transaction(st, 'readonly');
+            var store = tx.objectStore(st);
+            return store.get(ID);
+        });
 };
 
 function clearAllData(st) {
     return dbPromise
-    .then(function(db) {
-        var tx = db.transaction(st, 'readwrite');
-        var store = tx.objectStore(st);
-        store.clear();
-        return tx.complete;
-    });
+        .then(function (db) {
+            var tx = db.transaction(st, 'readwrite');
+            var store = tx.objectStore(st);
+            store.clear();
+            return tx.complete;
+        });
 };
 
 function clearItemFromData(st, ID) {
     return dbPromise
-    .then(function(db) {
-        var tx = db.transaction(st, 'readwrite');
-        var store = tx.objectStore(st);
-        store.delete(ID);
-        return tx.complete;
-    }).then(function() {
-        console.log('Item deleted!');
-    });
+        .then(function (db) {
+            var tx = db.transaction(st, 'readwrite');
+            var store = tx.objectStore(st);
+            store.delete(ID);
+            return tx.complete;
+        }).then(function () {
+            console.log('Item deleted!');
+        });
 };
 
 function dbDelete() {
-    return idb.delete('e-pest', function() {})
-    .then(function() {
-        console.log('Database deleted!');
-    });
+    return idb.delete('e-pest', function () { })
+        .then(function () {
+            console.log('Database deleted!');
+        });
 };

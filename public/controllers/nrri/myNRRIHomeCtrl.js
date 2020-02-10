@@ -1,3 +1,3 @@
-app.controller('myNRRIHomeCtrl', function() {
-    
+app.controller('myNRRIHomeCtrl', function () {
+
 });

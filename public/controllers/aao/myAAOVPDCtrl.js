@@ -1,8 +1,8 @@
-app.controller('myAAOVPDCtrl', function($scope, $http, $filter) {
+app.controller('myAAOVPDCtrl', function ($scope, $http, $filter) {
 
     var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-    $scope.checkCDay = function() {
+    $scope.checkCDay = function () {
         if ($scope.ddlUT == 'AAO') {
             document.getElementById('pdeDate').disabled = false;
             var day = new Date(document.getElementById('pdeDate').value).getDay();
@@ -65,7 +65,7 @@ app.controller('myAAOVPDCtrl', function($scope, $http, $filter) {
 
     $scope.pestDetails = [];
     $scope.ete = false;
-    $scope.getAAOPestDetails = function() {
+    $scope.getAAOPestDetails = function () {
         if ($scope.ddlUT != null && $scope.ddlUT != undefined && $scope.dateOfPDE != null && $scope.dateOfPDE != undefined && $scope.rbs != null && $scope.rbs != undefined && $scope.ddlFY != null && $scope.ddlFY != undefined && $scope.ddlCC != null && $scope.ddlCC != undefined && $scope.ddlC != null && $scope.ddlC != undefined) {
             var pdcd = 0;
             $scope.ddlPD == undefined || $scope.ddlPD == null ? pdcd = 0 : pdcd = $scope.ddlPD;
@@ -160,7 +160,7 @@ app.controller('myAAOVPDCtrl', function($scope, $http, $filter) {
                     }
                     $scope.laa = 0.0; $scope.maa = 0.0; $scope.haa = 0.0; $scope.lta = 0.0; $scope.mta = 0.0; $scope.hta = 0.0; $scope.taa = 0.0; $scope.tta = 0.0;
                     var count = 0;
-                    angular.forEach($scope.pestDetails, function(i) {
+                    angular.forEach($scope.pestDetails, function (i) {
                         $scope.laa += i.LowAffectedArea;
                         $scope.maa += i.MediumAffectedArea;
                         $scope.haa += i.HighAffectedArea;

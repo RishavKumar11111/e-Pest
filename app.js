@@ -42,17 +42,17 @@ app.use(session({
     // secure: auto,
     // expires: 10000
   },
-  genid: function() {
+  genid: function () {
     return uuid();
   }
 }));
 
 app.use(xFrameOptions());
 app.use(device.capture());
-app.use(express.json({limit: '100mb'}));
-app.use(express.urlencoded({limit: '100mb', extended: true}));
-app.use(bodyParser.json({limit: '100mb'}));
-app.use(bodyParser.urlencoded({limit: '100mb', extended: true}));
+app.use(express.json({ limit: '100mb' }));
+app.use(express.urlencoded({ limit: '100mb', extended: true }));
+app.use(bodyParser.json({ limit: '100mb' }));
+app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
 app.disable('x-powered-by');
 
 // static paths
@@ -84,14 +84,14 @@ app.use('/jdapp', jdappRouter);
 app.use('/index', indexRouter);
 app.use('/users', usersRouter);
 app.use('/changePassword', cpRouter);
-app.use('/emergencyApp' , emergencyAppRouter);
+app.use('/emergencyApp', emergencyAppRouter);
 app.use('/graph', graphRouter);
 app.use('/admin', adminRouter);
 app.use('/adapt', adaptRouter);
 app.use('/nrri', nrriRouter);
 
 // options request handler
-app.options("/*", function(req, res, next) {
+app.options("/*", function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
@@ -99,12 +99,12 @@ app.options("/*", function(req, res, next) {
 });
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

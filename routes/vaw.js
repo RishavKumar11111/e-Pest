@@ -21,7 +21,7 @@ function randomNumber() {
   return buf.toString('hex');
 };
 
-var getCurrentDateTime = function() {
+var getCurrentDateTime = function () {
   var today = new Date();
   var dd = today.getDate();
   var MM = today.getMonth() + 1;
@@ -30,10 +30,10 @@ var getCurrentDateTime = function() {
   var mm = today.getMinutes();
   var ss = today.getSeconds();
   if (dd < 10) {
-      dd = '0' + dd;
+    dd = '0' + dd;
   }
   if (MM < 10) {
-      MM = '0' + MM;
+    MM = '0' + MM;
   }
   if (HH < 10) {
     HH = '0' + HH;
@@ -49,7 +49,7 @@ var getCurrentDateTime = function() {
   return currentDate;
 };
 
-var getDateTime = function() {
+var getDateTime = function () {
   var dateTime = require('node-datetime');
   var dt = dateTime.create().format('Y-m-d H:M:S.N');
   var date = new Date(dt);
@@ -58,7 +58,7 @@ var getDateTime = function() {
   return currentDate;
 };
 
-var getFinancialYear = function() {
+var getFinancialYear = function () {
   var fiscalYear = "";
   var today = new Date();
   if ((today.getMonth() + 1) <= 3) {
@@ -70,34 +70,34 @@ var getFinancialYear = function() {
   return fiscalYear;
 };
 
-var getURL = function(req) {
+var getURL = function (req) {
   var fullURL = req.protocol + '://' + req.get('host') + req.originalUrl;
   return fullURL;
 };
 
 /* GET home page. */
-router.get('/', csrfProtection, permit.permission('VAW'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/', csrfProtection, permit.permission('VAW'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('vaw/layout', { title: 'VAW Layout', csrfToken: req.csrfToken() });
 });
 
-router.get('/home', csrfProtection, permit.permission('VAW'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/home', csrfProtection, permit.permission('VAW'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('vaw/home', { title: 'VAW Home', csrfToken: req.csrfToken() });
 });
 
-router.get('/dashboard', csrfProtection, permit.permission('VAW'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/dashboard', csrfProtection, permit.permission('VAW'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('vaw/dashboard', { title: 'VAW Dashboard', csrfToken: req.csrfToken() });
 });
 
-router.get('/changePassword', csrfProtection, permit.permission('VAW'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/changePassword', csrfProtection, permit.permission('VAW'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   req.session.RandomNo = randomNumber();
   res.get('X-Frame-Options');
   res.render('vaw/changepassword', { title: 'VAW Change Password', csrfToken: req.csrfToken(), randomNo: req.session.RandomNo });
 });
 
-router.post('/changePassword', parseForm, csrfProtection, permit.permission('VAW'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.post('/changePassword', parseForm, csrfProtection, permit.permission('VAW'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   balModule.getUserDetails(req.session.username).then(function success(response) {
     if (response.length === 0) {
@@ -112,7 +112,7 @@ router.post('/changePassword', parseForm, csrfProtection, permit.permission('VAW
       balModule.getPasswordHistory(req.session.username).then(function success(response1) {
         var objP = req.body.data;
         if (response1.length > 0) {
-          var found = response1.some(function(i) {
+          var found = response1.some(function (i) {
             return i.OldPassword === objP.NewPassword;
           });
         }

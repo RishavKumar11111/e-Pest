@@ -86,22 +86,22 @@ router.get('/home', csrfProtection, permit.permission('ADAPT'), cache.overrideCa
   res.render('adapt/home', { title: 'ADAPT Home', csrfToken: req.csrfToken() });
 });
 
-router.get('/stateWiseReport', csrfProtection, permit.permission('ADAPT', 'NRRI'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/stateWiseReport', csrfProtection, permit.permission('ADAPT', 'NRRI'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('adapt/statewisereport', { title: 'ADAPT VAW Details', csrfToken: req.csrfToken() });
 });
 
-router.get('/cropWiseReport', csrfProtection, permit.permission('ADAPT', 'NRRI'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/cropWiseReport', csrfProtection, permit.permission('ADAPT', 'NRRI'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('adapt/cropwisereport', { title: 'ADAPT Crop Details', csrfToken: req.csrfToken() });
 });
 
-router.get('/pestWiseReport', csrfProtection, permit.permission('ADAPT', 'NRRI'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/pestWiseReport', csrfProtection, permit.permission('ADAPT', 'NRRI'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('adapt/pestwisereport', { title: 'ADAPT Pest Details', csrfToken: req.csrfToken() });
 });
 
-router.get('/complianceReport', csrfProtection, permit.permission('ADAPT'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.get('/complianceReport', csrfProtection, permit.permission('ADAPT'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   res.render('adapt/compliancereport', { title: 'Compliance Report', csrfToken: req.csrfToken() });
 });
@@ -184,7 +184,7 @@ router.get('/logout', function (req, res, next) {
   res.redirect('../login');
 });
 
-router.get('/getDistricts', function(req, res, next) {
+router.get('/getDistricts', function (req, res, next) {
   res.get('X-Frame-Options');
   balModule.getDistricts().then(function success(response) {
     res.send(response);
@@ -195,7 +195,7 @@ router.get('/getDistricts', function(req, res, next) {
   });
 });
 
-router.get('/getBlocksByDistrict', function(req, res, next) {
+router.get('/getBlocksByDistrict', function (req, res, next) {
   res.get('X-Frame-Options');
   var districtCode = req.query.districtCode;
   balModule.getBlocksByDistrict(districtCode).then(function success(response) {
@@ -207,7 +207,7 @@ router.get('/getBlocksByDistrict', function(req, res, next) {
   });
 });
 
-router.get('/getGP', function(req, res, next) {
+router.get('/getGP', function (req, res, next) {
   res.get('X-Frame-Options');
   var blockCode = req.query.blockCode;
   balModule.getGP(blockCode).then(function success(response) {
@@ -219,7 +219,7 @@ router.get('/getGP', function(req, res, next) {
   });
 });
 
-router.get('/getCropCategories', function(req, res, next) {
+router.get('/getCropCategories', function (req, res, next) {
   res.get('X-Frame-Options');
   balModule.getCropCategories().then(function success(response) {
     res.send(response);
@@ -230,7 +230,7 @@ router.get('/getCropCategories', function(req, res, next) {
   });
 });
 
-router.get('/getCropsByCategory', function(req, res, next) {
+router.get('/getCropsByCategory', function (req, res, next) {
   res.get('X-Frame-Options');
   var cropCategoryCode = req.query.cropCategoryCode;
   balModule.getCropsByCategory(cropCategoryCode).then(function success(response) {
@@ -242,7 +242,7 @@ router.get('/getCropsByCategory', function(req, res, next) {
   });
 });
 
-router.get('/getPestDiseases', function(req, res, next) {
+router.get('/getPestDiseases', function (req, res, next) {
   res.get('X-Frame-Options');
   var cropCode = req.query.cropCode;
   balModule.getPestDiseases(cropCode, function success(response) {
@@ -264,7 +264,7 @@ router.get('/getPestDetails', function (req, res, next) {
   var cropCategoryCode = req.query.cropCategoryCode;
   var cropCode = req.query.cropCode;
   var pestDiseaseCode = req.query.pestDiseaseCode;
-  balModule.getPestDetails(dateOfEntry, season, financialYear, districtCode, blockCode , cropCategoryCode, cropCode, pestDiseaseCode, username, role, function success(response) {
+  balModule.getPestDetails(dateOfEntry, season, financialYear, districtCode, blockCode, cropCategoryCode, cropCode, pestDiseaseCode, username, role, function success(response) {
     console.log(response);
     res.send(response);
   }, function error(response) {
@@ -329,14 +329,14 @@ router.get('/getSurveyGP', function (req, res, next) {
   res.get('X-Frame-Options');
   var dateOfEntry = req.query.dateOfEntry;
   var blockCode = req.query.blockCode;
-  balModule.getSurveyGP(dateOfEntry,blockCode, function success(response) {
+  balModule.getSurveyGP(dateOfEntry, blockCode, function success(response) {
     res.send(response);
   }, function error(response) {
     console.log(response.status);
   });
 });
 
-router.get('/getADODetails', function(req, res, next) {
+router.get('/getADODetails', function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.get('X-Frame-Options');
   var adoCode = req.query.adoCode;
@@ -349,7 +349,7 @@ router.get('/getADODetails', function(req, res, next) {
   });
 });
 
-router.get('/getADODetails', function(req, res, next) {
+router.get('/getADODetails', function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.get('X-Frame-Options');
   var adoCode = req.query.adoCode;

@@ -1,4 +1,4 @@
-app.controller('myADOEMRCRCtrl', function($scope, $http, $filter, $timeout) {
+app.controller('myADOEMRCRCtrl', function ($scope, $http, $filter, $timeout) {
 
     var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
@@ -23,7 +23,7 @@ app.controller('myADOEMRCRCtrl', function($scope, $http, $filter, $timeout) {
             console.log('An error occurred...', error);
         });
     };
-    
+
     $scope.getBlocksByADO = function () {
         $http.get('http://localhost:3000/ado/getBlocksByADO').then(function success(response) {
             $scope.blocks = response.data;
@@ -34,7 +34,7 @@ app.controller('myADOEMRCRCtrl', function($scope, $http, $filter, $timeout) {
         });
     };
 
-    var getImage = function(a, b, c) {
+    var getImage = function (a, b, c) {
         var flp = "data:image/jpeg;base64," + a;
         document.getElementById('flp').setAttribute("src", flp);
         var rlp1 = "data:image/jpeg;base64," + b;
@@ -44,11 +44,11 @@ app.controller('myADOEMRCRCtrl', function($scope, $http, $filter, $timeout) {
     };
 
     $scope.emrDetails = [];
-    $scope.getEMRNosForADO = function() {
-        if ($scope.dateOfPDE != null && $scope.dateOfPDE != undefined && $scope.ddlFY != null && $scope.ddlFY != undefined && $scope.ddlCrop != null && $scope.ddlCrop != undefined && $scope.ddlCropCategory != null && $scope.ddlCropCategory != undefined ) {
+    $scope.getEMRNosForADO = function () {
+        if ($scope.dateOfPDE != null && $scope.dateOfPDE != undefined && $scope.ddlFY != null && $scope.ddlFY != undefined && $scope.ddlCrop != null && $scope.ddlCrop != undefined && $scope.ddlCropCategory != null && $scope.ddlCropCategory != undefined) {
             var blkcd = 0;
             $scope.ddlBlock == undefined || $scope.ddlBlock == null ? blkcd = 0 : blkcd = $scope.ddlBlock;
-            $http.get('http://localhost:3000/ado/getEMRNosForADO?dateOfEntry=' + document.getElementById('pdeDate').value + '&cropCategory=' + $scope.ddlCropCategory + '&crop=' + $scope.ddlCrop + '&financialYear=' + $scope.ddlFY  + '&blockCode=' + blkcd).then(function success(response) {
+            $http.get('http://localhost:3000/ado/getEMRNosForADO?dateOfEntry=' + document.getElementById('pdeDate').value + '&cropCategory=' + $scope.ddlCropCategory + '&crop=' + $scope.ddlCrop + '&financialYear=' + $scope.ddlFY + '&blockCode=' + blkcd).then(function success(response) {
                 if (response.data.length > 0) {
                     $scope.emrDetails = response.data;
                     if (response.data[0].hasOwnProperty('BlockName')) {

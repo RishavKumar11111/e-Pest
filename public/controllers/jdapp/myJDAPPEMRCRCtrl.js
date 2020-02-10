@@ -1,4 +1,4 @@
-app.controller('myJDAPPEMRCRCtrl', function($scope, $http, $filter, $timeout) {
+app.controller('myJDAPPEMRCRCtrl', function ($scope, $http, $filter, $timeout) {
 
     var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
@@ -23,7 +23,7 @@ app.controller('myJDAPPEMRCRCtrl', function($scope, $http, $filter, $timeout) {
             console.log('An error occurred...', error);
         });
     };
-    
+
     $scope.getDistricts = function () {
         $http.get('http://localhost:3000/jdapp/getDistricts').then(function success(response) {
             $scope.districts = response.data;
@@ -53,7 +53,7 @@ app.controller('myJDAPPEMRCRCtrl', function($scope, $http, $filter, $timeout) {
         }
     };
 
-    var getImage = function(a, b, c) {
+    var getImage = function (a, b, c) {
         var flp = "data:image/jpeg;base64," + a;
         document.getElementById('flp').setAttribute("src", flp);
         var rlp1 = "data:image/jpeg;base64," + b;
@@ -63,8 +63,8 @@ app.controller('myJDAPPEMRCRCtrl', function($scope, $http, $filter, $timeout) {
     };
 
     $scope.emrDetails = [];
-    $scope.getEMRNos = function() {
-        if ($scope.dateOfPDE != null && $scope.dateOfPDE != undefined && $scope.ddlFY != null && $scope.ddlFY != undefined && $scope.ddlCrop != null && $scope.ddlCrop != undefined && $scope.ddlCropCategory != null && $scope.ddlCropCategory != undefined ) {
+    $scope.getEMRNos = function () {
+        if ($scope.dateOfPDE != null && $scope.dateOfPDE != undefined && $scope.ddlFY != null && $scope.ddlFY != undefined && $scope.ddlCrop != null && $scope.ddlCrop != undefined && $scope.ddlCropCategory != null && $scope.ddlCropCategory != undefined) {
             var distcd = 0; var blkcd = 0;
             $scope.ddlDistrict == undefined || $scope.ddlDistrict == null ? distcd = 0 : distcd = $scope.ddlDistrict;
             $scope.ddlBlock == undefined || $scope.ddlBlock == null ? blkcd = 0 : blkcd = $scope.ddlBlock;

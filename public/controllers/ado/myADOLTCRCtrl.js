@@ -1,4 +1,4 @@
-app.controller('myADOLTCRCtrl', function($scope, $http, $filter) {
+app.controller('myADOLTCRCtrl', function ($scope, $http, $filter) {
 
     var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
@@ -7,7 +7,7 @@ app.controller('myADOLTCRCtrl', function($scope, $http, $filter) {
             var k = ($filter('filter')(response.data, { CategoryCode: 3 }, true));
             var l = { CC: k[0].CategoryCode, CN: k[0].CategoryName };
             var m = response.data.filter(function (i) { return !k.includes(i); });
-            $scope.crops = m.map(function(i) { return { CC: i.CropCode, CN: i.CropName }; });
+            $scope.crops = m.map(function (i) { return { CC: i.CropCode, CN: i.CropName }; });
             $scope.crops.push(l);
         }, function error(response) {
             console.log(response.status);
@@ -29,7 +29,7 @@ app.controller('myADOLTCRCtrl', function($scope, $http, $filter) {
     };
 
     $scope.getBlocksByADO = function () {
-        $http.get('http://localhost:3000/ado/getBlocks').then(function success(response) {   
+        $http.get('http://localhost:3000/ado/getBlocks').then(function success(response) {
             $scope.blocks = response.data;
         }, function error(response) {
             console.log(response.status);
@@ -39,7 +39,7 @@ app.controller('myADOLTCRCtrl', function($scope, $http, $filter) {
     };
 
     $scope.ltcDetails = [];
-    $scope.getLTCDetails = function() {
+    $scope.getLTCDetails = function () {
         if ($scope.dateOfPDE != null && $scope.dateOfPDE != undefined && $scope.rbs != null && $scope.rbs != undefined && $scope.ddlFY != null && $scope.ddlFY != undefined && $scope.ddlC != null && $scope.ddlC != undefined) {
             var blkcd = 0; var pdcd = 0;
             $scope.ddlBlock == undefined || $scope.ddlBlock == null ? blkcd = 0 : blkcd = $scope.ddlBlock;
@@ -72,7 +72,7 @@ app.controller('myADOLTCRCtrl', function($scope, $http, $filter) {
                         $scope.sdd = true;
                     }
                     $scope.ptn = 0.0;
-                    angular.forEach($scope.ltcDetails, function(i) {
+                    angular.forEach($scope.ltcDetails, function (i) {
                         $scope.ptn += i.PestTrappedNo;
                     });
                 }

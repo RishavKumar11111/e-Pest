@@ -3,9 +3,9 @@ var sequelize = dbConfig.sequelize;
 var sql = dbConfig.sql;
 var locConfig = dbConfig.locConfig;
 
-exports.addActivityLog = function(ipAddress, userID, url, deviceType, os, browser, action, attack, mode) {
+exports.addActivityLog = function (ipAddress, userID, url, deviceType, os, browser, action, attack, mode) {
     sequelize.query('insert into ActivityLog (IPAddress, UserID, URL, DeviceType, OS, Browser, DateTime, Action, Attack, Mode) values (:ip_address, :user_id, :url, :device_type, :os, :browser, getdate(), :action, :attack, :mode)', {
-    replacements: { ip_address: ipAddress, user_id: userID, url: url, device_type: deviceType, os: os, browser: browser, action: action, attack: attack, mode: mode}, type: sequelize.QueryTypes.SELECT
+        replacements: { ip_address: ipAddress, user_id: userID, url: url, device_type: deviceType, os: os, browser: browser, action: action, attack: attack, mode: mode }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
         return data;
     }).catch(function error(err) {
@@ -92,7 +92,7 @@ exports.getPasswordHistory = function (userName) {
     });
 };
 
-exports.changePasssword = function(obj, callback) {
+exports.changePasssword = function (obj, callback) {
     var con = new sql.ConnectionPool(locConfig);
     con.connect().then(function success() {
         const request = new sql.Request(con);
@@ -101,7 +101,7 @@ exports.changePasssword = function(obj, callback) {
         request.input('Status', obj.Status);
         request.input('IPAddress', obj.IPAddress);
         request.input('FinancialYear', obj.FinancialYear);
-        request.execute('spChangePassword', function(err, result) {
+        request.execute('spChangePassword', function (err, result) {
             if (err) {
                 console.log('An error occurred...', err);
             }
@@ -115,9 +115,9 @@ exports.changePasssword = function(obj, callback) {
     });
 };
 
-exports.updateFailedCount = function(failedCount, userID) {
+exports.updateFailedCount = function (failedCount, userID) {
     sequelize.query('update UserLogin set AccessFailedCount = :failed_count where UserID = :user_id', {
-    replacements: { failed_count: failedCount, user_id: userID }, type: sequelize.QueryTypes.SELECT
+        replacements: { failed_count: failedCount, user_id: userID }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {
         return data;
     }).catch(function error(err) {
@@ -125,7 +125,7 @@ exports.updateFailedCount = function(failedCount, userID) {
     });
 };
 
-exports.checkCPStatus = function(userName) {
+exports.checkCPStatus = function (userName) {
     return sequelize.query('select UserID from ChangePasswordStatus where UserID = :user_name', {
         replacements: { user_name: userName }, type: sequelize.QueryTypes.SELECT
     }).then(function success(data) {

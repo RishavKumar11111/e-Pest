@@ -1,8 +1,8 @@
-app.controller('myAAOPDECtrl', function($scope, $http, $window) {
+app.controller('myAAOPDECtrl', function ($scope, $http, $window) {
 
     var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    
-    $scope.checkDay = function() {
+
+    $scope.checkDay = function () {
         var dt = new Date();
         var d = dt.getDay();
         var HH = dt.getHours();
@@ -83,7 +83,7 @@ app.controller('myAAOPDECtrl', function($scope, $http, $window) {
     };
 
     var laa = null; var maa = null; var haa = null; var lta = null; var mta = null; var hta = null;
-    var convertValid = function(i) {
+    var convertValid = function (i) {
         laa = i.txtLAA == null ? '0' : i.txtLAA == undefined ? '0' : i.txtLAA == '' ? '0' : i.txtLAA;
         maa = i.txtMAA == null ? '0' : i.txtMAA == undefined ? '0' : i.txtMAA == '' ? '0' : i.txtMAA;
         haa = i.txtHAA == null ? '0' : i.txtHAA == undefined ? '0' : i.txtHAA == '' ? '0' : i.txtHAA;
@@ -94,7 +94,7 @@ app.controller('myAAOPDECtrl', function($scope, $http, $window) {
         return obj;
     };
 
-    $scope.checkMArea = function(i) {
+    $scope.checkMArea = function (i) {
         var k = convertValid(i);
         if (!(k.mta <= k.maa && ((k.lta + k.mta + k.hta) <= (k.laa + k.maa + k.haa)))) {
             alert('Medium Treated Area cannot be more than Medium Affected Area. Total Treated Area must be less than Total Affected Area.');
@@ -102,7 +102,7 @@ app.controller('myAAOPDECtrl', function($scope, $http, $window) {
         }
     };
 
-    $scope.checkHArea = function(i) {
+    $scope.checkHArea = function (i) {
         var k = convertValid(i);
         if (!(k.hta <= k.haa && ((k.lta + k.mta + k.hta) <= (k.laa + k.maa + k.haa)))) {
             alert('High Treated Area cannot be more than High Affected Area. Total Treated Area must be less than Total Affected Area.');
@@ -110,12 +110,12 @@ app.controller('myAAOPDECtrl', function($scope, $http, $window) {
         }
     };
 
-    $scope.submitAAOPDE = function(isValid) {
+    $scope.submitAAOPDE = function (isValid) {
         if (isValid) {
             var message = confirm('Do you really want to submit the form?');
             if (message) {
                 var myData = [];
-                angular.forEach($scope.ltcGPs, function(i) {
+                angular.forEach($scope.ltcGPs, function (i) {
                     var k = {
                         CropCategoryCode: $scope.ddlCropCategory,
                         CropCode: $scope.ddlCrop,
@@ -150,7 +150,7 @@ app.controller('myAAOPDECtrl', function($scope, $http, $window) {
         }
     };
 
-    $scope.checkCDay = function() {
+    $scope.checkCDay = function () {
         var day = new Date(document.getElementById('pdeDate').value).getDay();
         if (day != 4 && day != 5) {
             alert('Pest details entry are only done on Thursday and Friday.');
@@ -159,7 +159,7 @@ app.controller('myAAOPDECtrl', function($scope, $http, $window) {
     };
 
     $scope.pestDetails = [];
-    $scope.getPestDetails = function() {
+    $scope.getPestDetails = function () {
         if ($scope.dateOfPDE != null && $scope.dateOfPDE != undefined && $scope.rbs != null && $scope.rbs != undefined && $scope.ddlFY != null && $scope.ddlFY != undefined && $scope.ddlCC != null && $scope.ddlCC != undefined && $scope.ddlC != null && $scope.ddlC != undefined) {
             var pdcd = 0;
             $scope.ddlPD == undefined || $scope.ddlPD == null ? pdcd = 0 : pdcd = $scope.ddlPD;
@@ -175,7 +175,7 @@ app.controller('myAAOPDECtrl', function($scope, $http, $window) {
                         $scope.sgpd = true;
                     }
                     $scope.laa = 0.0; $scope.maa = 0.0; $scope.haa = 0.0; $scope.lta = 0.0; $scope.mta = 0.0; $scope.hta = 0.0; $scope.taa = 0.0; $scope.tta = 0.0;
-                    angular.forEach($scope.pestDetails, function(i) {
+                    angular.forEach($scope.pestDetails, function (i) {
                         $scope.laa += i.LowAffectedArea;
                         $scope.maa += i.MediumAffectedArea;
                         $scope.haa += i.HighAffectedArea;

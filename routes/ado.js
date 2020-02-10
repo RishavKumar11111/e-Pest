@@ -720,7 +720,7 @@ router.get('/getCropDetailsCategory', function (req, res, next) {
   });
 });
 
-var getSeasonShort = function() {
+var getSeasonShort = function () {
   var seasonName;
   var month = new Date().getMonth();
   if (month >= 6 && month <= 10) {
@@ -732,7 +732,7 @@ var getSeasonShort = function() {
   return seasonName;
 };
 
-router.post('/getPestGraphData', parseForm, csrfProtection, permit.permission('ADO'), cache.overrideCacheHeaders(overrideConfig), function(req, res, next) {
+router.post('/getPestGraphData', parseForm, csrfProtection, permit.permission('ADO'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
   res.get('X-Frame-Options');
   balModule.addActivityLog(req.connection.remoteAddress, req.session.username, getURL(req), req.device.type.toUpperCase(), os.platform(), req.headers['user-agent'], '/getPestGraphData', 'INSERT', 'POST', function success(response) {
   }, function error(response) {
@@ -752,7 +752,7 @@ router.post('/getPestGraphData', parseForm, csrfProtection, permit.permission('A
   });
 });
 
-router.get('/getPestDiseases', function(req, res, next) {
+router.get('/getPestDiseases', function (req, res, next) {
   res.get('X-Frame-Options');
   var cropCode = req.query.cropCode;
   balModule.getPestDiseases(cropCode, function success(response) {

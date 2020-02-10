@@ -1,4 +1,4 @@
-app.controller('myCDAOADReportCtrl', function($scope, $http) {
+app.controller('myCDAOADReportCtrl', function ($scope, $http) {
 
     var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 

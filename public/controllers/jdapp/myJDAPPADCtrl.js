@@ -300,7 +300,7 @@ app.controller('myJDAPPADCtrl', function ($scope, $http, $filter) {
         }
     };
 
-    $scope.convertE2O = function(engText, $event) {
+    $scope.convertE2O = function (engText, $event) {
         var keyCode = $event.which || $event.keyCode;
         if (keyCode === 32) {
             var xhttp = new XMLHttpRequest();
@@ -310,7 +310,7 @@ app.controller('myJDAPPADCtrl', function ($scope, $http, $filter) {
             if (response[0] == 'SUCCESS') {
                 var resultOdia = response[1][0][1];
                 document.getElementById($event.target.id).value = resultOdia[0];
-                resultOdia.forEach(function(i) {
+                resultOdia.forEach(function (i) {
                     var optionNode = document.createElement('option');
                     optionNode.value = i;
                     document.getElementById($event.target.nextElementSibling.id).appendChild(optionNode);

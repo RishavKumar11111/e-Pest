@@ -1,6 +1,6 @@
-app.controller('myADOAppHomeCtrl', function($scope) {
-    
-    $scope.checkUserDetails = function() {
+app.controller('myADOAppHomeCtrl', function ($scope) {
+
+    $scope.checkUserDetails = function () {
         if ('indexedDB' in window) {
             readAllData('user-authentication').then(function success(response) {
                 if (response.length == 0) {

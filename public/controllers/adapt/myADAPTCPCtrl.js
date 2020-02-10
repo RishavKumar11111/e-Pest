@@ -1,10 +1,10 @@
-app.controller('myADAPTCPCtrl', function($scope, $http) {
-    
+app.controller('myADAPTCPCtrl', function ($scope, $http) {
+
     var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
     var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})");
     var mediumRegex = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
-    
+
     $scope.npCheck = {
         'padding-top': '8px'
     };
@@ -13,7 +13,7 @@ app.controller('myADAPTCPCtrl', function($scope, $http) {
         'padding-top': '8px'
     };
 
-    $scope.analyzeNP = function(value) {
+    $scope.analyzeNP = function (value) {
         if (strongRegex.test(value)) {
             $scope.nPWDCheck = "glyphicon glyphicon-ok";
             $scope.npCheck['color'] = 'green';
@@ -26,9 +26,9 @@ app.controller('myADAPTCPCtrl', function($scope, $http) {
         }
     };
 
-    $scope.analyzeCP = function(value) {
+    $scope.analyzeCP = function (value) {
         $scope.pnm = null;
-        if(strongRegex.test(value)) {
+        if (strongRegex.test(value)) {
             if ($scope.txtNewPassword === $scope.txtConfirmPassword) {
                 $scope.cPWDCheck = "glyphicon glyphicon-ok";
                 $scope.cpCheck['color'] = 'green';
@@ -46,11 +46,11 @@ app.controller('myADAPTCPCtrl', function($scope, $http) {
         }
     };
 
-    $scope.randomNoInit = function(rno) {
+    $scope.randomNoInit = function (rno) {
         $scope.rNo = rno;
     };
 
-    $scope.changePassword = function(isValid) {
+    $scope.changePassword = function (isValid) {
         if (isValid) {
             var obj = {};
             obj.OldPassword = sha256(sha256($scope.txtOldPassword) + $scope.rNo);
@@ -86,7 +86,7 @@ app.controller('myADAPTCPCtrl', function($scope, $http) {
         }
     };
 
-    var clearFields = function() {
+    var clearFields = function () {
         $scope.txtOldPassword = null;
         $scope.txtNewPassword = null;
         $scope.txtConfirmPassword = null;

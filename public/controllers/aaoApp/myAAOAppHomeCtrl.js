@@ -1,6 +1,6 @@
-app.controller('myAAOAppHomeCtrl', function($scope) {
-    
-    $scope.checkUserDetails = function() {
+app.controller('myAAOAppHomeCtrl', function ($scope) {
+
+    $scope.checkUserDetails = function () {
         if ('indexedDB' in window) {
             readAllData('user-authentication').then(function success(response) {
                 if (response.length == 0) {
@@ -15,7 +15,7 @@ app.controller('myAAOAppHomeCtrl', function($scope) {
     };
 
     $scope.blockName = null;
-    $scope.getBlock = function() {
+    $scope.getBlock = function () {
         if ('indexedDB' in window) {
             readAllData('user-login').then(function success(response) {
                 if (response.length > 0) {

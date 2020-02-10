@@ -1,6 +1,6 @@
 app.controller('myAAOAppDashboardCtrl', function ($scope, $filter, $state, aaoService) {
 
-    $scope.checkUserDetails = function() {
+    $scope.checkUserDetails = function () {
         if ('indexedDB' in window) {
             readAllData('user-login').then(function success(response) {
                 if (response.length == 0) {
@@ -23,7 +23,7 @@ app.controller('myAAOAppDashboardCtrl', function ($scope, $filter, $state, aaoSe
     //     }
     // };
 
-    $scope.checkDay = function() {
+    $scope.checkDay = function () {
         var dt = new Date();
         var d = dt.getDay();
         if (d == 0) {
@@ -84,7 +84,7 @@ app.controller('myAAOAppDashboardCtrl', function ($scope, $filter, $state, aaoSe
                     readAllData('refNo-fID-aID').then(function success(response1) {
                         if (response1.length > 0) {
                             $scope.faArray = ($filter('filter')(response1, { ReferenceNo: $scope.referenceNo }, true));
-                            angular.forEach($scope.faArray, function(i) {
+                            angular.forEach($scope.faArray, function (i) {
                                 if (i.AadhaarNo != null) {
                                     i.AadhaarNo = atob(i.AadhaarNo);
                                 }
@@ -170,7 +170,7 @@ app.controller('myAAOAppDashboardCtrl', function ($scope, $filter, $state, aaoSe
         }
     };
 
-    $scope.checkPest = function(cropCode) {
+    $scope.checkPest = function (cropCode) {
         if (cropCode != null || cropCode != undefined) {
             readAllData('pest-disease').then(function success(response) {
                 if (response.length > 0) {
@@ -212,13 +212,13 @@ app.controller('myAAOAppDashboardCtrl', function ($scope, $filter, $state, aaoSe
         }
     };
 
-    $scope.addFAID = function() {
+    $scope.addFAID = function () {
         if (($scope.txtAadhaarNo != '' && $scope.txtAadhaarNo != null && $scope.txtAadhaarNo != undefined && $scope.txtAadhaarNo.length == 12) || ($scope.txtFarmerID != '' && $scope.txtFarmerID != null && $scope.txtFarmerID != undefined && ($scope.txtAadhaarNo == null || $scope.txtAadhaarNo == '' || $scope.txtAadhaarNo == undefined || $scope.txtAadhaarNo.length == 12))) {
             if ($scope.txtFarmerID != '' && $scope.txtFarmerID != null && $scope.txtFarmerID != undefined) {
                 var l = $scope.districtName + '/' + $scope.txtFarmerID;
                 var r = true;
                 if ($scope.faArray.length > 0) {
-                    angular.forEach($scope.faArray, function(i) {
+                    angular.forEach($scope.faArray, function (i) {
                         if (i.FarmerID == l || (i.AadhaarNo == $scope.txtAadhaarNo && i.AadhaarNo != null && $scope.txtAadhaarNo != null)) {
                             alert('The Farmer ID or Aadhaar No. is already entered.');
                             r = false;
@@ -236,7 +236,7 @@ app.controller('myAAOAppDashboardCtrl', function ($scope, $filter, $state, aaoSe
             else {
                 var r = true;
                 if ($scope.faArray.length > 0) {
-                    angular.forEach($scope.faArray, function(i) {
+                    angular.forEach($scope.faArray, function (i) {
                         if (i.AadhaarNo == $scope.txtAadhaarNo) {
                             alert('The Aadhaar No. is already entered.');
                             r = false;
@@ -260,13 +260,13 @@ app.controller('myAAOAppDashboardCtrl', function ($scope, $filter, $state, aaoSe
         $scope.faArray.splice(index, 1);
     };
 
-    var modifyFAData = function(faData, callback) {
+    var modifyFAData = function (faData, callback) {
         if ('indexedDB' in window) {
             readAllData('refNo-fID-aID').then(function success(response) {
                 if (response.length > 0) {
                     var fData = ($filter('filter')(response, { ReferenceNo: $scope.refNoDetails.ReferenceNo }, true));
-                    angular.forEach(fData, function(i) {
-                        clearItemFromData('refNo-fID-aID', i.ID).then(function() {
+                    angular.forEach(fData, function (i) {
+                        clearItemFromData('refNo-fID-aID', i.ID).then(function () {
                         }, function error(response) {
                             console.log(response.status);
                         }).catch(function err(error) {
@@ -274,12 +274,12 @@ app.controller('myAAOAppDashboardCtrl', function ($scope, $filter, $state, aaoSe
                         });
                     });
                     var counter = 0;
-                    angular.forEach(faData, function(i) {
+                    angular.forEach(faData, function (i) {
                         if (i.AadhaarNo != null) {
                             encodedAN = btoa(i.AadhaarNo);
                             i.AadhaarNo = encodedAN;
                         }
-                        writeData('refNo-fID-aID', i).then(function() {
+                        writeData('refNo-fID-aID', i).then(function () {
                             counter++;
                             if (counter == faData.length) {
                                 callback();
@@ -308,7 +308,7 @@ app.controller('myAAOAppDashboardCtrl', function ($scope, $filter, $state, aaoSe
             if ($scope.faArray.length > 0) {
                 var message = confirm('Do you really want to save the form?');
                 if (message) {
-                    if ('indexedDB' in  window) {
+                    if ('indexedDB' in window) {
                         readItemFromData('crop-category', $scope.ddlCaCo).then(function success(response) {
                             if (response != null && response != undefined && response != '') {
                                 $scope.CrCaN = response.CategoryName;
@@ -351,9 +351,9 @@ app.controller('myAAOAppDashboardCtrl', function ($scope, $filter, $state, aaoSe
                                                             ReferenceNo: $scope.refNoDetails.ReferenceNo,
                                                             Status: 0
                                                         };
-                                                        writeData('crop-details', cropData).then(function() {
-                                                            writeData('referenceNo-status', refNoStatus).then(function() {
-                                                                modifyFAData(faData, function() {
+                                                        writeData('crop-details', cropData).then(function () {
+                                                            writeData('referenceNo-status', refNoStatus).then(function () {
+                                                                modifyFAData(faData, function () {
                                                                     alert('The crop information is updated with the Reference No. ' + cropData.ReferenceNo + '.');
                                                                     aaoService.setReferenceNo(cropData.ReferenceNo);
                                                                     aaoService.setCropCategoryCode(cropData.CategoryCode);
@@ -424,7 +424,7 @@ app.controller('myAAOAppDashboardCtrl', function ($scope, $filter, $state, aaoSe
         }
     };
 
-    $scope.getCropPhotoDetailsData = function() {
+    $scope.getCropPhotoDetailsData = function () {
         document.getElementById('top').scrollIntoView();
         $scope.referenceNo = aaoService.getReferenceNo();
         $scope.cropCategoryCode = aaoService.getCropCategoryCode();
@@ -448,7 +448,7 @@ app.controller('myAAOAppDashboardCtrl', function ($scope, $filter, $state, aaoSe
         }
     };
 
-    var getImage = function(a, b, c) {
+    var getImage = function (a, b, c) {
         var flp = "data:image/jpeg;base64," + a;
         document.getElementById('flp').setAttribute("src", flp);
         if (b != null) {
@@ -461,21 +461,21 @@ app.controller('myAAOAppDashboardCtrl', function ($scope, $filter, $state, aaoSe
         }
     };
 
-    $scope.backToCropDetails = function() {
+    $scope.backToCropDetails = function () {
         aaoService.setReferenceNo($scope.referenceNo);
         aaoService.setCropCategoryCode($scope.cropCategoryCode);
         aaoService.setCropCode($scope.cropCode);
         $state.go('dashboard.cropDetails');
     };
 
-    $scope.proceedToPestDetails = function() {
+    $scope.proceedToPestDetails = function () {
         aaoService.setReferenceNo($scope.referenceNo);
         aaoService.setCropCategoryCode($scope.cropCategoryCode);
         aaoService.setCropCode($scope.cropCode);
         $state.go('dashboard.pestDetails');
     };
 
-    $scope.backToPhoto = function() {
+    $scope.backToPhoto = function () {
         aaoService.setReferenceNo($scope.referenceNo);
         aaoService.setCropCategoryCode($scope.cropCategoryCode);
         aaoService.setCropCode($scope.cropCode);
@@ -493,7 +493,7 @@ app.controller('myAAOAppDashboardCtrl', function ($scope, $filter, $state, aaoSe
         angular.element(document.querySelector('#lblPD')).removeClass('ng-hide');
         angular.element(document.querySelector('#txtPD')).addClass('ng-hide');
     };
-    
+
     $scope.getCropPestDetails = function () {
         $scope.referenceNo = aaoService.getReferenceNo();
         $scope.cropCategoryCode = aaoService.getCropCategoryCode();
@@ -531,14 +531,14 @@ app.controller('myAAOAppDashboardCtrl', function ($scope, $filter, $state, aaoSe
         }
     };
 
-    $scope.getPestDiseases = function() {
+    $scope.getPestDiseases = function () {
         if ('indexedDB' in window) {
             readAllData('pest-disease').then(function success(response) {
                 if (response.length > 0) {
                     var cropType = ($scope.cropCode == 202) ? 'MS' : ($scope.cropCode == 201) ? 'GN' : ($scope.cropCode == 206) ? 'SN' : null;
                     if (cropType != null) {
                         $scope.pestDiseases = ($filter('filter')(response, { CropCode: $scope.cropCode, CropType: cropType }, true));
-                        var found = $scope.pestDiseases.some(function(o) {
+                        var found = $scope.pestDiseases.some(function (o) {
                             return o["PestDiseaseCode"] === $scope.ddlPest;
                         });
                         if (!found) {
@@ -547,7 +547,7 @@ app.controller('myAAOAppDashboardCtrl', function ($scope, $filter, $state, aaoSe
                     }
                     else {
                         $scope.pestDiseases = ($filter('filter')(response, { CropCode: $scope.cropCode }, true));
-                        var found = $scope.pestDiseases.some(function(o) {
+                        var found = $scope.pestDiseases.some(function (o) {
                             return o["PestDiseaseCode"] === $scope.ddlPest;
                         });
                         if (!found) {
@@ -568,7 +568,7 @@ app.controller('myAAOAppDashboardCtrl', function ($scope, $filter, $state, aaoSe
         }
     };
 
-    $scope.getPestPopulation = function(pestCode) {
+    $scope.getPestPopulation = function (pestCode) {
         if ('indexedDB' in window) {
             readAllData('pest-disease-intensity').then(function success(response) {
                 if (response.length > 0) {
@@ -576,7 +576,7 @@ app.controller('myAAOAppDashboardCtrl', function ($scope, $filter, $state, aaoSe
                     if ($scope.pestPopulation.length > 0) {
                         var mppArray = [];
                         var hppArray = [];
-                        angular.forEach($scope.pestPopulation, function(i) {
+                        angular.forEach($scope.pestPopulation, function (i) {
                             var mpp = {
                                 mppObj: i.ModerateIntensityPopulation
                             };
@@ -603,7 +603,7 @@ app.controller('myAAOAppDashboardCtrl', function ($scope, $filter, $state, aaoSe
         }
     };
 
-    $scope.getPesticides = function(pestCode) {
+    $scope.getPesticides = function (pestCode) {
         if ('indexedDB' in window) {
             readAllData('pesticide').then(function success(response) {
                 if (response.length > 0) {
@@ -615,7 +615,7 @@ app.controller('myAAOAppDashboardCtrl', function ($scope, $filter, $state, aaoSe
                         readItemFromData('crop', $scope.cropCode).then(function success(response) {
                             if (response != null && response != undefined && response != '') {
                                 var cropName = response.CropName;
-                                angular.forEach(advisories, function(i) {
+                                angular.forEach(advisories, function (i) {
                                     var ma = {
                                         maObj: cropName + ' - ' + pestDetails[0].PestDiseaseName + ' - ' + i.PesticideName + ' - ' + i.RecommendedDose + ' / ' + i.PesticideNameOdia + ' - ' + i.RecommendedDoseOdia
                                     };
@@ -658,7 +658,7 @@ app.controller('myAAOAppDashboardCtrl', function ($scope, $filter, $state, aaoSe
     };
 
     $scope.pdIntensity = [];
-    $scope.checkAdvisoryandPP = function(pestCode) {
+    $scope.checkAdvisoryandPP = function (pestCode) {
         if (pestCode != null || pestCode != undefined) {
             readAllData('pesticide').then(function success(response) {
                 if (response.length > 0) {
@@ -694,7 +694,7 @@ app.controller('myAAOAppDashboardCtrl', function ($scope, $filter, $state, aaoSe
             });
         }
     };
-    
+
     $scope.updatePestDetails = function (isValid) {
         if (isValid) {
             var maa = parseFloat($scope.txtMediumAreaAffected);
@@ -736,8 +736,8 @@ app.controller('myAAOAppDashboardCtrl', function ($scope, $filter, $state, aaoSe
                                                     ReferenceNo: $scope.referenceNo,
                                                     Status: 0
                                                 };
-                                                writeData('pest-details', pestData).then(function() {
-                                                    writeData('referenceNo-status', refNoStatus).then(function() {
+                                                writeData('pest-details', pestData).then(function () {
+                                                    writeData('referenceNo-status', refNoStatus).then(function () {
                                                         alert('The pest information is updated with the Reference No. ' + $scope.referenceNo + '.');
                                                         angular.element(document.querySelector('#lblPD')).removeClass('ng-hide');
                                                         angular.element(document.querySelector('#txtPD')).addClass('ng-hide');
@@ -814,7 +814,7 @@ app.controller('myAAOAppDashboardCtrl', function ($scope, $filter, $state, aaoSe
                 Status: 1
             };
             if ('indexedDB' in window) {
-                writeData('referenceNo-status', refNoStatus).then(function() {
+                writeData('referenceNo-status', refNoStatus).then(function () {
                     alert('The pest information is submitted with the Reference No. ' + $scope.referenceNo + '.');
                     location.href = 'http://localhost:3000/aaoApp#!/home';
                 }, function error(response) {

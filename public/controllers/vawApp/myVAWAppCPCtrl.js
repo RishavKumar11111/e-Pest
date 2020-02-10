@@ -1,10 +1,10 @@
-app.controller('myVAWAppCPCtrl', function($scope, $http, $window) {
-    
+app.controller('myVAWAppCPCtrl', function ($scope, $http, $window) {
+
     var token = document.querySelector('#_csrf').value;
 
     var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})");
     var mediumRegex = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
-    
+
     $scope.npCheck = {
         'padding-top': '8px'
     };
@@ -13,16 +13,16 @@ app.controller('myVAWAppCPCtrl', function($scope, $http, $window) {
         'padding-top': '8px'
     };
 
-    $scope.reload = function() {
-        setTimeout(function() {
-            if(!($window.location.hash == '#!/changePassword#loaded')) {
+    $scope.reload = function () {
+        setTimeout(function () {
+            if (!($window.location.hash == '#!/changePassword#loaded')) {
                 $window.location.href = $window.location.href + '#loaded';
                 $window.location.reload();
             }
         }, 1);
     };
 
-    $scope.analyzeNP = function(value) {
+    $scope.analyzeNP = function (value) {
         if (strongRegex.test(value)) {
             $scope.nPWDCheck = "glyphicon glyphicon-ok";
             $scope.npCheck['color'] = 'green';
@@ -35,9 +35,9 @@ app.controller('myVAWAppCPCtrl', function($scope, $http, $window) {
         }
     };
 
-    $scope.analyzeCP = function(value) {
+    $scope.analyzeCP = function (value) {
         $scope.pnm = null;
-        if(strongRegex.test(value)) {
+        if (strongRegex.test(value)) {
             if ($scope.txtNewPassword === $scope.txtConfirmPassword) {
                 $scope.cPWDCheck = "glyphicon glyphicon-ok";
                 $scope.cpCheck['color'] = 'green';
@@ -55,11 +55,11 @@ app.controller('myVAWAppCPCtrl', function($scope, $http, $window) {
         }
     };
 
-    $scope.randomNoInit = function(rno) {
+    $scope.randomNoInit = function (rno) {
         $scope.rNo = rno;
     };
 
-    $scope.changePassword = function(isValid) {
+    $scope.changePassword = function (isValid) {
         if (isValid) {
             readAllData('user-authentication').then(function success(resun) {
                 var obj = {};
@@ -108,7 +108,7 @@ app.controller('myVAWAppCPCtrl', function($scope, $http, $window) {
         }
     };
 
-    var clearFields = function() {
+    var clearFields = function () {
         $scope.txtOldPassword = null;
         $scope.txtNewPassword = null;
         $scope.txtConfirmPassword = null;

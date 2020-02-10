@@ -1,6 +1,6 @@
 app.controller('myADOAppEMRCtrl', function ($scope) {
 
-    $scope.checkUserDetails = function() {
+    $scope.checkUserDetails = function () {
         if ('indexedDB' in window) {
             readAllData('user-login').then(function success(response) {
                 if (response.length == 0) {
