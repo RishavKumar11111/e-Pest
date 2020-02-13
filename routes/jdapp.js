@@ -443,6 +443,7 @@ router.post('/resetPasswords', parseForm, csrfProtection, permit.permission('JDA
 });
 
 router.get('/getCropCategories', function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
   res.get('X-Frame-Options');
   balModule.getCropCategories().then(function success(response) {
     res.send(response);
@@ -454,6 +455,7 @@ router.get('/getCropCategories', function (req, res, next) {
 });
 
 router.get('/getCropsByCategory', function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
   res.get('X-Frame-Options');
   var cropCategoryCode = req.query.cropCategoryCode;
   balModule.getCropsByCategory(cropCategoryCode).then(function success(response) {
@@ -530,6 +532,7 @@ router.get('/getPD', function (req, res, next) {
 });
 
 router.get('/getPestDiseases', function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
   res.get('X-Frame-Options');
   var cropCode = req.query.cropCode;
   balModule.getPestDiseases(cropCode, function success(response) {
@@ -763,6 +766,7 @@ router.get('/getAAODetails', function (req, res, next) {
 });
 
 router.get('/getDashboardDetails', function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
   res.get('X-Frame-Options');
   var sq = null; if (req.query.hasOwnProperty('season')) sq = req.query.season.charAt(0);
   var season = getSeasonShort() == sq ? getSeasonShort() : sq;
@@ -1209,6 +1213,7 @@ router.get('/getEMRReferenceNoDetails', function (req, res, next) {
 });
 
 router.post('/getPestGraphData', parseForm, csrfProtection, permit.permission('JDA_PP'), cache.overrideCacheHeaders(overrideConfig), function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
   res.get('X-Frame-Options');
   balModule.addActivityLog(req.connection.remoteAddress, req.session.username, getURL(req), req.device.type.toUpperCase(), os.platform(), req.headers['user-agent'], '/getPestGraphData', 'INSERT', 'POST', function success(response) {
   }, function error(response) {
@@ -1228,6 +1233,7 @@ router.post('/getPestGraphData', parseForm, csrfProtection, permit.permission('J
 });
 
 router.get('/getGraphforCrop', function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
   res.get('X-Frame-Options');
   var sq = null; if (req.query.hasOwnProperty('season')) sq = req.query.season.charAt(0);
   var season = getSeasonShort() == sq ? getSeasonShort() : sq;
@@ -1243,6 +1249,7 @@ router.get('/getGraphforCrop', function (req, res, next) {
 });
 
 router.get('/getCropDetailsCategory', function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
   res.get('X-Frame-Options');
   var sq = null; if (req.query.hasOwnProperty('season')) sq = req.query.season.charAt(0);
   var season = getSeasonShort() == sq ? getSeasonShort() : sq;
