@@ -1,7 +1,5 @@
 app.controller('myJDAPPDashbord1Ctrl', function ($scope, $http, $filter) {
 
-    var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
     $scope.generateGraphs = function () {
         if ($scope.cbSeason != undefined && $scope.cbSeason != null && $scope.ddlFY != undefined && $scope.ddlFY != null) {
             if (myChart9) myChart9.destroy();
@@ -130,7 +128,7 @@ app.controller('myJDAPPDashbord1Ctrl', function ($scope, $http, $filter) {
                 var month = $scope.ddlMonth == undefined || $scope.ddlMonth == null ? 0 : $scope.ddlMonth;
                 var financialYear = $scope.ddlFY == undefined || $scope.ddlFY == null ? 0 : $scope.ddlFY;
                 var season = $scope.cbSeason == undefined || $scope.cbSeason == null ? 0 : $scope.cbSeason;
-                $http.post('http://localhost:3000/jdapp/getPestGraphData', { data: { pestData: $scope.pests, month: month, season: season, financialYear: financialYear } }, { credentials: 'same-origin', headers: { 'CSRF-Token': token } }).then(function success(response) {
+                $http.get('http://localhost:3000/jdapp/getPestGraphData', { params: { pestData: JSON.stringify($scope.pests), month: month, season: season, financialYear: financialYear } }).then(function success(response) {
                     graphData = response.data;
                     if (graphData.length > 0) {
                         var pestName = [];
