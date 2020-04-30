@@ -505,4 +505,26 @@ router.get('/getAdvisoryDetails', function (req, res, next) {
   });
 });
 
+// odihortmarketing
+
+router.get('/getStockDetails', function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.get('X-Frame-Options');
+  balModule.getStockDetails(function success(response) {
+    res.send(response);
+  }, function error(response) {
+    console.log(response.status);
+  });
+});
+
+router.get('/getTraderDetails', function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.get('X-Frame-Options');
+  balModule.getTraderDetails(function success(response) {
+    res.send(response);
+  }, function error(response) {
+    console.log(response.status);
+  });
+});
+
 module.exports = router;
