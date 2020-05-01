@@ -14,7 +14,10 @@
 //     user: 'sa',
 //     password: 'sa@123#',
 //     server: 'localhost',
-//     database: 'e-pest'
+//     database: 'e-pest',
+//     options: {
+//         encrypt: false
+//     }
 // };
 
 const Sequelize = require('sequelize');
@@ -29,7 +32,10 @@ const locConfig = {
     password: 'E@Pest#456',
     server: '164.100.140.101',
     database: 'e-pest',
-    requestTimeout: 3600000
+    requestTimeout: 3600000,
+    options: {
+        encrypt: false
+    }
 };
 
 sequelize
